@@ -1,9 +1,19 @@
-# Fabric Example Mod
+# Hexasis Vanilla Plus
 
-## Setup
+## Helix SMP
 
-For setup instructions please see the [fabric wiki page](https://fabricmc.net/wiki/tutorial:setup) that relates to the IDE that you are using.
+Developed for the **Helix SMP** server
 
-## License
+## Planned features;
 
-This template is available under the CC0 license. Feel free to learn from it and incorporate it in your own projects.
+- Custom stone generators;
+
+  Andesite, Granite, Diorite, Netherrack, Blackstone, End Stone, Sandstone, Red Sandstone, Deepslate, Tuff, or Calcite
+ 
+- Crusher;
+
+  Cobblestone -> Gravel, Sandstone -> Sand, Red Sandstone -> Red Sand
+ 
+- Chest shops
+
+- Chorus Elevators
