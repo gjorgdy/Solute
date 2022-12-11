@@ -19,11 +19,11 @@
   "environment": "*",
   "entrypoints": {
     "main": [
-      "net.fabricmc.example.ExampleMod"
+      "nl.gjorgdy.vanillaplus.VanillaPlus"
     ]
   },
   "mixins": [
-    "modid.mixins.json"
+    "vanillaplus.mixins.json"
   ],
 
   "depends": {
