@@ -1,13 +1,8 @@
 package nl.gjorgdy.vanillaplus;
 
 import net.fabricmc.api.ModInitializer;
-import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
-import net.minecraft.block.Block;
-import net.minecraft.block.Material;
-import net.minecraft.registry.Registries;
-import net.minecraft.registry.Registry;
-import net.minecraft.util.Identifier;
-import nl.gjorgdy.vanillaplus.blocks.PurpurBlock;
+import nl.gjorgdy.vanillaplus.callbacks.PlayerEntityCallback;
+import nl.gjorgdy.vanillaplus.functions.Elevator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -23,5 +18,12 @@ public class VanillaPlus implements ModInitializer {
 		// Proceed with mild caution.
 
 		LOGGER.info("Hello Fabric world! Your leader speaking, please do what I say");
+
+		//PlayerJumpCallback.EVENT.register(player -> {
+		//	LOGGER.info("Player jumped");
+		//	return ActionResult.SUCCESS;
+		//});
+		Elevator elevator = new Elevator(LOGGER);
+		PlayerEntityCallback.JUMP_EVENT.register(elevator::up);
 	}
 }
