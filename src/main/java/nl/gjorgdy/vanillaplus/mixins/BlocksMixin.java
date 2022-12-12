@@ -1,10 +1,9 @@
-package nl.gjorgdy.vanillaplus.mixin;
+package nl.gjorgdy.vanillaplus.mixins;
 
 import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
-import nl.gjorgdy.vanillaplus.VanillaPlus;
-import nl.gjorgdy.vanillaplus.blocks.PurpurBlock;
+import nl.gjorgdy.vanillaplus.blocks.ElevatorBlock;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;
@@ -31,7 +30,7 @@ public abstract class BlocksMixin {
         method = "<clinit>"
     )
     private static Block purpur(AbstractBlock.Settings settings) {
-        return new PurpurBlock(settings);
+        return new ElevatorBlock(settings);
     }
 
 }
