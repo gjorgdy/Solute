@@ -12,11 +12,10 @@ import net.minecraft.util.ActionResult;
  * - PASS - not used
  * - FAIL - not used
  */
-public interface PlayerEntityCallback {
-
-    Event<PlayerEntityCallback> JUMP_EVENT = EventFactory.createArrayBacked(PlayerEntityCallback.class,
+public interface PlayerSneakCallback {
+    Event<PlayerSneakCallback> EVENT = EventFactory.createArrayBacked(PlayerSneakCallback.class,
             (listeners) -> (player) -> {
-                for (PlayerEntityCallback listener : listeners) {
+                for (PlayerSneakCallback listener : listeners) {
                     ActionResult result = listener.interactJump(player);
                     if(result != ActionResult.PASS) {
                         return result;
@@ -25,17 +24,4 @@ public interface PlayerEntityCallback {
                 return ActionResult.PASS;
             });
     ActionResult interactJump(PlayerEntity player);
-
-    Event<PlayerEntityCallback> SNEAK_EVENT = EventFactory.createArrayBacked(PlayerEntityCallback.class,
-            (listeners) -> (player) -> {
-                for (PlayerEntityCallback listener : listeners) {
-                    ActionResult result = listener.interactSneak(player);
-                    if(result != ActionResult.PASS) {
-                        return result;
-                    }
-                }
-                return ActionResult.PASS;
-            });
-    ActionResult interactSneak(PlayerEntity player);
-
 }

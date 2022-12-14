@@ -3,7 +3,7 @@ package nl.gjorgdy.vanillaplus.mixins;
 import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
-import nl.gjorgdy.vanillaplus.blocks.ElevatorBlock;
+import nl.gjorgdy.vanillaplus.blocks.IndestructibleBlock;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;
@@ -17,7 +17,7 @@ public abstract class BlocksMixin {
             from = @At(
                 value = "CONSTANT",
                 args= {
-                        "stringValue=purpur_block"
+                        "stringValue=lodestone"
                 },
                 ordinal = 0
             )
@@ -29,8 +29,8 @@ public abstract class BlocksMixin {
         ),
         method = "<clinit>"
     )
-    private static Block purpur(AbstractBlock.Settings settings) {
-        return new ElevatorBlock(settings);
+    private static Block lodestone(AbstractBlock.Settings settings) {
+        return new IndestructibleBlock(settings);
     }
 
 }
