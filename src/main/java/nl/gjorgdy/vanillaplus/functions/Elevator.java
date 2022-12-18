@@ -6,31 +6,29 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
+import nl.gjorgdy.vanillaplus.VanillaPlus;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class Elevator {
 
-    private List<Block> validBlocks = new ArrayList<>();
     private static int RANGE = 8;
-
-    public void registerBlock(Block block) {
-        validBlocks.add(block);
-    }
 
     /**
      * Moves the player in the elevator
      * @param player instance of player using teleporter
      * @param up boolean value detirming if elevator goes up or down
      */
-    public void moveVertical(PlayerEntity player, boolean up) {
+    public static void moveVertical(PlayerEntity player, boolean up) {
         World world = player.getWorld();
         BlockPos blockPos = player.getBlockPos();
         // Get the block under the player
         Block block = world.getBlockState(blockPos.add(0,-1,0)).getBlock();
         // Check if block is an elevator block
-        if (validBlocks.contains(block)) {
+        if (contains(block)) {
             int deltaY;
             if (up) {
                 deltaY = 1;
@@ -39,11 +37,11 @@ public class Elevator {
                 deltaY = -1;
             }
             // Loop trough blocks
-            for (int i = 0; i < RANGE; i++) {
+            for (int i = 0; i < VanillaPlus.CONFIG.elevatorRange(); i++) {
                 blockPos = blockPos.add(0, deltaY, 0);
                 block = world.getBlockState(blockPos).getBlock();
                 // If it encounters an elevator block
-                if (validBlocks.contains(block)) {
+                if (contains(block)) {
                     if (teleport(player, blockPos)) {
                         return;
                     } else {
@@ -52,6 +50,11 @@ public class Elevator {
                 }
             }
         }
+    }
+
+    private static boolean contains(Block block) {
+        String id = block.toString().split("\\{|\\}")[1];
+        return VanillaPlus.CONFIG.elevatorBlocks().contains(id);
     }
 
     /**

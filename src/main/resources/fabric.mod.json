@@ -1,9 +1,9 @@
 {
   "schemaVersion": 1,
-  "id": "modid",
+  "id": "vanillaplus",
   "version": "${version}",
 
-  "name": "Example Mod",
+  "name": "Hexasis VanillaPlus",
   "description": "This is an example description! Tell everyone what your mod is about!",
   "authors": [
     "Me!"
@@ -14,7 +14,7 @@
   },
 
   "license": "CC0-1.0",
-  "icon": "assets/modid/icon.png",
+  "icon": "assets/vanillaplus/icon.png",
 
   "environment": "*",
   "entrypoints": {
