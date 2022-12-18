@@ -1,8 +1,7 @@
 package nl.gjorgdy.vanillaplus.mixins;
 
 import net.minecraft.entity.player.PlayerEntity;
-import nl.gjorgdy.vanillaplus.callbacks.PlayerJumpCallback;
-import nl.gjorgdy.vanillaplus.callbacks.PlayerSneakCallback;
+import nl.gjorgdy.vanillaplus.functions.Elevator;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -14,9 +13,9 @@ public class PlayerEntityMixin {
     private boolean releasedSneak = true;
     private PlayerEntity player = (PlayerEntity) (Object) this;
 
-    @Inject(at = @At("HEAD"), method = "jump")
+    @Inject(at = @At("TAIL"), method = "jump", cancellable = true)
     private void onJump(CallbackInfo ci) {
-        PlayerJumpCallback.EVENT.invoker().interactJump((PlayerEntity) (Object) this);
+        Elevator.moveVertical(player, true);
     }
 
     /**
@@ -27,7 +26,7 @@ public class PlayerEntityMixin {
     private void onSneak(CallbackInfo ci) {
         if (player.isSneaking() && releasedSneak) {
             releasedSneak = false;
-            PlayerSneakCallback.EVENT.invoker().interactJump((PlayerEntity) (Object) this);
+            Elevator.moveVertical(player, false);
         } else {
             releasedSneak = true;
         }
