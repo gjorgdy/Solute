@@ -8,14 +8,9 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import nl.gjorgdy.vanillaplus.VanillaPlus;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+import static nl.gjorgdy.vanillaplus.functions.BlockFunctions.getBlockFromID;
 
 public class Elevator {
-
-    private static int RANGE = 8;
 
     /**
      * Moves the player in the elevator
@@ -26,35 +21,53 @@ public class Elevator {
         World world = player.getWorld();
         BlockPos blockPos = player.getBlockPos();
         // Get the block under the player
-        Block block = world.getBlockState(blockPos.add(0,-1,0)).getBlock();
+        blockPos = blockPos.add(0, -1, 0);
+        Block block = world.getBlockState(blockPos).getBlock();
         // Check if block is an elevator block
-        if (contains(block)) {
-            int deltaY;
-            if (up) {
-                deltaY = 1;
-            } else {
-                blockPos = blockPos.add(0, -1, 0);
-                deltaY = -1;
-            }
-            // Loop trough blocks
-            for (int i = 0; i < VanillaPlus.CONFIG.elevatorRange(); i++) {
-                blockPos = blockPos.add(0, deltaY, 0);
-                block = world.getBlockState(blockPos).getBlock();
-                // If it encounters an elevator block
-                if (contains(block)) {
-                    if (teleport(player, blockPos)) {
-                        return;
-                    } else {
-                        i--;
-                    }
+        if (!isElevatorBlock(block)) {
+            return;
+        }
+        int deltaY;
+        if (up) {
+            deltaY = 1;
+        } else {
+            deltaY = -1;
+        }
+        // Loop trough blocks
+        for (int i = 0; i < VanillaPlus.CONFIG.elevatorRange(); i++) {
+            blockPos = blockPos.add(0, deltaY, 0);
+            block = world.getBlockState(blockPos).getBlock();
+            // When it encounters an extender block, it resets the range counter
+            if (isExtenderBlock(block)) {
+                i = -1;
+            // When it encounters an elevator block
+            } else if (isElevatorBlock(block)) {
+                if (teleport(player, blockPos)) {
+                    return;
+                } else {
+                    i--;
                 }
             }
         }
+
     }
 
-    private static boolean contains(Block block) {
-        String id = block.toString().split("\\{|\\}")[1];
-        return VanillaPlus.CONFIG.elevatorBlocks().contains(id);
+    private static boolean isElevatorBlock(Block block) {
+        for (String id : VanillaPlus.CONFIG.elevatorBlocks()) {
+            if (getBlockFromID(id) == block) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private static boolean isExtenderBlock(Block block) {
+        for (String id : VanillaPlus.CONFIG.extenderBlocks()) {
+            if (getBlockFromID(id) == block) {
+                return true;
+            }
+        }
+        return false;
     }
 
     /**

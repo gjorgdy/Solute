@@ -18,6 +18,11 @@ public class ConfigTemplate {
                   "minecraft:purpur_stairs"
           )
     );
+    public List<String> extenderBlocks = new ArrayList<>(
+            List.of(
+                    "minecraft:end_rod"
+            )
+    );
     public int elevatorRange = 8;
 
     public Map<String, String> generatorBlocks = new HashMap<>(
