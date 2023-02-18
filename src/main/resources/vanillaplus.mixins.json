@@ -6,9 +6,12 @@
   "mixins": [],
   "client": [],
   "server": [
-    "FluidBlockMixin",
     "BlocksMixin",
-    "PlayerEntityMixin"
+    "CropBlockMixin",
+    "FluidBlockMixin",
+    "NetherPortalMixin",
+    "PlayerEntityMixin",
+    "PlayerInventoryMixin"
   ],
   "injectors": {
     "defaultRequire": 1

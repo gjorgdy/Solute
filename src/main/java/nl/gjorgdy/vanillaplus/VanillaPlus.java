@@ -1,7 +1,6 @@
 package nl.gjorgdy.vanillaplus;
 
 import net.fabricmc.api.ModInitializer;
-import nl.gjorgdy.vanillaplus.MainConfig;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -10,7 +9,7 @@ public class VanillaPlus implements ModInitializer {
 	// It is considered best practice to use your mod id as the logger's name.
 	// That way, it's clear which mod wrote info, warnings, and errors.
 	public static final Logger LOGGER = LoggerFactory.getLogger("VanillaPlus");
-	public static final MainConfig CONFIG = MainConfig.createAndLoad();
+	public static final Config CONFIG = new Config();
 
 	@Override
 	public void onInitialize() {

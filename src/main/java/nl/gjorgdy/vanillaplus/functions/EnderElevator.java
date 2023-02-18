@@ -8,9 +8,7 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import nl.gjorgdy.vanillaplus.VanillaPlus;
 
-import static nl.gjorgdy.vanillaplus.functions.BlockFunctions.getBlockFromID;
-
-public class Elevator {
+public class EnderElevator {
 
     /**
      * Moves the player in the elevator
@@ -34,7 +32,7 @@ public class Elevator {
             deltaY = -1;
         }
         // Loop trough blocks
-        for (int i = 0; i < VanillaPlus.CONFIG.elevatorRange(); i++) {
+        for (int i = 0; i < VanillaPlus.CONFIG.elevatorRange; i++) {
             blockPos = blockPos.add(0, deltaY, 0);
             block = world.getBlockState(blockPos).getBlock();
             // When it encounters an extender block, it resets the range counter
@@ -53,21 +51,11 @@ public class Elevator {
     }
 
     private static boolean isElevatorBlock(Block block) {
-        for (String id : VanillaPlus.CONFIG.elevatorBlocks()) {
-            if (getBlockFromID(id) == block) {
-                return true;
-            }
-        }
-        return false;
+        return VanillaPlus.CONFIG.elevatorBlocks.contains(block);
     }
 
     private static boolean isExtenderBlock(Block block) {
-        for (String id : VanillaPlus.CONFIG.extenderBlocks()) {
-            if (getBlockFromID(id) == block) {
-                return true;
-            }
-        }
-        return false;
+        return VanillaPlus.CONFIG.extenderBlocks.contains(block);
     }
 
     /**
