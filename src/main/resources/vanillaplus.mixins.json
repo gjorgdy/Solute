@@ -3,12 +3,14 @@
   "minVersion": "0.8",
   "package": "nl.gjorgdy.vanillaplus.mixins",
   "compatibilityLevel": "JAVA_17",
-  "mixins": [],
+  "mixins": [
+  ],
   "client": [],
   "server": [
-    "BlocksMixin",
+    "CraftingScreenHandlerMixin",
     "CropBlockMixin",
     "FluidBlockMixin",
+    "HopperBlockEntityMixin",
     "NetherPortalMixin",
     "PlayerEntityMixin",
     "PlayerInventoryMixin"
