@@ -33,6 +33,7 @@ public class CustomGenerator {
             BiomeKeys.GROVE,
             BiomeKeys.SNOWY_SLOPES
     );
+    static final int CRYING_OBSIDIAN_CHANCE = 16;
 
     public static BlockState replace(World world, BlockPos pos, BlockState block) {
         Block under = world.getBlockState(pos.add(0, -1, 0)).getBlock();
@@ -139,7 +140,7 @@ public class CustomGenerator {
 
     private static BlockState generateObsidian() {
         Random rand = new Random();
-        if (rand.nextInt(VanillaPlus.CONFIG.cryingObsidianChance) < 1) {
+        if (rand.nextInt(CRYING_OBSIDIAN_CHANCE) < 1) {
             return Blocks.CRYING_OBSIDIAN.getDefaultState();
         } else {
             return Blocks.OBSIDIAN.getDefaultState();

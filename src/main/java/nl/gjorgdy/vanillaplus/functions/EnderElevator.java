@@ -2,13 +2,29 @@ package nl.gjorgdy.vanillaplus.functions;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
+import net.minecraft.block.Blocks;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import nl.gjorgdy.vanillaplus.VanillaPlus;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 public class EnderElevator {
+
+    static List<Block> elevatorBlocks = List.of(
+            Blocks.PURPUR_BLOCK,
+            Blocks.PURPUR_PILLAR,
+            Blocks.PURPUR_SLAB,
+            Blocks.PURPUR_STAIRS
+    );
+    static List<Block> extenderBlocks = List.of(
+            Blocks.END_ROD
+    );
+    static int elevatorRange = 8;
 
     /**
      * Moves the player in the elevator
@@ -32,7 +48,7 @@ public class EnderElevator {
             deltaY = -1;
         }
         // Loop trough blocks
-        for (int i = 0; i < VanillaPlus.CONFIG.elevatorRange; i++) {
+        for (int i = 0; i < elevatorRange; i++) {
             blockPos = blockPos.add(0, deltaY, 0);
             block = world.getBlockState(blockPos).getBlock();
             // When it encounters an extender block, it resets the range counter
@@ -51,11 +67,11 @@ public class EnderElevator {
     }
 
     private static boolean isElevatorBlock(Block block) {
-        return VanillaPlus.CONFIG.elevatorBlocks.contains(block);
+        return elevatorBlocks.contains(block);
     }
 
     private static boolean isExtenderBlock(Block block) {
-        return VanillaPlus.CONFIG.extenderBlocks.contains(block);
+        return extenderBlocks.contains(block);
     }
 
     /**

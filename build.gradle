@@ -28,7 +28,7 @@ dependencies {
 	implementation group: 'com.googlecode.json-simple', name: 'json-simple', version: '1.1.1'
 
 	// https://www.mongodb.com/docs/drivers/java/sync/current/quick-start/
-	implementation 'org.mongodb:mongodb-driver-sync:4.8.2'
+	implementation 'org.mongodb:mongodb-driver-sync:4.9.0'
 
 	// Uncomment the following line to enable the deprecated Fabric API modules. 
 	// These are included in the Fabric API production distribution and allow you to update your mod to the latest modules at a later more convenient time.
