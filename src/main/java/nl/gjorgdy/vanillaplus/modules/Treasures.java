@@ -1,14 +1,13 @@
-package nl.gjorgdy.vanillaplus.functions;
+package nl.gjorgdy.vanillaplus.modules;
 
 import net.minecraft.item.*;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtInt;
 import net.minecraft.nbt.NbtList;
-import net.minecraft.nbt.NbtString;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
-import net.minecraft.util.Rarity;
 import nl.gjorgdy.vanillaplus.VanillaPlus;
+import nl.gjorgdy.vanillaplus.functions.NbtText;
 
 public class Treasures {
 
@@ -29,7 +28,7 @@ public class Treasures {
         // Give item nbt
         NbtCompound nbtDisplay = new NbtCompound();
         NbtList nbtLore = new NbtList();
-        nbtLore.add(NbtText.of(Text.literal("#" + count), Formatting.GRAY));
+        nbtLore.add(NbtText.of(Text.literal("Treasure"), Formatting.GRAY));
         // Add elements to display nbt
         nbtDisplay.put("Lore", nbtLore);
         // Add display element to item

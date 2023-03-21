@@ -19,7 +19,8 @@ public class Database {
 
     public Database() {
         // Try to connect to database
-        try (MongoClient mongoClient = MongoClients.create(uri)) {
+        try {
+            MongoClient mongoClient = MongoClients.create(uri);
 
             MongoDatabase database = mongoClient.getDatabase(dbId);
             MongoCollection<Document> collection = database.getCollection(colId);

@@ -34,5 +34,11 @@
   },
   "suggests": {
     "another-mod": "*"
+  },
+  "custom": {
+    "loom:injected_interfaces": {
+      "net/minecraft/entity/player/PlayerEntity.class": ["nl/gjorgdy/vanillaplus/interfaces/PlayerEntityInterface.java"],
+      "net/minecraft/block/entity/SignBlockEntity.class": ["nl/gjorgdy/vanillaplus/interfaces/SignBlockEntityInterface.java"]
+    }
   }
 }

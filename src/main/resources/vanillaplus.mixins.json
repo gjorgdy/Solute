@@ -11,9 +11,11 @@
     "CropBlockMixin",
     "FluidBlockMixin",
     "HopperBlockEntityMixin",
+    "LavaFluidMixin",
     "NetherPortalMixin",
     "PlayerEntityMixin",
-    "PlayerInventoryMixin"
+    "PlayerInventoryMixin",
+    "SignBlockEntityMixin"
   ],
   "injectors": {
     "defaultRequire": 1

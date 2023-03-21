@@ -11,7 +11,7 @@ import net.minecraft.util.Hand;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import nl.gjorgdy.vanillaplus.functions.ExpandedFarming;
+import nl.gjorgdy.vanillaplus.modules.ExpandedFarming;
 import org.spongepowered.asm.mixin.Mixin;
 
 @Mixin(CropBlock.class)

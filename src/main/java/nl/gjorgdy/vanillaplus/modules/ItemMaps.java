@@ -1,20 +1,13 @@
-package nl.gjorgdy.vanillaplus.functions;
+package nl.gjorgdy.vanillaplus.modules;
 
 import net.minecraft.inventory.Inventory;
-import net.minecraft.inventory.SimpleInventory;
 import net.minecraft.item.*;
 import net.minecraft.nbt.*;
 import net.minecraft.text.MutableText;
 import net.minecraft.text.Style;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
-import net.minecraft.util.collection.DefaultedList;
-import nl.gjorgdy.vanillaplus.VanillaPlus;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import nl.gjorgdy.vanillaplus.functions.NbtText;
 
 public class ItemMaps {
 
