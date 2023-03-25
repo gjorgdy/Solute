@@ -1,7 +1,7 @@
 package nl.gjorgdy.vanillaplus.mixins;
 
 import net.minecraft.entity.player.PlayerEntity;
-import nl.gjorgdy.vanillaplus.VanillaPlus;
+import net.minecraft.world.World;
 import nl.gjorgdy.vanillaplus.interfaces.PlayerEntityInterface;
 import nl.gjorgdy.vanillaplus.modules.EnderElevator;
 import org.spongepowered.asm.mixin.Mixin;
@@ -21,7 +21,9 @@ public abstract class PlayerEntityMixin implements PlayerEntityInterface {
      */
     @Inject(at = @At("HEAD"), method = "jump")
     private void onJump(CallbackInfo ci) {
-        EnderElevator.moveVertical(player, true);
+        if (player.getWorld().getRegistryKey() != World.END) {
+            EnderElevator.moveVertical(player, true);
+        }
     }
 
     /**
@@ -31,14 +33,14 @@ public abstract class PlayerEntityMixin implements PlayerEntityInterface {
     @Inject(at = @At("TAIL"), method = "tick")
     private void onSneak(CallbackInfo ci) {
         // Start sneaking
-        if (checkCooldown() && player.isSneaking()) {
+        if (vanillaPlus$checkCooldown() && player.isSneaking() && player.getWorld().getRegistryKey() != World.END) {
             EnderElevator.moveVertical(player, false);
-            resetCooldown();
+            vanillaPlus$resetCooldown();
         }
     }
 
     @Override
-    synchronized public boolean checkCooldown() {
+    synchronized public boolean vanillaPlus$checkCooldown() {
         if (elevatorCooldown <= 0) {
             return true;
         } else {
@@ -48,7 +50,7 @@ public abstract class PlayerEntityMixin implements PlayerEntityInterface {
     }
 
     @Override
-    synchronized public void resetCooldown() {
+    synchronized public void vanillaPlus$resetCooldown() {
         elevatorCooldown = 10;
     }
 }

@@ -4,6 +4,7 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
@@ -53,7 +54,7 @@ public class EnderElevator {
                 i = -1;
             // When it encounters an elevator block
             } else if (isElevatorBlock(block)) {
-                if (teleport(player, blockPos)) {
+                if (teleport((ServerPlayerEntity) player, blockPos)) {
                     return;
                 } else {
                     i--;
@@ -77,7 +78,7 @@ public class EnderElevator {
      * @param blockPos location to teleport player to
      * @return return if location is valid and player is teleported
      */
-    private static boolean teleport(PlayerEntity player, BlockPos blockPos) {
+    private static boolean teleport(ServerPlayerEntity player, BlockPos blockPos) {
         World world = player.getWorld();
         Vec3d playerPos = player.getPos();
         BlockState firstBlock = world.getBlockState(blockPos.add(0,1,0));

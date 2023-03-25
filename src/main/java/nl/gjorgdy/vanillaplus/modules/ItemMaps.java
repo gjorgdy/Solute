@@ -7,7 +7,7 @@ import net.minecraft.text.MutableText;
 import net.minecraft.text.Style;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
-import nl.gjorgdy.vanillaplus.functions.NbtText;
+import nl.gjorgdy.vanillaplus.functions.NbtFunctions;
 
 public class ItemMaps {
 
@@ -55,12 +55,12 @@ public class ItemMaps {
         // Lore list
         NbtList nbtLore = new NbtList();
         nbtLore.add(
-                NbtText.of(Text.translatable(item.getTranslationKey()), Formatting.GRAY)
+                NbtFunctions.of(Text.translatable(item.getTranslationKey()), Formatting.GRAY)
         );
         // If item has tooltip, add it
         if (item instanceof MusicDiscItem | item instanceof BannerPatternItem | item instanceof GoatHornItem) {
             nbtLore.add(
-                    NbtText.of(Text.translatable(item.getTranslationKey() + ".desc"), Formatting.GRAY)
+                    NbtFunctions.of(Text.translatable(item.getTranslationKey() + ".desc"), Formatting.GRAY)
             );
         }
         // Add elements to display nbt

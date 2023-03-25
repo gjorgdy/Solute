@@ -7,14 +7,17 @@
   ],
   "client": [],
   "server": [
+    "ChorusFruitItemMixin",
     "CraftingScreenHandlerMixin",
     "CropBlockMixin",
+    "EnderPearlEntityMixin",
+    "EndGatewayBlockEntityMixin",
+    "EndPortalBlockMixin",
     "FluidBlockMixin",
     "HopperBlockEntityMixin",
     "LavaFluidMixin",
     "NetherPortalMixin",
     "PlayerEntityMixin",
-    "PlayerInventoryMixin",
     "SignBlockEntityMixin"
   ],
   "injectors": {

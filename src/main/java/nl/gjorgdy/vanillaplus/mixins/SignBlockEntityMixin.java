@@ -2,21 +2,25 @@ package nl.gjorgdy.vanillaplus.mixins;
 
 import net.minecraft.block.entity.SignBlockEntity;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.Text;
 import nl.gjorgdy.vanillaplus.VanillaPlus;
+import nl.gjorgdy.vanillaplus.functions.BlockFunctions;
+import nl.gjorgdy.vanillaplus.functions.PlayerFunctions;
 import nl.gjorgdy.vanillaplus.interfaces.SignBlockEntityInterface;
 import nl.gjorgdy.vanillaplus.modules.SignShops;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(SignBlockEntity.class)
-public class SignBlockEntityMixin implements SignBlockEntityInterface {
+public abstract class SignBlockEntityMixin implements SignBlockEntityInterface {
+
+    @Shadow public abstract boolean isGlowingText();
 
     public boolean shop;
     public ItemStack product;
@@ -28,7 +32,10 @@ public class SignBlockEntityMixin implements SignBlockEntityInterface {
     @Inject(method = "setTextOnRow(ILnet/minecraft/text/Text;Lnet/minecraft/text/Text;)V", at=@At("HEAD"))
     public void setTextOnRow(int row, Text text, Text filteredText, CallbackInfo ci) {
         // After last line is set, check the sign
-        if (row == 3 && sign.getTextOnRow(0, false).equals(Text.literal("[shop]"))) {
+        if (row == 3
+                && (sign.getTextOnRow(0, false).equals(Text.literal("[shop]"))
+                || sign.getTextOnRow(0, false).equals(Text.literal("[trade]")))
+        ) {
             // Create a shop for this sign is possible
             SignShops.create(sign);
         }
@@ -38,23 +45,29 @@ public class SignBlockEntityMixin implements SignBlockEntityInterface {
     @Inject(method = "onActivate", at=@At("HEAD"), cancellable = true)
     public void onActivate(ServerPlayerEntity player, CallbackInfoReturnable<Boolean> cir) {
         SignBlockEntityInterface shopSign = (SignBlockEntityInterface) sign;
-        if (shopSign.isShop()) {
+        if (shopSign.vanillaPlus$isShop()) {
+            boolean result = false;
             // If a product has not been set yet
-            if (shopSign.getProduct().getItem() == Items.AIR) {
+            if (shopSign.vanillaPlus$getProduct() == null) {
                 ItemStack playerHand = player.getMainHandStack();
-                SignShops.setProduct(sign, playerHand);
+                result = SignShops.setProduct(sign, playerHand);
             // If a price has not been set yet
-            } else if (shopSign.getPrice().getItem() == Items.AIR) {
+            } else if (shopSign.vanillaPlus$getPrice() == null) {
                 ItemStack playerHand = player.getMainHandStack();
-                SignShops.setPrice(sign, playerHand);
-            // Shop exists
+                result = SignShops.setPrice(sign, playerHand);
+            // Shop is valid
             } else {
-                VanillaPlus.LOGGER.info("This should buy stuff");
-                VanillaPlus.LOGGER.info("Product; " + getProduct().getName());
-                VanillaPlus.LOGGER.info("Price; " + getPrice().getName());
-                SignShops.makePurchase(sign, player);
+                // Make a purchase
+                PlayerFunctions.sendError(player, "Purchase");
+                result = SignShops.makePurchase(sign, player);
             }
-            cir.setReturnValue(true);
+            // Update the stock counter of the shop
+            SignShops.updateStock(sign);
+            // Update sign block for players
+            BlockFunctions.updateBlock(sign.getWorld(), sign.getPos(), true);
+            // Return result so click animation plays if true
+            cir.setReturnValue(result);
+            // Cancel event
             cir.cancel();
         }
     }
@@ -63,16 +76,20 @@ public class SignBlockEntityMixin implements SignBlockEntityInterface {
     @Inject(method = "writeNbt", at=@At("HEAD"))
     public void writeNBT(NbtCompound nbt, CallbackInfo ci) {
         // Store if the sign is a shop
-        nbt.putBoolean("shop", isShop());
+        nbt.putBoolean("shop", vanillaPlus$isShop());
         // If it's a shop, store more
-        if (isShop()) {
+        if (vanillaPlus$isShop()) {
             // Store the product
             NbtCompound productNBT = new NbtCompound();
-            getProduct().writeNbt(productNBT);
+            ItemStack product = vanillaPlus$getProduct();
+            product = product == null ? ItemStack.EMPTY : product;
+            product.writeNbt(productNBT);
             nbt.put("product", productNBT);
             // Store the price
             NbtCompound priceNBT = new NbtCompound();
-            getPrice().writeNbt(priceNBT);
+            ItemStack price = vanillaPlus$getPrice();
+            price = price == null ? ItemStack.EMPTY : price;
+            price.writeNbt(priceNBT);
             nbt.put("price", priceNBT);
         }
     }
@@ -83,50 +100,51 @@ public class SignBlockEntityMixin implements SignBlockEntityInterface {
         // Read if the sign is a shop
         if (nbt.getBoolean("shop")) {
             // Store that sign is shop
-            setShop();
+            vanillaPlus$setShop();
             // Read product
-            setProduct(ItemStack.fromNbt(nbt.getCompound("product")));
+            ItemStack product = ItemStack.fromNbt(nbt.getCompound("product"));
+            product = product.isEmpty() ? null : product;
+            vanillaPlus$setProduct(product);
             // Read price
-            setPrice(ItemStack.fromNbt(nbt.getCompound("price")));
+            ItemStack price = ItemStack.fromNbt(nbt.getCompound("price"));
+            price = price.isEmpty() ? null : price;
+            vanillaPlus$setPrice(price);
         }
     }
 
     // Boolean check if the sign is a shop
     @Override
-    public void setShop() {
+    public void vanillaPlus$setShop() {
         shop = true;
     }
     @Override
-    public boolean isShop() {
+    public boolean vanillaPlus$isShop() {
         return shop;
     }
 
     // ItemStack product
     @Override
-    public void setProduct(ItemStack itemStack) {
-        product = itemStack;
+    public void vanillaPlus$setProduct(ItemStack itemStack) {
+        if (product == null) {
+            product = itemStack;
+        }
     }
     @Override
-    public ItemStack getProduct() {
-        if (product == null) {
-            return ItemStack.EMPTY;
-        } else {
-            return product;
-        }
+    public ItemStack vanillaPlus$getProduct() {
+        return product == null ? null : product.copy();
     }
 
     // ItemStack price per one instance of the ItemStack product
     @Override
-    public void setPrice(ItemStack itemStack) {
-        price = itemStack;
+    public void vanillaPlus$setPrice(ItemStack itemStack) {
+        VanillaPlus.LOGGER.info("Set ");
+        if (price == null) {
+            price = itemStack;
+        }
     }
     @Override
-    public ItemStack getPrice() {
-        if (price == null) {
-            return ItemStack.EMPTY;
-        } else {
-            return price;
-        }
+    public ItemStack vanillaPlus$getPrice() {
+        return price == null ? null : price.copy();
     }
 
 }

@@ -6,7 +6,7 @@ import net.minecraft.text.Style;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 
-public class NbtText {
+public class NbtFunctions {
 
     public static NbtString of(String text) {
         return of(Text.literal(text), Formatting.WHITE);

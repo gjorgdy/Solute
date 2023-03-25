@@ -10,8 +10,8 @@ import org.spongepowered.asm.mixin.Shadow;
 @Mixin(NetherPortal.class)
 public class NetherPortalMixin {
 
-    @Final
     @Shadow
-    private final static AbstractBlock.ContextPredicate IS_VALID_FRAME_BLOCK =
+    @Final
+    private static final AbstractBlock.ContextPredicate IS_VALID_FRAME_BLOCK =
         (state, world, pos) -> (state.isOf(Blocks.OBSIDIAN) || state.isOf(Blocks.CRYING_OBSIDIAN));
 }

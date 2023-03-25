@@ -4,18 +4,18 @@ import net.minecraft.item.ItemStack;
 
 public interface SignBlockEntityInterface {
 
-    default void setShop() {}
-    default boolean isShop() {
+    default void vanillaPlus$setShop() {}
+    default boolean vanillaPlus$isShop() {
         return false;
     }
 
-    default void setProduct(ItemStack itemStack) {}
-    default ItemStack getProduct() {
+    default void vanillaPlus$setProduct(ItemStack itemStack) {}
+    default ItemStack vanillaPlus$getProduct() {
         return ItemStack.EMPTY;
     }
 
-    default void setPrice(ItemStack itemStack) {}
-    default ItemStack getPrice() {
+    default void vanillaPlus$setPrice(ItemStack itemStack) {}
+    default ItemStack vanillaPlus$getPrice() {
         return ItemStack.EMPTY;
     }
 
