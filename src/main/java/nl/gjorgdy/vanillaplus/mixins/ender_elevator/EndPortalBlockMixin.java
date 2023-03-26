@@ -1,4 +1,4 @@
-package nl.gjorgdy.vanillaplus.mixins;
+package nl.gjorgdy.vanillaplus.mixins.ender_elevator;
 
 import net.minecraft.block.EndPortalBlock;
 import net.minecraft.entity.Entity;
@@ -23,7 +23,6 @@ public class EndPortalBlockMixin {
         }
         // Teleport vehicle
         instance.moveToWorld(destination);
-
 
         return instance;
     }

@@ -1,4 +1,4 @@
-package nl.gjorgdy.vanillaplus.mixins;
+package nl.gjorgdy.vanillaplus.mixins.item_maps;
 
 import net.minecraft.block.entity.HopperBlockEntity;
 import net.minecraft.inventory.Inventory;

@@ -1,4 +1,4 @@
-package nl.gjorgdy.vanillaplus.mixins;
+package nl.gjorgdy.vanillaplus.mixins.sign_shops;
 
 import net.minecraft.block.entity.SignBlockEntity;
 import net.minecraft.item.ItemStack;

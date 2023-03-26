@@ -1,4 +1,4 @@
-package nl.gjorgdy.vanillaplus.mixins;
+package nl.gjorgdy.vanillaplus.mixins.custom_generator;
 
 import net.minecraft.block.BlockState;
 import net.minecraft.block.FluidBlock;

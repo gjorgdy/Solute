@@ -3,22 +3,21 @@
   "minVersion": "0.8",
   "package": "nl.gjorgdy.vanillaplus.mixins",
   "compatibilityLevel": "JAVA_17",
-  "mixins": [
-  ],
+  "mixins": [],
   "client": [],
   "server": [
-    "ChorusFruitItemMixin",
-    "CraftingScreenHandlerMixin",
-    "CropBlockMixin",
-    "EnderPearlEntityMixin",
-    "EndGatewayBlockEntityMixin",
-    "EndPortalBlockMixin",
-    "FluidBlockMixin",
-    "HopperBlockEntityMixin",
-    "LavaFluidMixin",
-    "NetherPortalMixin",
-    "PlayerEntityMixin",
-    "SignBlockEntityMixin"
+    "custom_generator.LavaFluidMixin",
+    "custom_generator.NetherPortalMixin",
+    "custom_generator.FluidBlockMixin",
+    "ender_elevator.ChorusFruitItemMixin",
+    "ender_elevator.EnderPearlEntityMixin",
+    "ender_elevator.EndGatewayBlockEntityMixin",
+    "ender_elevator.EndPortalBlockMixin",
+    "ender_elevator.PlayerEntityMixin",
+    "expanded_farming.CropBlockMixin",
+    "item_maps.CraftingScreenHandlerMixin",
+    "item_maps.HopperBlockEntityMixin",
+    "sign_shops.SignBlockEntityMixin"
   ],
   "injectors": {
     "defaultRequire": 1

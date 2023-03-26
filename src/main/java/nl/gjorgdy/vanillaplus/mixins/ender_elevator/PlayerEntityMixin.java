@@ -1,4 +1,4 @@
-package nl.gjorgdy.vanillaplus.mixins;
+package nl.gjorgdy.vanillaplus.mixins.ender_elevator;
 
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.world.World;
