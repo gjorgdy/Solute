@@ -7,19 +7,23 @@ import net.minecraft.text.MutableText;
 import net.minecraft.text.Style;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
-import nl.gjorgdy.vanillaplus.functions.NbtFunctions;
+import nl.gjorgdy.vanillaplus.functions.ItemFunctions;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class ItemMaps {
 
-    private static final String nbtIndex = "vp_filter";
-    private static final MutableText name = Text.translatable("entity.minecraft.item")
+    private static final String ITEM_INDEX = "vp$item_map";
+    private static final String CUSTOM_INDEX = "vp$custom_item";
+    private static final MutableText NAME = Text.translatable("entity.minecraft.item")
             .append(Text.literal(" "))
             .append(Text.translatable("item.minecraft.filled_map"))
             .setStyle(Style.EMPTY);
 
-    public static boolean compareItem(Inventory inventory, ItemStack itemStack) {
+    public static boolean compareItem(Inventory inventory, ItemStack inputStack) {
         // If item is a filter, immediately return false, as they can't move
-        if (isItemMap(itemStack)) {
+        if (isItemMap(inputStack)) {
             return false;
         }
         boolean containsItemMap = false;
@@ -30,7 +34,7 @@ public class ItemMaps {
             if (isItemMap(_item)) {
                 // If inventory contains item map, deny all other items
                 containsItemMap = true;
-                if (_item.getNbt().getString(nbtIndex).equals(itemStack.getTranslationKey())) {
+                if (_item.getNbt().getString(ITEM_INDEX).equals(inputStack.getTranslationKey())) {
                     return true;
                 }
             }
@@ -40,46 +44,28 @@ public class ItemMaps {
 
     // Return if the ItemStack is a filter item
     public static boolean isItemMap(ItemStack stack) {
-        if (stack.hasNbt()) {
-            return stack.getNbt().contains(nbtIndex);
-        } else {
-            return false;
-        }
+        return stack.hasNbt() && stack.getNbt().contains(ITEM_INDEX);
     }
 
     public static ItemStack createItemMap(Item item) {
-        // Create a new paper item
-        ItemStack filter = Items.PAPER.getDefaultStack();
-        // Create a new nbt compound for the display tags
-        NbtCompound nbtDisplay = new NbtCompound();
-        // Lore list
-        NbtList nbtLore = new NbtList();
-        nbtLore.add(
-                NbtFunctions.of(Text.translatable(item.getTranslationKey()), Formatting.GRAY)
-        );
+    // Create display attributes for stack
+        // Create name Text
+        MutableText nameText = NAME.setStyle(Style.EMPTY.withItalic(false));
+        // Create lore list
+        List<MutableText> loreList = new ArrayList<>();
+        loreList.add(Text.translatable(item.getTranslationKey()));
         // If item has tooltip, add it
         if (item instanceof MusicDiscItem | item instanceof BannerPatternItem | item instanceof GoatHornItem) {
-            nbtLore.add(
-                    NbtFunctions.of(Text.translatable(item.getTranslationKey() + ".desc"), Formatting.GRAY)
-            );
+            loreList.add(Text.translatable(item.getTranslationKey() + ".desc"));
         }
-        // Add elements to display nbt
-        nbtDisplay.put("Lore", nbtLore);
-        nbtDisplay.put("Name",
-            NbtString.of(
-                Text.Serializer.toJson(name.setStyle(Style.EMPTY.withItalic(false)))
-            )
-        );
-        // General nbt compound
-        NbtCompound nbt = new NbtCompound();
-        nbt.put("display", nbtDisplay);
-        nbt.putBoolean("no_ingredient", true);
-        // Add an inventory filter
-        nbt.putString(nbtIndex, item.getTranslationKey());
-        // Add NBT to paper item
-        filter.setNbt(nbt);
+    // Create a new paper item
+        ItemStack itemMapStack = Items.PAPER.getDefaultStack();
+        ItemFunctions.setDisplay(itemMapStack, nameText, loreList, Formatting.GRAY);
+        // Add functional NBT data
+        itemMapStack.setSubNbt(CUSTOM_INDEX, NbtByte.of(true));
+        itemMapStack.setSubNbt(ITEM_INDEX, NbtString.of(item.getTranslationKey()));
         // Return paper item
-        return filter;
+        return itemMapStack;
     }
 
 }

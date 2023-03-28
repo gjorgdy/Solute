@@ -1,6 +1,18 @@
 package nl.gjorgdy.vanillaplus.functions;
 
+import net.minecraft.item.BannerPatternItem;
+import net.minecraft.item.GoatHornItem;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.MusicDiscItem;
+import net.minecraft.nbt.NbtCompound;
+import net.minecraft.nbt.NbtList;
+import net.minecraft.nbt.NbtString;
+import net.minecraft.text.MutableText;
+import net.minecraft.text.Style;
+import net.minecraft.text.Text;
+import net.minecraft.util.Formatting;
+
+import java.util.List;
 
 public class ItemFunctions {
 
@@ -50,6 +62,23 @@ public class ItemFunctions {
             second.decrement(mergeCount);
         }
         return second.getCount() == 0;
+    }
+
+    public static ItemStack setDisplay(ItemStack stack, MutableText name, List<MutableText> lore, Formatting loreColor) {
+        // Lore NbtList
+        NbtList nbtLore = new NbtList();
+        for (MutableText line : lore) {
+            nbtLore.add(NbtFunctions.of(line, loreColor));
+        }
+        // Create a new nbt compound for the display tags
+        NbtCompound nbtDisplay = new NbtCompound();
+        // Add elements to display nbt
+        nbtDisplay.put("Lore", nbtLore);
+        nbtDisplay.put("Name", NbtString.of(Text.Serializer.toJson(name)));
+        // Set to the display NBT tag
+        stack.setSubNbt("display", nbtDisplay);
+        // Return itemStack
+        return stack;
     }
 
 }
