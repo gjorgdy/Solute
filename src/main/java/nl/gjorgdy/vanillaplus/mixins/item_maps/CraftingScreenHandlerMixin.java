@@ -20,8 +20,8 @@ public class CraftingScreenHandlerMixin {
     private static ItemStack getRecipe(CraftingRecipe recipe, Inventory inventory, DynamicRegistryManager dynamicRegistryManager) {
         if (!hasValidIngredients((CraftingInventory) inventory)) {
           return ItemStack.EMPTY;
-        } else if (recipe.getId().getPath().equals("item_map")) {
-            return ItemMaps.createItemMap(inventory.getStack(4).getItem());
+        } else if (recipe.getId().getPath().equals("vp_item_map")) {
+            return ItemMaps.createItemMap(inventory.getStack(4));
         } else {
             return recipe.craft((CraftingInventory) inventory, dynamicRegistryManager);
         }
@@ -31,22 +31,11 @@ public class CraftingScreenHandlerMixin {
     private static boolean hasValidIngredients(CraftingInventory inventory) {
         for (int i=0; i<inventory.size(); i++) {
             ItemStack _item = inventory.getStack(i);
-            if (_item.hasNbt()) {
-                if (_item.getNbt().contains("no_ingredient")) {
-                    return false;
-                }
+            if (_item.hasNbt() && _item.getNbt().contains(ItemMaps.CUSTOM_INDEX)) {
+                return false;
             }
         }
         return true;
     }
-
-    //@ModifyVariable(method = "updateResult", at= @At(value = "STORE"), ordinal = 1)
-    //private static ItemStack updateResult(ItemStack value) {
-    //    if (value.getItem() == Items.KNOWLEDGE_BOOK) {
-    //        return InventoryFilter.createFilter(Items.APPLE);
-    //    } else {
-    //        return value;
-    //    }
-    //}
 
 }

@@ -3,12 +3,14 @@
   "minVersion": "0.8",
   "package": "nl.gjorgdy.vanillaplus.mixins",
   "compatibilityLevel": "JAVA_17",
-  "mixins": [],
+  "mixins": [
+    "dispenser_crafting.DispenserBlockMixin"
+  ],
   "client": [],
   "server": [
+    "custom_generator.FluidBlockMixin",
     "custom_generator.LavaFluidMixin",
     "custom_generator.NetherPortalMixin",
-    "custom_generator.FluidBlockMixin",
     "ender_elevator.ChorusFruitItemMixin",
     "ender_elevator.EnderPearlEntityMixin",
     "ender_elevator.EndGatewayBlockEntityMixin",

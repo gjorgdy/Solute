@@ -16,7 +16,7 @@ public class HopperBlockEntityMixin {
     @Inject(at = @At("HEAD"), method="canInsert", cancellable = true)
     private static void canInsert(Inventory inventory, ItemStack stack, int slot, Direction side, CallbackInfoReturnable<Boolean> cir) {
         // Check if 'stack' can be added to 'inventory' based on filters
-        if (!ItemMaps.compareItem(inventory, stack)) {
+        if (!ItemMaps.checkForItemMap(inventory, stack)) {
             cir.setReturnValue(false);
             cir.cancel();
         }
@@ -25,7 +25,7 @@ public class HopperBlockEntityMixin {
     @Inject(at = @At("HEAD"), method="canExtract", cancellable = true)
     private static void canExtract(Inventory hopperInventory, Inventory fromInventory, ItemStack stack, int slot, Direction facing, CallbackInfoReturnable<Boolean> cir) {
         // Check if 'stack' can be added to 'inventory' based on filters
-        if (!ItemMaps.compareItem(hopperInventory, stack) || !ItemMaps.compareItem(fromInventory, stack)) {
+        if (!ItemMaps.checkForItemMap(hopperInventory, stack) || !ItemMaps.checkForItemMap(fromInventory, stack)) {
             cir.setReturnValue(false);
             cir.cancel();
         }
