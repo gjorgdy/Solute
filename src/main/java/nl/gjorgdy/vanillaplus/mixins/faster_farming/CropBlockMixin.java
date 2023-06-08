@@ -1,19 +1,17 @@
-package nl.gjorgdy.vanillaplus.mixins.expanded_farming;
+package nl.gjorgdy.vanillaplus.mixins.faster_farming;
 
 import net.minecraft.block.BlockState;
 import net.minecraft.block.CropBlock;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.HoeItem;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import nl.gjorgdy.vanillaplus.modules.ExpandedFarming;
+import nl.gjorgdy.vanillaplus.modules.FasterFarming;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.injection.Inject;
 
 @Mixin(CropBlock.class)
 public class CropBlockMixin {
@@ -25,11 +23,11 @@ public class CropBlockMixin {
 
         // If main hand is a hoe
         if (mainhandItem.getItem() instanceof HoeItem) {
-            ExpandedFarming.farmArea(world, pos, mainhandItem);
+            FasterFarming.farmArea(world, pos, mainhandItem);
         }
         // If main hand is empty
         else {
-            ExpandedFarming.farmArea(world, pos, offhandItem);
+            FasterFarming.farmArea(world, pos, offhandItem);
         }
         return ActionResult.PASS;
     }

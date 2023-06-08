@@ -1,4 +1,4 @@
-package nl.gjorgdy.vanillaplus.mixins.ender_elevator;
+package nl.gjorgdy.vanillaplus.mixins.balanced_ender;
 
 import net.minecraft.block.EndPortalBlock;
 import net.minecraft.entity.Entity;

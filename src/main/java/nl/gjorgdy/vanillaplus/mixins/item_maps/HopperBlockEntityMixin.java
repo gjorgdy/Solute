@@ -6,12 +6,15 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.Direction;
 import nl.gjorgdy.vanillaplus.modules.ItemMaps;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(HopperBlockEntity.class)
-public class HopperBlockEntityMixin {
+public abstract class HopperBlockEntityMixin {
+
+    @Shadow public abstract ItemStack removeStack(int slot, int amount);
 
     @Inject(at = @At("HEAD"), method="canInsert", cancellable = true)
     private static void canInsert(Inventory inventory, ItemStack stack, int slot, Direction side, CallbackInfoReturnable<Boolean> cir) {

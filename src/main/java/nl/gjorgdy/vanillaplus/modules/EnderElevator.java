@@ -81,9 +81,9 @@ public class EnderElevator {
     private static boolean teleport(ServerPlayerEntity player, BlockPos blockPos) {
         World world = player.getWorld();
         Vec3d playerPos = player.getPos();
-        BlockState firstBlock = world.getBlockState(blockPos.add(0,1,0));
-        BlockState secondBlock = world.getBlockState(blockPos.add(0,2,0));
-        if ( !firstBlock.shouldSuffocate(world, blockPos) && !secondBlock.shouldSuffocate(world, blockPos) ) {
+        BlockState bottomBlock = world.getBlockState(blockPos.add(0,1,0));
+        BlockState topBlock = world.getBlockState(blockPos.add(0,2,0));
+        if ( !bottomBlock.shouldSuffocate(world, blockPos) && !topBlock.shouldSuffocate(world, blockPos) ) {
             Vec3d velocity = player.getVelocity();
             player.teleport(
                     (playerPos.getX()),

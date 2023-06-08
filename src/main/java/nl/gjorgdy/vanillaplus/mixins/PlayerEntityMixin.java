@@ -1,13 +1,19 @@
-package nl.gjorgdy.vanillaplus.mixins.ender_elevator;
+package nl.gjorgdy.vanillaplus.mixins;
 
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.util.ActionResult;
+import net.minecraft.util.Hand;
 import net.minecraft.world.World;
+import nl.gjorgdy.vanillaplus.VanillaPlus;
 import nl.gjorgdy.vanillaplus.interfaces.PlayerEntityInterface;
 import nl.gjorgdy.vanillaplus.modules.EnderElevator;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
+import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
 
 @Mixin(PlayerEntity.class)
 public abstract class PlayerEntityMixin implements PlayerEntityInterface {
@@ -17,7 +23,7 @@ public abstract class PlayerEntityMixin implements PlayerEntityInterface {
 
     /**
      * Run elevator upwards when player jumps
-     * @param ci
+     * @param ci -
      */
     @Inject(at = @At("HEAD"), method = "jump")
     private void onJump(CallbackInfo ci) {
@@ -28,7 +34,7 @@ public abstract class PlayerEntityMixin implements PlayerEntityInterface {
 
     /**
      * Run elevator downwards when player sneaks
-     * @param ci
+     * @param ci -
      */
     @Inject(at = @At("TAIL"), method = "tick")
     private void onSneak(CallbackInfo ci) {
@@ -51,6 +57,11 @@ public abstract class PlayerEntityMixin implements PlayerEntityInterface {
 
     @Override
     synchronized public void vanillaPlus$resetCooldown() {
-        elevatorCooldown = 10;
+        elevatorCooldown = 20;
+    }
+
+    @Inject(method = "interact", at = @At(value = "INVOKE", target = "Lnet/minecraft/util/ActionResult;isAccepted()Z"), locals = LocalCapture.CAPTURE_FAILHARD)
+    private void onInteract(Entity entity, Hand hand, CallbackInfoReturnable<ActionResult> cir) {
+        VanillaPlus.LOGGER.info("interaction with " + entity.toString());
     }
 }

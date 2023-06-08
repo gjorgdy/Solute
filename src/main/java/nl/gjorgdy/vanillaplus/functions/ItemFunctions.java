@@ -1,14 +1,10 @@
 package nl.gjorgdy.vanillaplus.functions;
 
-import net.minecraft.item.BannerPatternItem;
-import net.minecraft.item.GoatHornItem;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.MusicDiscItem;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtList;
 import net.minecraft.nbt.NbtString;
 import net.minecraft.text.MutableText;
-import net.minecraft.text.Style;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 
@@ -24,7 +20,7 @@ public class ItemFunctions {
      */
     public static boolean canMergeStacks(ItemStack first, ItemStack second) {
         return first.isOf(second.getItem())
-                && ItemStack.areNbtEqual(first, second)
+                && (first.getNbt() == null || first.getNbt().equals(second.getNbt()))
                 && first.getDamage() == second.getDamage()
                 && first.getMaxCount() > 1
                 && second.getMaxCount() > 1;
@@ -62,6 +58,11 @@ public class ItemFunctions {
             second.decrement(mergeCount);
         }
         return second.getCount() == 0;
+    }
+
+    public static boolean areEqual(ItemStack first, ItemStack second) {
+        return first.isOf(second.getItem())
+                && first.getEnchantments().equals(second.getEnchantments());
     }
 
     public static ItemStack setDisplay(ItemStack stack, MutableText name, List<MutableText> lore, Formatting loreColor) {

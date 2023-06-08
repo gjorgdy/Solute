@@ -43,13 +43,14 @@ public class InventoryFunctions {
         }
     }
 
-    public static List<ItemStack> takeItems(Inventory inv, Item item, int amount) {
+    public static List<ItemStack> takeItems(Inventory inv, ItemStack itemStack) {
         List<ItemStack> taken = new ArrayList<>();
+        int amount = itemStack.getCount();
         int size = inv.size();
         // Loop through inventory
         for (int i = 0; i < size; i++) {
             ItemStack _itemStack = inv.getStack(i);
-            if (_itemStack.isOf(item)) {
+            if (ItemFunctions.areEqual(itemStack, _itemStack)) {
                 // Calculate amount to be taken from slot
                 //  amount left to take, or count of stack in slot
                 int amountToTake = Math.min(amount, _itemStack.getCount());
