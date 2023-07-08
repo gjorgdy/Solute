@@ -3,34 +3,22 @@
   "minVersion": "0.8",
   "package": "nl.gjorgdy.vanillaplus.mixins",
   "compatibilityLevel": "JAVA_17",
-  "mixins": [],
+  "mixins": [
+    "cinematic_sleep.ServerWorldMixin"
+  ],
   "client": [],
   "server": [
-    "AbstractBlockMixin",
     "PlayerEntityMixin",
-
-    "balanced_ender.EnderPearlEntityMixin",
-    "balanced_ender.EndGatewayBlockEntityMixin",
-    "balanced_ender.EndPortalBlockMixin",
-    "balanced_ender.ThrownItemEntityMixin",
-
+    "computed_crafting.DispenserBlockMixin",
     "custom_generator.FluidBlockMixin",
     "custom_generator.LavaFluidMixin",
-
-    "dispenser_crafting.DispenserBlockMixin",
-
-    "display_entities.DisplayEntityMixin",
-    "display_entities.ItemDisplayEntityMixin",
-    "display_entities.TextDisplayEntityMixin",
-
-    "ender_elevator.ChorusFruitItemMixin",
-
-    "faster_farming.CropBlockMixin",
-
-    "item_maps.CraftingScreenHandlerMixin",
-    "item_maps.HopperBlockEntityMixin",
-
-    "sign_shops.SignBlockEntityMixin"
+    "enhanced_ender.ChorusFruitItemMixin",
+    "enhanced_ender.EnderPearlEntityMixin",
+    "enhanced_ender.EndGatewayBlockEntityMixin",
+    "enhanced_ender.EndPortalBlockMixin",
+    "enhanced_ender.ThrownItemEntityMixin",
+    "faster_farming.HoeItemMixin",
+    "horse_enchants.EnchantmentMixin"
   ],
   "injectors": {
     "defaultRequire": 1

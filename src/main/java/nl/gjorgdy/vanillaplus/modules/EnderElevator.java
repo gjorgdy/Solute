@@ -78,7 +78,7 @@ public class EnderElevator {
      * @param blockPos location to teleport player to
      * @return return if location is valid and player is teleported
      */
-    private static boolean teleport(ServerPlayerEntity player, BlockPos blockPos) {
+    private synchronized static boolean teleport(ServerPlayerEntity player, BlockPos blockPos) {
         World world = player.getWorld();
         Vec3d playerPos = player.getPos();
         BlockState bottomBlock = world.getBlockState(blockPos.add(0,1,0));

@@ -1,8 +1,7 @@
-package nl.gjorgdy.vanillaplus.mixins.balanced_ender;
+package nl.gjorgdy.vanillaplus.mixins.enhanced_ender;
 
 import net.minecraft.entity.projectile.thrown.ThrownItemEntity;
 import net.minecraft.nbt.NbtCompound;
-import nl.gjorgdy.vanillaplus.VanillaPlus;
 import nl.gjorgdy.vanillaplus.interfaces.EnderPearlEntityInterface;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;

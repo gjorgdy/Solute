@@ -1,24 +1,22 @@
 package nl.gjorgdy.vanillaplus.mixins;
 
-import net.minecraft.entity.Entity;
+import net.minecraft.block.BlockState;
+import net.minecraft.block.Blocks;
+import net.minecraft.block.SideShapeType;
+import net.minecraft.entity.effect.StatusEffectInstance;
+import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.util.ActionResult;
-import net.minecraft.util.Hand;
+import net.minecraft.util.math.Direction;
 import net.minecraft.world.World;
-import nl.gjorgdy.vanillaplus.VanillaPlus;
-import nl.gjorgdy.vanillaplus.interfaces.PlayerEntityInterface;
 import nl.gjorgdy.vanillaplus.modules.EnderElevator;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
-import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
 
 @Mixin(PlayerEntity.class)
-public abstract class PlayerEntityMixin implements PlayerEntityInterface {
+public abstract class PlayerEntityMixin {
 
-    public int elevatorCooldown = 0;
     private final PlayerEntity player = (PlayerEntity) (Object) this;
 
     /**
@@ -39,29 +37,26 @@ public abstract class PlayerEntityMixin implements PlayerEntityInterface {
     @Inject(at = @At("TAIL"), method = "tick")
     private void onSneak(CallbackInfo ci) {
         // Start sneaking
-        if (vanillaPlus$checkCooldown() && player.isSneaking() && player.getWorld().getRegistryKey() != World.END) {
+        if (player.isSneaking() && player.getWorld().getRegistryKey() != World.END) {
             EnderElevator.moveVertical(player, false);
-            vanillaPlus$resetCooldown();
         }
     }
 
-    @Override
-    synchronized public boolean vanillaPlus$checkCooldown() {
-        if (elevatorCooldown <= 0) {
-            return true;
-        } else {
-            elevatorCooldown -= 1;
-            return false;
+    @Inject(at = @At("TAIL"), method = "tick")
+    private void tick(CallbackInfo ci) {
+        if (!player.isSpectator() && !player.isOnGround() && !player.isFallFlying() && isPole(player)) {
+            player.addStatusEffect(new StatusEffectInstance(StatusEffects.SLOW_FALLING, 2, 0, true, false, true));
         }
     }
 
-    @Override
-    synchronized public void vanillaPlus$resetCooldown() {
-        elevatorCooldown = 20;
+    private static boolean isPole(PlayerEntity player) {
+        BlockState block = player.getWorld().getBlockState(player.getBlockPos());
+        return block.isOf(Blocks.IRON_BARS)
+                && !block.isSideSolid(player.getWorld(), player.getBlockPos(), Direction.NORTH, SideShapeType.CENTER)
+                && !block.isSideSolid(player.getWorld(), player.getBlockPos(), Direction.EAST, SideShapeType.CENTER)
+                && !block.isSideSolid(player.getWorld(), player.getBlockPos(), Direction.SOUTH, SideShapeType.CENTER)
+                && !block.isSideSolid(player.getWorld(), player.getBlockPos(), Direction.WEST, SideShapeType.CENTER);
     }
 
-    @Inject(method = "interact", at = @At(value = "INVOKE", target = "Lnet/minecraft/util/ActionResult;isAccepted()Z"), locals = LocalCapture.CAPTURE_FAILHARD)
-    private void onInteract(Entity entity, Hand hand, CallbackInfoReturnable<ActionResult> cir) {
-        VanillaPlus.LOGGER.info("interaction with " + entity.toString());
-    }
+
 }

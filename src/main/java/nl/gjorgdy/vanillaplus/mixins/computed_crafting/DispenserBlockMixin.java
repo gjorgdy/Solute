@@ -1,15 +1,11 @@
-package nl.gjorgdy.vanillaplus.mixins.dispenser_crafting;
+package nl.gjorgdy.vanillaplus.mixins.computed_crafting;
 
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.DispenserBlock;
-import net.minecraft.block.dispenser.DispenserBehavior;
-import net.minecraft.block.dispenser.ItemDispenserBehavior;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.DispenserBlockEntity;
 import net.minecraft.block.entity.HopperBlockEntity;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.CraftingInventory;
 import net.minecraft.item.ItemStack;
@@ -21,28 +17,19 @@ import net.minecraft.screen.ScreenHandlerType;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
-import net.minecraft.state.property.DirectionProperty;
 import net.minecraft.util.math.BlockPointerImpl;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
-import net.minecraft.world.event.GameEvent;
-import nl.gjorgdy.vanillaplus.VanillaPlus;
-import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Optional;
 
 @Mixin(DispenserBlock.class)
 public class DispenserBlockMixin {
-
-    @Shadow @Final public static DirectionProperty FACING;
 
     @Inject(method = "dispense", at = @At( value = "INVOKE", target = "Lnet/minecraft/block/entity/DispenserBlockEntity;chooseNonEmptySlot(Lnet/minecraft/util/math/random/Random;)I"), locals = LocalCapture.CAPTURE_FAILHARD, cancellable = true)
     private void onDispense(ServerWorld world, BlockPos pos, CallbackInfo ci, BlockPointerImpl blockPointerImpl, DispenserBlockEntity dispenserBlockEntity) {

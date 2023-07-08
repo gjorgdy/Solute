@@ -1,64 +1,63 @@
 package nl.gjorgdy.vanillaplus.modules;
 
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.CropBlock;
-import net.minecraft.block.entity.BlockEntity;
+import net.minecraft.block.*;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.random.Random;
 import net.minecraft.world.World;
-
-import java.util.Map;
 
 public class FasterFarming {
 
-    private static Map<Item, Integer> ranges = Map.of(
-            Items.WOODEN_HOE, 1,
-            Items.STONE_HOE, 2,
-            Items.IRON_HOE, 3,
-            Items.GOLDEN_HOE, 4,
-            Items.DIAMOND_HOE, 4,
-            Items.NETHERITE_HOE, 5
-    );
+    public static void farmArea(World world, BlockPos centerPos, PlayerEntity playerEntity, ItemStack toolStack) {
 
-    public static void farmArea(World world, BlockPos pos, ItemStack tool) {
-        // Get range of tool
-        int range = ranges.getOrDefault(tool.getItem(), 0);
+        Item toolItem = toolStack.getItem();
 
-        if (range == 0) {
-            farmCrop(world, pos, pos);
+        int range;
+        if (toolItem.equals(Items.WOODEN_HOE))
+            range = 1;
+        else if (toolItem.equals(Items.STONE_HOE))
+            range = 2;
+        else if (toolItem.equals(Items.IRON_HOE))
+            range = 3;
+        else if (toolItem.equals(Items.GOLDEN_HOE) || toolItem.equals(Items.DIAMOND_HOE))
+            range = 4;
+        else if (toolItem.equals(Items.NETHERITE_HOE))
+            range = 6;
+        else {
+            farmCrop(world, centerPos, centerPos);
             return;
         }
-        //int width = range * 2+1;
-        for (int y = -range; y <= range; y++) {
-            for (int z = -range; z <= range; z++) {
-                for (int x = -range; x <= range; x++) {
-                    farmCrop( world, pos, pos.add(x, y, z) );
+        // Cube around centerPos
+        for (int y = -range; y <= range; y++) { for (int z = -range; z <= range; z++) { for (int x = -range; x <= range; x++) {
+            BlockPos _pos = centerPos.add(x, y, z);
+            if (world.canPlayerModifyAt(playerEntity, _pos))
+                if (farmCrop( world, centerPos, _pos) && !playerEntity.isCreative()) {
+                    toolStack.damage(1, playerEntity, t -> {});
+                    toolStack.postMine(world, world.getBlockState(_pos), _pos, playerEntity);
                 }
-            }
-        }
-        tool.damage(range, Random.create(), null);
+            if (toolStack.getDamage() >= toolStack.getMaxDamage())
+                return;
+        }}}
     }
 
-    public static void farmCrop(World world, BlockPos midPos, BlockPos pos) {
+    public static boolean farmCrop(World world, BlockPos midPos, BlockPos pos) {
         // Get the block
         BlockState crop = world.getBlockState(pos);
         // Replace the crop with a new one if full-grown
         try {
-            if (CropBlock.MAX_AGE > crop.get(CropBlock.AGE))
-                return;
+            if (isStemBlock(crop) || CropBlock.MAX_AGE > crop.get(CropBlock.AGE))
+                return false;
         } catch (IllegalArgumentException e) {
-            return;
+            return false;
         }
         // Break the crop
         world.breakBlock(pos, false);
         // Loop through the items that should be dropped
-        Block.getDroppedStacks(crop, (ServerWorld) world, pos, (BlockEntity) null).forEach((stack) -> {
+        Block.getDroppedStacks(crop, (ServerWorld) world, pos, null).forEach((stack) -> {
             // If drop is a seed and block is air
             if (world.getBlockState(pos).isAir() && stack.getItem() instanceof BlockItem && ((BlockItem) stack.getItem()).getBlock() instanceof CropBlock) {
                 // Set a new block
@@ -69,6 +68,11 @@ public class FasterFarming {
             // Drop the stack that's left
             Block.dropStack(world, midPos, stack);
         });
-}
+        return true;
+    }
+
+    public static boolean isStemBlock(BlockState cropBlock) {
+        return cropBlock.getBlock() instanceof StemBlock;
+    }
 
 }
