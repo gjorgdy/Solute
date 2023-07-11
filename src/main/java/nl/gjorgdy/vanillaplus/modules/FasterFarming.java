@@ -10,6 +10,8 @@ import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
+import java.util.Random;
+
 public class FasterFarming {
 
     public static void farmArea(World world, BlockPos centerPos, PlayerEntity playerEntity, ItemStack toolStack) {
@@ -31,16 +33,18 @@ public class FasterFarming {
             farmCrop(world, centerPos, centerPos);
             return;
         }
+        Random random = new Random();
         // Cube around centerPos
         for (int y = -range; y <= range; y++) { for (int z = -range; z <= range; z++) { for (int x = -range; x <= range; x++) {
             BlockPos _pos = centerPos.add(x, y, z);
-            if (world.canPlayerModifyAt(playerEntity, _pos))
-                if (farmCrop( world, centerPos, _pos) && !playerEntity.isCreative()) {
-                    toolStack.damage(1, playerEntity, t -> {});
-                    toolStack.postMine(world, world.getBlockState(_pos), _pos, playerEntity);
-                }
             if (toolStack.getDamage() >= toolStack.getMaxDamage())
                 return;
+            if (world.canPlayerModifyAt(playerEntity, _pos))
+                if (farmCrop( world, centerPos, _pos) && !playerEntity.isCreative()) {
+                    if (random.nextInt(range) == 0)
+                        toolStack.damage(1, playerEntity, t -> {});
+                    toolStack.postMine(world, world.getBlockState(_pos), _pos, playerEntity);
+                }
         }}}
     }
 

@@ -1,6 +1,10 @@
 package nl.gjorgdy.vanillaplus;
 
 import net.fabricmc.api.ModInitializer;
+import net.fabricmc.fabric.api.event.player.PlayerBlockBreakEvents;
+import net.fabricmc.fabric.api.event.player.UseBlockCallback;
+import nl.gjorgdy.vanillaplus.listeners.PlayerBlockBreakListener;
+import nl.gjorgdy.vanillaplus.listeners.UseBlockCallbackListener;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -13,23 +17,11 @@ public class VanillaPlus implements ModInitializer {
 
 	@Override
 	public void onInitialize() {
-		// This code runs as soon as Minecraft is in a mod-load-ready state.
-		// However, some things (like resources) may still be uninitialized.
-		// Proceed with mild caution.
 
 		LOGGER.info("Be prepared for your Quality of Life to be improved");
 
-		// Register '/filter' command
-		//CommandRegistrationCallback.EVENT.register((dispatcher, registryAccess, environment) -> dispatcher.register(
-		//	literal("filter")
-		//		.executes(context -> {
-		//			// For versions below 1.19, replace "Text.literal" with "new LiteralText".
-		//			ServerCommandSource src = context.getSource();
-		//			ServerPlayerEntity player = src.getPlayerOrThrow();
-		//			player.giveItemStack(ItemMaps.createItemMap(player.getMainHandStack().getItem()));
-		//			return 1;
-		//		})
-		//	)
-		//);
+		UseBlockCallback.EVENT.register(new UseBlockCallbackListener());
+		PlayerBlockBreakEvents.BEFORE.register(new PlayerBlockBreakListener());
+
 	}
 }

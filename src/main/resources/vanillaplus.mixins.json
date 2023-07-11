@@ -4,10 +4,13 @@
   "package": "nl.gjorgdy.vanillaplus.mixins",
   "compatibilityLevel": "JAVA_17",
   "mixins": [
-    "cinematic_sleep.ServerWorldMixin"
+    "LadderBlockMixin",
+    "explosive_enhancements.ExplosionMixin"
   ],
   "client": [],
   "server": [
+    "EntityMixin",
+    "ItemMixin",
     "PlayerEntityMixin",
     "computed_crafting.DispenserBlockMixin",
     "custom_generator.FluidBlockMixin",
@@ -18,7 +21,8 @@
     "enhanced_ender.EndPortalBlockMixin",
     "enhanced_ender.ThrownItemEntityMixin",
     "faster_farming.HoeItemMixin",
-    "horse_enchants.EnchantmentMixin"
+    "horse_enchants.EnchantmentMixin",
+    "smooth_sleep.ServerWorldMixin"
   ],
   "injectors": {
     "defaultRequire": 1

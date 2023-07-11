@@ -3,11 +3,13 @@ package nl.gjorgdy.vanillaplus.modules;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
+import nl.gjorgdy.vanillaplus.functions.BlockFunctions;
 
 import java.util.List;
 
@@ -24,41 +26,46 @@ public class EnderElevator {
     );
     static int elevatorRange = 8;
 
+    public static void onJump(PlayerEntity player) {
+        if (player.getWorld().getRegistryKey() != World.END) {
+            moveVertical(player, true);
+        }
+    }
+
+    public static void onSneak(PlayerEntity player) {
+        if (player.getWorld().getRegistryKey() != World.END) {
+            moveVertical(player, false);
+        }
+    }
+
     /**
      * Moves the player in the elevator
      * @param player instance of player using teleporter
      * @param up boolean value detirming if elevator goes up or down
      */
-    public static void moveVertical(PlayerEntity player, boolean up) {
+    private static void moveVertical(PlayerEntity player, boolean up) {
         World world = player.getWorld();
-        BlockPos blockPos = player.getBlockPos();
-        // Get the block under the player
-        blockPos = blockPos.add(0, -1, 0);
-        Block block = world.getBlockState(blockPos).getBlock();
-        // Check if block is an elevator block
-        if (!isElevatorBlock(block)) {
-            return;
-        }
-        int deltaY;
-        if (up) {
-            deltaY = 1;
-        } else {
-            deltaY = -1;
-        }
+        BlockPos playerBlockPos = player.getBlockPos();
+        BlockPos playerBlockUnderPos = playerBlockPos.add(0, -1, 0);
+        BlockPos elevatorBlockPos;
+        // Check for elevator
+        if (isElevatorBlock(world.getBlockState(playerBlockPos).getBlock())) {
+            elevatorBlockPos = playerBlockPos;
+        } else if (isElevatorBlock( world.getBlockState(playerBlockUnderPos).getBlock())) {
+            elevatorBlockPos = playerBlockUnderPos;
+        } else return;
         // Loop trough blocks
+        int deltaY = up ? 1 : -1;
         for (int i = 0; i < elevatorRange; i++) {
-            blockPos = blockPos.add(0, deltaY, 0);
-            block = world.getBlockState(blockPos).getBlock();
+            elevatorBlockPos = elevatorBlockPos.up(deltaY);
+            Block _block = world.getBlockState(elevatorBlockPos).getBlock();
             // When it encounters an extender block, it resets the range counter
-            if (isExtenderBlock(block)) {
-                i = -1;
-            // When it encounters an elevator block
-            } else if (isElevatorBlock(block)) {
-                if (teleport((ServerPlayerEntity) player, blockPos)) {
+            if (isElevatorBlock(_block)) {
+                if (safeTeleport(player, elevatorBlockPos))
                     return;
-                } else {
-                    i--;
-                }
+                else i--;
+            } else if (isExtenderBlock(_block)) {
+                i = -1;
             }
         }
 
@@ -78,21 +85,23 @@ public class EnderElevator {
      * @param blockPos location to teleport player to
      * @return return if location is valid and player is teleported
      */
-    private synchronized static boolean teleport(ServerPlayerEntity player, BlockPos blockPos) {
+    private synchronized static boolean safeTeleport(PlayerEntity player, BlockPos blockPos) {
         World world = player.getWorld();
         Vec3d playerPos = player.getPos();
+        BlockState floorBlock = world.getBlockState(blockPos);
         BlockState bottomBlock = world.getBlockState(blockPos.add(0,1,0));
         BlockState topBlock = world.getBlockState(blockPos.add(0,2,0));
         if ( !bottomBlock.shouldSuffocate(world, blockPos) && !topBlock.shouldSuffocate(world, blockPos) ) {
             Vec3d velocity = player.getVelocity();
-            player.teleport(
+            double dY = BlockFunctions.isBottomSlab(floorBlock) ? 0.5 : 1;
+            player.requestTeleport(
                     (playerPos.getX()),
-                    (blockPos.getY() + 1.05),
-                    (playerPos.getZ()),
-                    true
+                    ((double) blockPos.getY() + dY + 0.05),
+                    (playerPos.getZ())
             );
             player.setVelocity(velocity);
             player.velocityModified = true;
+            world.sendEntityStatus(player, (byte)46);
             return true;
         } else {
             return false;

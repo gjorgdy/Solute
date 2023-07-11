@@ -1,9 +1,10 @@
-package nl.gjorgdy.vanillaplus.mixins.cinematic_sleep;
+package nl.gjorgdy.vanillaplus.mixins.smooth_sleep;
 
 import net.minecraft.network.packet.s2c.play.WorldTimeUpdateS2CPacket;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.server.world.SleepManager;
+import net.minecraft.util.math.random.Random;
 import net.minecraft.world.GameRules;
 import net.minecraft.world.level.ServerWorldProperties;
 import org.spongepowered.asm.mixin.Final;
@@ -21,11 +22,12 @@ public abstract class ServerWorldMixin {
     @Shadow
     @Final
     private ServerWorldProperties worldProperties;
+    public final Random random = Random.create();
     ServerWorld serverWorld = (ServerWorld) (Object) this;
 
     @Redirect(method = "tick(Ljava/util/function/BooleanSupplier;)V", at = @At(value = "INVOKE", target = "Lnet/minecraft/server/world/SleepManager;canSkipNight(I)Z"))
     private boolean injected(SleepManager instance, int percentage) {
-        boolean doDayLightCycle = server.getGameRules().getBoolean(GameRules.DO_DAYLIGHT_CYCLE);
+        boolean doDayLightCycle = serverWorld.getGameRules().getBoolean(GameRules.DO_DAYLIGHT_CYCLE);
         boolean doWeatherCycle = serverWorld.getGameRules().getBoolean(GameRules.DO_WEATHER_CYCLE);
 
         int playersInWorld = serverWorld.getPlayers().size();
@@ -36,18 +38,21 @@ public abstract class ServerWorldMixin {
         long dayTime = worldTime % 24000L;
 
         if (playersSleeping >= 1) {
-            if ((doDayLightCycle && dayTime >= 12500L) || (doWeatherCycle && serverWorld.isThundering())) {
+            if ((doDayLightCycle && dayTime >= 12750L && dayTime < 23250L) || (doWeatherCycle && serverWorld.isThundering())) {
                 int timeDelta = getTimeDelta(playersSleepingPercentage);
                 setTime(worldTime + timeDelta);
-                if (serverWorld.isThundering()) {
-                    int thunderTime = Math.max(0, worldProperties.getThunderTime() - (timeDelta * 2));
-                    worldProperties.setThunderTime(thunderTime);
-                    if (thunderTime == 0) resetWeather();
+
+                int thunderTime = worldProperties.getThunderTime();
+                if (serverWorld.isThundering() && thunderTime > 0) {
+                    int _thunderTime = Math.max(0, thunderTime - (timeDelta * 2));
+                    worldProperties.setThunderTime(_thunderTime);
+                    if (_thunderTime == 0) worldProperties.setThundering(false);
                 }
             } else {
                 wakeSleepingPlayers();
-                if (doWeatherCycle && serverWorld.isRaining()) {
-                    resetWeather();
+                if (doWeatherCycle && (serverWorld.isRaining() || serverWorld.isThundering())) {
+                    int _rainTime = Math.min(500, worldProperties.getRainTime());
+                    worldProperties.setRainTime(_rainTime);
                 }
             }
         }

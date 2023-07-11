@@ -2,6 +2,7 @@ package nl.gjorgdy.vanillaplus.functions;
 
 import net.minecraft.block.*;
 import net.minecraft.block.entity.SignBlockEntity;
+import net.minecraft.block.enums.SlabType;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
@@ -22,6 +23,11 @@ public class BlockFunctions {
         return block instanceof GlassBlock
                 || block instanceof StainedGlassBlock
                 || block instanceof TintedGlassBlock;
+    }
+
+    public static boolean isBottomSlab(BlockState blockState) {
+        return blockState.getBlock() instanceof SlabBlock
+                && blockState.get(SlabBlock.TYPE) == SlabType.BOTTOM;
     }
 
 }
