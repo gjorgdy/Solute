@@ -3,6 +3,7 @@ package nl.gjorgdy.vanillaplus.modules;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
+import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.server.network.ServerPlayerEntity;
@@ -44,6 +45,7 @@ public class EnderElevator {
      * @param up boolean value detirming if elevator goes up or down
      */
     private static void moveVertical(PlayerEntity player, boolean up) {
+        // Ready vars
         World world = player.getWorld();
         BlockPos playerBlockPos = player.getBlockPos();
         BlockPos playerBlockUnderPos = playerBlockPos.add(0, -1, 0);
