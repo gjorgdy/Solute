@@ -1,6 +1,7 @@
 package nl.gjorgdy.vanillaplus.mixins.computed_crafting;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.DispenserBlock;
 import net.minecraft.block.entity.BlockEntity;
@@ -11,13 +12,13 @@ import net.minecraft.inventory.CraftingInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.recipe.CraftingRecipe;
+import net.minecraft.recipe.RecipeEntry;
 import net.minecraft.recipe.RecipeType;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.screen.ScreenHandlerType;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
-import net.minecraft.util.math.BlockPointerImpl;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import org.spongepowered.asm.mixin.Mixin;
@@ -32,7 +33,7 @@ import java.util.Optional;
 public class DispenserBlockMixin {
 
     @Inject(method = "dispense", at = @At( value = "INVOKE", target = "Lnet/minecraft/block/entity/DispenserBlockEntity;chooseNonEmptySlot(Lnet/minecraft/util/math/random/Random;)I"), locals = LocalCapture.CAPTURE_FAILHARD, cancellable = true)
-    private void onDispense(ServerWorld world, BlockPos pos, CallbackInfo ci, BlockPointerImpl blockPointerImpl, DispenserBlockEntity dispenserBlockEntity) {
+    private void onDispense(ServerWorld world, BlockState state, BlockPos pos, CallbackInfo ci, DispenserBlockEntity dispenserBlockEntity) {
         Direction facing = world.getBlockState(pos).get(DispenserBlock.FACING);
         if (world.getBlockState(pos.offset(facing)).getBlock() == Blocks.CRAFTING_TABLE) {
             // Cancel default dispenser behavior
@@ -47,10 +48,10 @@ public class DispenserBlockMixin {
                 }
             }
             // Get recipe
-            Optional<CraftingRecipe> optional = world.getServer().getRecipeManager().getFirstMatch(RecipeType.CRAFTING, craftingInventory, world);
+            Optional<RecipeEntry<CraftingRecipe>> optional = world.getServer().getRecipeManager().getFirstMatch(RecipeType.CRAFTING, craftingInventory, world);
             if (optional.isPresent()) {
                 // Get result of recipe
-                ItemStack result = optional.get().craft(craftingInventory, world.getRegistryManager());
+                ItemStack result = optional.get().value().craft(craftingInventory, world.getRegistryManager());
                 // Decrement all items by 1
                 for (int i = 0; i < 9; i++) {
                     craftingInventory.getStack(i).decrement(1);

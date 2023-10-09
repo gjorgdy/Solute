@@ -13,6 +13,10 @@ group = project.maven_group
 repositories {
 	maven { url 'https://maven.wispforest.io' }
 	maven { url 'https://repo1.maven.org/maven2/' }
+	exclusiveContent {
+		forRepository { maven { url = "https://api.modrinth.com/maven" } }
+		filter { includeGroup "maven.modrinth" }
+	}
 }
 
 dependencies {
@@ -30,6 +34,7 @@ dependencies {
 	// https://www.mongodb.com/docs/drivers/java/sync/current/quick-start/
 	implementation 'org.mongodb:mongodb-driver-sync:4.9.0'
 
+	compileOnly 'maven.modrinth:pl3xmap:1.20.1-444'
 	// Uncomment the following line to enable the deprecated Fabric API modules. 
 	// These are included in the Fabric API production distribution and allow you to update your mod to the latest modules at a later more convenient time.
 

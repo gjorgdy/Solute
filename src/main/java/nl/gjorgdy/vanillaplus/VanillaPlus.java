@@ -3,6 +3,7 @@ package nl.gjorgdy.vanillaplus;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.event.player.PlayerBlockBreakEvents;
 import net.fabricmc.fabric.api.event.player.UseBlockCallback;
+import net.pl3x.map.core.markers.marker.Marker;
 import nl.gjorgdy.vanillaplus.listeners.PlayerBlockBreakListener;
 import nl.gjorgdy.vanillaplus.listeners.UseBlockCallbackListener;
 import org.slf4j.Logger;
