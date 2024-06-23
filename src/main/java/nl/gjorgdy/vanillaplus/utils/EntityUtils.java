@@ -1,9 +1,9 @@
-package nl.gjorgdy.vanillaplus.functions;
+package nl.gjorgdy.vanillaplus.utils;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.world.World;
 
-public class EntityFunctions {
+public class EntityUtils {
 
     public static Entity[] fromIdList(World world, int[] ids) {
         Entity[] entities = new Entity[ids.length];

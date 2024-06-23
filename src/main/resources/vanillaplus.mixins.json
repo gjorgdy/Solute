@@ -3,18 +3,17 @@
   "minVersion": "0.8",
   "package": "nl.gjorgdy.vanillaplus.mixins",
   "compatibilityLevel": "JAVA_17",
-  "mixins": [
-    "BoneMealItemMixin",
-    "explosive_enhancements.ExplosionMixin"
-  ],
+  "mixins": [],
   "client": [],
   "server": [
-    "EntityMixin",
     "ItemMixin",
     "PlayerEntityMixin",
-    "ShovelItemMixin",
+    "growable_grass.BoneMealItemMixin",
+    "explosive_enhancements.ExplosionMixin",
+    "past_paths.ShovelItemMixin",
     "custom_generator.FluidBlockMixin",
     "custom_generator.LavaFluidMixin",
+    "enhanced_ender.EntityMixin",
     "enhanced_ender.ChorusFruitItemMixin",
     "enhanced_ender.EnderPearlEntityMixin",
     "enhanced_ender.ThrownItemEntityMixin",

@@ -3,14 +3,11 @@ package nl.gjorgdy.vanillaplus.modules;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
-import net.minecraft.client.network.ClientPlayerEntity;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
-import nl.gjorgdy.vanillaplus.functions.BlockFunctions;
+import nl.gjorgdy.vanillaplus.utils.BlockUtils;
 
 import java.util.List;
 
@@ -95,7 +92,7 @@ public class EnderElevator {
         BlockState topBlock = world.getBlockState(blockPos.add(0,2,0));
         if ( !bottomBlock.shouldSuffocate(world, blockPos) && !topBlock.shouldSuffocate(world, blockPos) ) {
             Vec3d velocity = player.getVelocity();
-            double dY = BlockFunctions.isBottomSlab(floorBlock) ? 0.5 : 1;
+            double dY = BlockUtils.isBottomSlab(floorBlock) ? 0.5 : 1;
             player.requestTeleport(
                     (playerPos.getX()),
                     ((double) blockPos.getY() + dY + 0.05),

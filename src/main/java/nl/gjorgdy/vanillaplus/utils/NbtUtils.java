@@ -1,12 +1,11 @@
-package nl.gjorgdy.vanillaplus.functions;
+package nl.gjorgdy.vanillaplus.utils;
 
 import net.minecraft.nbt.NbtString;
 import net.minecraft.text.MutableText;
-import net.minecraft.text.Style;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 
-public class NbtFunctions {
+public class NbtUtils {
 
     public static NbtString of(String text) {
         return of(Text.literal(text), Formatting.WHITE);

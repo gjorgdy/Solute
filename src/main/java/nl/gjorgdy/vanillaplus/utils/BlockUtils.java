@@ -1,12 +1,11 @@
-package nl.gjorgdy.vanillaplus.functions;
+package nl.gjorgdy.vanillaplus.utils;
 
 import net.minecraft.block.*;
-import net.minecraft.block.entity.SignBlockEntity;
 import net.minecraft.block.enums.SlabType;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
-public class BlockFunctions {
+public class BlockUtils {
 
     public static void updateBlock(World world, BlockPos pos, boolean save) {
         // BlockState

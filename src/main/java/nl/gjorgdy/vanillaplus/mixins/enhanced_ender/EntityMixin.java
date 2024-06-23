@@ -1,4 +1,4 @@
-package nl.gjorgdy.vanillaplus.mixins;
+package nl.gjorgdy.vanillaplus.mixins.enhanced_ender;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;

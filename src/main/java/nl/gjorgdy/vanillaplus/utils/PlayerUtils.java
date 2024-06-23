@@ -1,11 +1,11 @@
-package nl.gjorgdy.vanillaplus.functions;
+package nl.gjorgdy.vanillaplus.utils;
 
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.MutableText;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 
-public class PlayerFunctions {
+public class PlayerUtils {
 
     public static void sendError(ServerPlayerEntity player, MutableText text) {
         sendActionBar(player, text.formatted(Formatting.RED));

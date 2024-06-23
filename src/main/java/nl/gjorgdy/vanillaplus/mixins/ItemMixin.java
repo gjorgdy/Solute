@@ -10,7 +10,7 @@ import net.minecraft.item.Items;
 import net.minecraft.util.Hand;
 import net.minecraft.util.TypedActionResult;
 import net.minecraft.world.World;
-import nl.gjorgdy.vanillaplus.modules.Compass;
+import nl.gjorgdy.vanillaplus.modules.ChunkCompass;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -31,7 +31,7 @@ public class ItemMixin {
         ItemStack mainHand = user.getMainHandStack();
         ItemStack offHand = user.getOffHandStack();
         if (mainHand.isOf(Items.COMPASS) || offHand.isOf(Items.COMPASS)) {
-            Compass.use(user);
+            ChunkCompass.use(user);
         }
     }
 

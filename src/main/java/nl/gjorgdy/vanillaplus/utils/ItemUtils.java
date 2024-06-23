@@ -1,16 +1,14 @@
-package nl.gjorgdy.vanillaplus.functions;
+package nl.gjorgdy.vanillaplus.utils;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtList;
-import net.minecraft.nbt.NbtString;
 import net.minecraft.text.MutableText;
-import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 
 import java.util.List;
 
-public class ItemFunctions {
+public class ItemUtils {
 
     /**
      * Check if stacks can be merged
@@ -69,7 +67,7 @@ public class ItemFunctions {
         // Lore NbtList
         NbtList nbtLore = new NbtList();
         for (MutableText line : lore) {
-            nbtLore.add(NbtFunctions.of(line, loreColor));
+            nbtLore.add(NbtUtils.of(line, loreColor));
         }
         // Create a new nbt compound for the display tags
         NbtCompound nbtDisplay = new NbtCompound();

@@ -1,8 +1,7 @@
-package nl.gjorgdy.vanillaplus.functions;
+package nl.gjorgdy.vanillaplus.utils;
 
 import net.minecraft.block.entity.HopperBlockEntity;
 import net.minecraft.inventory.Inventory;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -10,13 +9,13 @@ import net.minecraft.world.World;
 import java.util.ArrayList;
 import java.util.List;
 
-public class InventoryFunctions {
+public class InventoryUtils {
 
     public static boolean isSpaceForItem(Inventory inv, ItemStack input) {
         int space = 0;
         // Loop through inventory
         for (int i = inv.size()-1; i >= 0; i--) {
-            space += ItemFunctions.getSpace(inv.getStack(i), input);
+            space += ItemUtils.getSpace(inv.getStack(i), input);
             if (space >= input.getCount()) {
                 return true;
             }
@@ -29,7 +28,7 @@ public class InventoryFunctions {
         // Loop through inventory
         for (int i = 0; i < size; i++) {
             // Merge stacks until the input is completely merged
-            if (ItemFunctions.mergeStacks(inv.getStack(i), input)) {
+            if (ItemUtils.mergeStacks(inv.getStack(i), input)) {
                 return;
             }
         }
@@ -50,7 +49,7 @@ public class InventoryFunctions {
         // Loop through inventory
         for (int i = 0; i < size; i++) {
             ItemStack _itemStack = inv.getStack(i);
-            if (ItemFunctions.areEqual(itemStack, _itemStack)) {
+            if (ItemUtils.areEqual(itemStack, _itemStack)) {
                 // Calculate amount to be taken from slot
                 //  amount left to take, or count of stack in slot
                 int amountToTake = Math.min(amount, _itemStack.getCount());
