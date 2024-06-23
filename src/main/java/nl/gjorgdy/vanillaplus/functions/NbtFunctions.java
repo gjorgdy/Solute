@@ -22,11 +22,12 @@ public class NbtFunctions {
     }
 
     public static NbtString of(MutableText text, Formatting color) {
-        return NbtString.of(
-                Text.Serializer.toJson(
-                    text.setStyle(Style.EMPTY.withItalic(false).withColor(color))
-                )
-        );
+        return null;
+//                NbtString.of(
+//                Text.Serialization.toJsonString(
+//                    text.setStyle(Style.EMPTY.withItalic(false).withColor(color))
+//                )
+//        );
     }
 
 }

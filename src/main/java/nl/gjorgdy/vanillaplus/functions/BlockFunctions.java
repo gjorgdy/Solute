@@ -20,7 +20,7 @@ public class BlockFunctions {
     }
 
     public static boolean isGlassBlock(Block block) {
-        return block instanceof GlassBlock
+        return block == Blocks.GLASS
                 || block instanceof StainedGlassBlock
                 || block instanceof TintedGlassBlock;
     }

@@ -7,6 +7,7 @@ import net.minecraft.item.Items;
 import net.minecraft.loot.context.LootContextParameterSet;
 import net.minecraft.world.explosion.Explosion;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;
 
@@ -18,11 +19,12 @@ public class ExplosionMixin {
 
     private final Random random = new Random();
 
-    @Redirect(method = "affectWorld", at = @At(value = "INVOKE", target = "Lnet/minecraft/block/BlockState;getDroppedStacks(Lnet/minecraft/loot/context/LootContextParameterSet$Builder;)Ljava/util/List;"))
-    private List affectWorld(BlockState instance, LootContextParameterSet.Builder builder) {
-        return instance.getDroppedStacks(builder).stream().map((stack) -> getDrop(instance, stack)).toList();
-    }
+//    @Redirect(method = "affectWorld", at = @At(value = "INVOKE", target = "Lnet/minecraft/block/BlockState;getDroppedStacks(Lnet/minecraft/loot/context/LootContextParameterSet$Builder;)Ljava/util/List;"))
+//    private List affectWorld(BlockState instance, LootContextParameterSet.Builder builder) {
+//        return instance.getDroppedStacks(builder).stream().map((stack) -> getDrop(instance, stack)).toList();
+//    }
 
+    @Unique
     public ItemStack getDrop(BlockState block, ItemStack drop) {
         if (block.isOf(Blocks.COBBLESTONE) && drop.isOf(Items.COBBLESTONE)) {
             int count = random.nextInt(5) - 2;

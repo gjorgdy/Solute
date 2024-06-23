@@ -19,7 +19,7 @@ public class UseBlockCallbackListener implements UseBlockCallback {
         BlockState block = world.getBlockState(hitResult.getBlockPos());
         if (player.getMainHandStack().isOf(Items.LADDER) && block.isOf(Blocks.LADDER)) {
             LoweringLadders.lower(player, player.getMainHandStack(), world, hitResult.getBlockPos());
-            return ActionResult.CONSUME;
+            return ActionResult.SUCCESS;
         }
         return ActionResult.PASS;
     }

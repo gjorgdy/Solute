@@ -20,10 +20,10 @@ public class ItemFunctions {
      */
     public static boolean canMergeStacks(ItemStack first, ItemStack second) {
         return first.isOf(second.getItem())
-                && (first.getNbt() == null || first.getNbt().equals(second.getNbt()))
-                && first.getDamage() == second.getDamage()
-                && first.getMaxCount() > 1
-                && second.getMaxCount() > 1;
+//            && (first.getNbt() == null || first.getNbt().equals(second.getNbt()))
+            && first.getDamage() == second.getDamage()
+            && first.getMaxCount() > 1
+            && second.getMaxCount() > 1;
     }
 
     /**
@@ -75,9 +75,9 @@ public class ItemFunctions {
         NbtCompound nbtDisplay = new NbtCompound();
         // Add elements to display nbt
         nbtDisplay.put("Lore", nbtLore);
-        nbtDisplay.put("Name", NbtString.of(Text.Serializer.toJson(name)));
+//        nbtDisplay.put("Name", NbtString.of(Text.Serialization.toJsonString(name)));
         // Set to the display NBT tag
-        stack.setSubNbt("display", nbtDisplay);
+//        stack.setSubNbt("display", nbtDisplay);
         // Return itemStack
         return stack;
     }

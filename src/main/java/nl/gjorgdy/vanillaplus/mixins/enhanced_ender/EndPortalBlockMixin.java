@@ -12,19 +12,19 @@ import java.util.List;
 @Mixin(EndPortalBlock.class)
 public class EndPortalBlockMixin {
 
-    @Redirect(method = "onEntityCollision", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/Entity;moveToWorld(Lnet/minecraft/server/world/ServerWorld;)Lnet/minecraft/entity/Entity;"))
-    public Entity teleportVehicle(Entity instance, ServerWorld destination) {
-        // Get all passengers
-        List<Entity> passengers = instance.getPassengerList();
-        // Dismount and teleport passengers
-        for (Entity passenger : passengers) {
-            passenger.dismountVehicle();
-            passenger.moveToWorld(destination);
-        }
-        // Teleport vehicle
-        instance.moveToWorld(destination);
-
-        return instance;
-    }
+//    @Redirect(method = "onEntityCollision", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/Entity;moveToWorld(Lnet/minecraft/server/world/ServerWorld;)Lnet/minecraft/entity/Entity;"))
+//    public Entity teleportVehicle(Entity instance, ServerWorld destination) {
+//        // Get all passengers
+//        List<Entity> passengers = instance.getPassengerList();
+//        // Dismount and teleport passengers
+//        for (Entity passenger : passengers) {
+//            passenger.dismountVehicle();
+//            passenger.teleportTo(destination);
+//        }
+//        // Teleport vehicle
+//        instance.teleportTo(destination);
+//
+//        return instance;
+//    }
 
 }
