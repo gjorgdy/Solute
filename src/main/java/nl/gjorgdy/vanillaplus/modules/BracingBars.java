@@ -3,17 +3,28 @@ package nl.gjorgdy.vanillaplus.modules;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.SideShapeType;
-import net.minecraft.entity.effect.StatusEffectInstance;
-import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.math.Direction;
+import net.minecraft.util.math.Vec3d;
 
-public class Pole {
+public class BracingBars {
+
+    public static final double TARGET_VELOCITY = -0.5;
+    public static final double VELOCITY_MODIFIER = 0.85;
 
     public static void tick(PlayerEntity player) {
         if (!player.isSpectator() && !player.isOnGround() && player.getVelocity().getY() < 0 && !player.isSneaking() && isPole(player)) {
-            int duration = player.getVelocity().getY() < -2 ? 1 : 3;
-            player.addStatusEffect(new StatusEffectInstance(StatusEffects.SLOW_FALLING, duration, 0, true, false, true));
+            Vec3d v = player.getVelocity();
+            double newVerticalVelocity = v.y >= TARGET_VELOCITY ? v.y : v.y * VELOCITY_MODIFIER;
+            player.setVelocity(
+                    v.x,
+                    newVerticalVelocity,
+                    v.z
+            );
+            player.velocityModified = true;
+            if (newVerticalVelocity >= TARGET_VELOCITY) {
+                player.fallDistance = 0;
+            }
         }
     }
 

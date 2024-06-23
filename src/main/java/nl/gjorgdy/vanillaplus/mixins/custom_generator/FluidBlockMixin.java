@@ -18,16 +18,5 @@ public class FluidBlockMixin {
     private void generateCobble(Args args, World world, BlockPos pos, BlockState fluidBlockState) {
         args.set(1, CustomGenerator.replaceCobblestone(world, pos, args.get(1)));
     }
-    //@Redirect(
-    //      method = "receiveNeighborFluids",
-    //      at = @At(
-    //              value = "INVOKE",
-    //              target = "Lnet/minecraft/world/World;setBlockState(Lnet/minecraft/util/math/BlockPos;Lnet/minecraft/block/BlockState;)Z",
-    //              ordinal = 0
-    //      )
-    //)
-    //private boolean generateCobble(World world, BlockPos pos, BlockState fluidBlockState) {
-    //   FluidBlockCallback.EVENT.invoker().interact(world, pos);
-    //  return true;
-    //}
+
 }

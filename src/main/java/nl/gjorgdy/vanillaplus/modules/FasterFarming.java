@@ -1,12 +1,14 @@
 package nl.gjorgdy.vanillaplus.modules;
 
 import net.minecraft.block.*;
+import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.server.world.ServerWorld;
+import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
@@ -41,8 +43,11 @@ public class FasterFarming {
                 return;
             if (world.canPlayerModifyAt(playerEntity, _pos))
                 if (farmCrop( world, centerPos, _pos) && !playerEntity.isCreative()) {
-                    if (random.nextInt(range) == 0)
-                        toolStack.damage(1, playerEntity, t -> {});
+                    if (random.nextInt(range) == 0) {
+                        if (playerEntity.getStackInHand(Hand.MAIN_HAND) == toolStack) {
+                            toolStack.damage(1, playerEntity, EquipmentSlot.MAINHAND);
+                        } else toolStack.damage(1, playerEntity, EquipmentSlot.OFFHAND);
+                    }
                     toolStack.postMine(world, world.getBlockState(_pos), _pos, playerEntity);
                 }
         }}}

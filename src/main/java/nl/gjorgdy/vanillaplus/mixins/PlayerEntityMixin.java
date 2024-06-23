@@ -2,7 +2,7 @@ package nl.gjorgdy.vanillaplus.mixins;
 
 import net.minecraft.entity.player.PlayerEntity;
 import nl.gjorgdy.vanillaplus.modules.EnderElevator;
-import nl.gjorgdy.vanillaplus.modules.Pole;
+import nl.gjorgdy.vanillaplus.modules.BracingBars;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
@@ -26,7 +26,7 @@ public abstract class PlayerEntityMixin {
 
     @Inject(at = @At("TAIL"), method = "tick")
     private void tick(CallbackInfo ci) {
-        Pole.tick(player);
+        BracingBars.tick(player);
     }
 
 

@@ -8,7 +8,6 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.biome.BiomeKeys;
-import nl.gjorgdy.vanillaplus.VanillaPlus;
 
 import java.util.List;
 import java.util.Map;
@@ -44,7 +43,7 @@ public class CustomGenerator {
         // if vanilla would generate obsidian
         if (block.getBlock() == Blocks.OBSIDIAN) {
             return generateObsidian();
-        // if vanilla would generate cobblestone
+            // if vanilla would generate cobblestone
         } else if (block.getBlock() == Blocks.COBBLESTONE) {
             Block under = world.getBlockState(pos.add(0, -1, 0)).getBlock();
             if (under == Blocks.COBBLESTONE) {
@@ -57,35 +56,6 @@ public class CustomGenerator {
         }
     }
 
-    public static Block biomeReplacement(World world, BlockPos pos, Block in) {
-        Optional<RegistryKey<Biome>> biomeKeyOpt = world.getBiome(pos).getKey();
-        // Check if biome is valid
-        if (biomeKeyOpt.isEmpty()) {
-            throw new RuntimeException("Could not find biome for position " + pos);
-        }
-        RegistryKey<Biome> biomeKey = biomeKeyOpt.get();
-        // Desert
-        if (biomeKey.equals(BiomeKeys.DESERT)) {
-            if (in.equals(Blocks.COBBLESTONE)) return Blocks.SANDSTONE;
-            else if (in.equals(Blocks.STONE)) return Blocks.SMOOTH_SANDSTONE;
-        // Badlands
-        } else if (BADLAND_BIOMES.contains(biomeKey)) {
-            if (in.equals(Blocks.COBBLESTONE)) return Blocks.RED_SANDSTONE;
-            else if (in.equals(Blocks.STONE)) return randomBlock(Map.of(
-                Blocks.SMOOTH_RED_SANDSTONE, 50,
-                Blocks.TERRACOTTA, 50
-            ));
-        // Mossy Biomes
-        } else if (MOSSY_BIOMES.contains(biomeKey)) {
-            if (in.equals(Blocks.COBBLESTONE)) return randomBlock(Map.of(
-                Blocks.MOSSY_COBBLESTONE, 25,
-                Blocks.COBBLESTONE, 75
-            ));
-        }
-        // If not any of these
-        return in;
-	}
-
     public static Block environmentBasedCobble(World world, BlockPos pos) {
         Optional<RegistryKey<Biome>> biomeKeyOpt = world.getBiome(pos).getKey();
         // Check if biome is valid
@@ -96,12 +66,12 @@ public class CustomGenerator {
         RegistryKey<Biome> biomeKey = biomeKeyOpt.get();
         if (pos.getY() < -56) {
             return randomBlock(Map.of(
-                Blocks.NETHERRACK, 50,
-                Blocks.NETHER_QUARTZ_ORE, 10,
-                Blocks.BLACKSTONE, 40
+                    Blocks.NETHERRACK, 50,
+                    Blocks.NETHER_QUARTZ_ORE, 10,
+                    Blocks.BLACKSTONE, 40
             ));
         }
-        // If under y=0, generate cobbled deepslate
+        // If under y=0, generate cobbled deep slate
         else if (pos.getY() < 0 | biomeKey.equals(BiomeKeys.DEEP_DARK)) {
             return Blocks.COBBLED_DEEPSLATE;
         }
@@ -111,10 +81,10 @@ public class CustomGenerator {
                     Blocks.COBBLESTONE, 75,
                     Blocks.MOSSY_COBBLESTONE, 25));
         }
-        // Generate endstone in the end dimension
+        // Generate end stone in the end dimension
         else if (world.getRegistryKey().equals(World.END)) {
             return Blocks.END_STONE;
-        // Generate cobble any other time
+            // Generate cobble any other time
         } else {
             return Blocks.COBBLESTONE;
         }
@@ -141,45 +111,45 @@ public class CustomGenerator {
         // If under y -56 generate nether blocks
         if (pos.getY() < -56) {
             return randomBlock(Map.of(
-                Blocks.SOUL_SOIL, 50,
-                Blocks.BASALT, 45,
-                Blocks.SMOOTH_QUARTZ, 5
+                    Blocks.SOUL_SOIL, 50,
+                    Blocks.BASALT, 45,
+                    Blocks.SMOOTH_QUARTZ, 5
             ));
         } else
-        // If under y=10, generate deepslate or stone
-        if (pos.getY() < 10) {
-            return randomBlock(Map.of(
-                Blocks.DEEPSLATE, 50,
-                Blocks.STONE, 50
-            ));
-        } else
-        // If under y=0, always generate deepslate
-        if (pos.getY() < 0 || biomeKey == BiomeKeys.DEEP_DARK) {
-            return Blocks.DEEPSLATE;
-        } else
-        // Generate sandstone in the desert
-        if (pos.getY() > 48 && biomeKey == BiomeKeys.DESERT) {
-            return Blocks.SANDSTONE;
-        } else
-        // Generate red sandstone in badlands biomes
-        if (BADLAND_BIOMES.contains(biomeKey)) {
-            return Blocks.RED_SANDSTONE;
-        } else
-        // Generate andesite, diorite, or granite on mountain peaks
-        if (MOUNTAIN_BIOMES.contains(biomeKey)) {
-            return randomBlock(Map.of(
-                    Blocks.ANDESITE, 25,
-                    Blocks.GRANITE, 25,
-                    Blocks.DIORITE, 25,
-                    Blocks.STONE, 25)
-            );
-        } else
-        // Generate endstone in the end dimension
-        if (world.getRegistryKey() == World.END) {
-            return Blocks.END_STONE;
-        } else {
-            return Blocks.STONE;
-        }
+            // If under y=10, generate deepslate or stone
+            if (pos.getY() < 10) {
+                return randomBlock(Map.of(
+                        Blocks.DEEPSLATE, 50,
+                        Blocks.STONE, 50
+                ));
+            } else
+                // If under y=0, always generate deepslate
+                if (pos.getY() < 0 || biomeKey == BiomeKeys.DEEP_DARK) {
+                    return Blocks.DEEPSLATE;
+                } else
+                    // Generate sandstone in the desert
+                    if (pos.getY() > 48 && biomeKey == BiomeKeys.DESERT) {
+                        return Blocks.SANDSTONE;
+                    } else
+                        // Generate red sandstone in badlands biomes
+                        if (BADLAND_BIOMES.contains(biomeKey)) {
+                            return Blocks.RED_SANDSTONE;
+                        } else
+                            // Generate andesite, diorite, or granite on mountain peaks
+                            if (MOUNTAIN_BIOMES.contains(biomeKey)) {
+                                return randomBlock(Map.of(
+                                        Blocks.ANDESITE, 25,
+                                        Blocks.GRANITE, 25,
+                                        Blocks.DIORITE, 25,
+                                        Blocks.STONE, 25)
+                                );
+                            } else
+                                // Generate end stone in the end dimension
+                                if (world.getRegistryKey() == World.END) {
+                                    return Blocks.END_STONE;
+                                } else {
+                                    return Blocks.STONE;
+                                }
     }
 
     private static Block randomBlock(Map<Block, Integer> blocks) {
@@ -191,7 +161,7 @@ public class CustomGenerator {
                 return entry.getKey();
             }
         }
-        return (Block) blocks.values().toArray()[blocks.size()-1];
+        return (Block) blocks.values().toArray()[blocks.size() - 1];
     }
 
     private static BlockState generateObsidian() {

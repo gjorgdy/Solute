@@ -1,4 +1,4 @@
-package nl.gjorgdy.vanillaplus.mixins.longer_ladders;
+package nl.gjorgdy.vanillaplus.mixins.lowering_ladders;
 
 import net.minecraft.block.BlockState;
 import net.minecraft.block.LadderBlock;

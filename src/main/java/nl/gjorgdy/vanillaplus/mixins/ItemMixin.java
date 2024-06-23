@@ -11,7 +11,6 @@ import net.minecraft.util.Hand;
 import net.minecraft.util.TypedActionResult;
 import net.minecraft.world.World;
 import nl.gjorgdy.vanillaplus.modules.Compass;
-import nl.gjorgdy.vanillaplus.modules.FernFire;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -33,11 +32,6 @@ public class ItemMixin {
         ItemStack offHand = user.getOffHandStack();
         if (mainHand.isOf(Items.COMPASS) || offHand.isOf(Items.COMPASS)) {
             Compass.use(user);
-        // Smoke the fern
-        } else if (mainHand.isOf(Items.FERN) && offHand.isOf(Items.FLINT_AND_STEEL)) {
-            FernFire.burn(user, mainHand, offHand);
-        } else if (offHand.isOf(Items.FERN) && mainHand.isOf(Items.FLINT_AND_STEEL)) {
-            FernFire.burn(user, offHand, mainHand);
         }
     }
 

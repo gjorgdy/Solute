@@ -4,26 +4,33 @@ import net.minecraft.network.packet.s2c.play.WorldTimeUpdateS2CPacket;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.server.world.SleepManager;
-import net.minecraft.util.math.random.Random;
 import net.minecraft.world.GameRules;
 import net.minecraft.world.level.ServerWorldProperties;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
+import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;
 
 @Mixin(ServerWorld.class)
 public abstract class ServerWorldMixin {
 
+    @Unique
+    ServerWorld serverWorld = (ServerWorld) (Object) this;
+
+    @Shadow
+    @Final
+    private SleepManager sleepManager;
     @Shadow
     @Final
     private MinecraftServer server;
     @Shadow
     @Final
     private ServerWorldProperties worldProperties;
-    public final Random random = Random.create();
-    ServerWorld serverWorld = (ServerWorld) (Object) this;
+
+    @Shadow
+    protected abstract void wakeSleepingPlayers();
 
     @Redirect(method = "tick(Ljava/util/function/BooleanSupplier;)V", at = @At(value = "INVOKE", target = "Lnet/minecraft/server/world/SleepManager;canSkipNight(I)Z"))
     private boolean injected(SleepManager instance, int percentage) {
@@ -35,12 +42,21 @@ public abstract class ServerWorldMixin {
         float playersSleepingPercentage = (float) playersSleeping / playersInWorld;
 
         long worldTime = serverWorld.getTimeOfDay();
-        long dayTime = worldTime % 24000L;
 
         if (playersSleeping >= 1) {
-            if ((doDayLightCycle && dayTime >= 12750L && dayTime < 23250L) || (doWeatherCycle && serverWorld.isThundering())) {
+            if (doDayLightCycle && sleepManager.canSkipNight((int) playersSleepingPercentage)
+                    || (doWeatherCycle && serverWorld.isThundering())) {
                 int timeDelta = getTimeDelta(playersSleepingPercentage);
-                setTime(worldTime + timeDelta);
+
+                new Thread(() -> {
+                    for (int i = 0; i < 10; i++) {
+                        try {
+                            Thread.sleep(5);
+                        } catch (InterruptedException ignore) {
+                        }
+                        setTime(worldTime + ((long) timeDelta * i));
+                    }
+                }).start();
 
                 int thunderTime = worldProperties.getThunderTime();
                 if (serverWorld.isThundering() && thunderTime > 0) {
@@ -59,10 +75,12 @@ public abstract class ServerWorldMixin {
         return false;
     }
 
+    @Unique
     private int getTimeDelta(float sleepingPercentage) {
-        return Math.max(25, Math.round(50 * sleepingPercentage));
+        return Math.max(5, Math.round(10 * sleepingPercentage));
     }
 
+    @Unique
     private void setTime(long newTime) {
         serverWorld.setTimeOfDay(newTime);
         server.getPlayerManager().sendToDimension(
@@ -71,8 +89,4 @@ public abstract class ServerWorldMixin {
         );
     }
 
-    @Shadow
-    protected abstract void resetWeather();
-    @Shadow
-    protected abstract void wakeSleepingPlayers();
 }
