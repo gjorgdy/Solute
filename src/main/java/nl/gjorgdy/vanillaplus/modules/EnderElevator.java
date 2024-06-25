@@ -3,88 +3,81 @@ package nl.gjorgdy.vanillaplus.modules;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
-import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.Entity;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Box;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import nl.gjorgdy.vanillaplus.utils.BlockUtils;
 
 import java.util.List;
 
-public class EnderElevator {
+public class EnderElevator extends Thread {
 
-    static List<Block> elevatorBlocks = List.of(
+    static final List<Block> elevatorBlocks = List.of(
             Blocks.PURPUR_BLOCK,
             Blocks.PURPUR_PILLAR,
             Blocks.PURPUR_SLAB,
             Blocks.PURPUR_STAIRS
     );
-    static List<Block> extenderBlocks = List.of(
-            Blocks.END_ROD
-    );
-    static int elevatorRange = 8;
+    static final int range = 16;
 
-    public static void onJump(PlayerEntity player) {
-        if (player.getWorld().getRegistryKey() != World.END) {
-            moveVertical(player, true);
-        }
+    private final World world;
+    private final BlockPos pos;
+
+    public EnderElevator(World world, BlockPos pos) {
+        this.world = world;
+        this.pos = pos;
     }
 
-    public static void onSneak(PlayerEntity player) {
-        if (player.getWorld().getRegistryKey() != World.END) {
-            moveVertical(player, false);
-        }
+    @Override
+    public void run() {
+        List<Entity> entities = getEntities();
+        if (entities.isEmpty()) return;
+        BlockPos destination = getDestinationPosition();
+        if (destination == null) return;
+        entities.forEach(entity -> safeTeleport(entity, destination));
     }
 
-    /**
-     * Moves the player in the elevator
-     * @param player instance of player using teleporter
-     * @param up boolean value detirming if elevator goes up or down
-     */
-    private static void moveVertical(PlayerEntity player, boolean up) {
-        // Ready vars
-        World world = player.getWorld();
-        BlockPos playerBlockPos = player.getBlockPos();
-        BlockPos playerBlockUnderPos = playerBlockPos.add(0, -1, 0);
-        BlockPos elevatorBlockPos;
-        // Check for elevator
-        if (isElevatorBlock(world.getBlockState(playerBlockPos).getBlock())) {
-            elevatorBlockPos = playerBlockPos;
-        } else if (isElevatorBlock( world.getBlockState(playerBlockUnderPos).getBlock())) {
-            elevatorBlockPos = playerBlockUnderPos;
-        } else return;
-        // Loop trough blocks
-        int deltaY = up ? 1 : -1;
-        for (int i = 0; i < elevatorRange; i++) {
-            elevatorBlockPos = elevatorBlockPos.up(deltaY);
-            Block _block = world.getBlockState(elevatorBlockPos).getBlock();
-            // When it encounters an extender block, it resets the range counter
-            if (isElevatorBlock(_block)) {
-                if (safeTeleport(player, elevatorBlockPos))
-                    return;
-                else i--;
-            } else if (isExtenderBlock(_block)) {
-                i = -1;
+    private List<Entity> getEntities() {
+        return world.getOtherEntities(null, new Box(
+            pos.north().east().toCenterPos(),
+            pos.west().south().up(2).toCenterPos()
+        ));
+    }
+
+    private BlockPos getDestinationPosition() {
+        for (int i = 1; i < range; i++) {
+            BlockPos posAbove = pos.up(i);
+            BlockPos posBelow = pos.down(i);
+            if (isElevatorBlock(posAbove)) {
+                return posAbove;
+            } else if (isElevatorBlock(posBelow)) {
+                return posBelow;
             }
         }
-
+        return null;
     }
 
-    private static boolean isElevatorBlock(Block block) {
+    private boolean isElevatorBlock(BlockPos pos) {
+        return isElevatorBlock(world, pos);
+    }
+
+    public static boolean isElevatorBlock(World world, BlockPos pos) {
+        return elevatorBlocks.contains(world.getBlockState(pos).getBlock());
+    }
+
+    public static boolean isElevatorBlock(Block block) {
         return elevatorBlocks.contains(block);
-    }
-
-    private static boolean isExtenderBlock(Block block) {
-        return extenderBlocks.contains(block);
     }
 
     /**
      * Teleports the player to the BlockPos if location is valid
-     * @param player instance of player to teleport
+     *
+     * @param player   instance of player to teleport
      * @param blockPos location to teleport player to
-     * @return return if location is valid and player is teleported
      */
-    private synchronized static boolean safeTeleport(PlayerEntity player, BlockPos blockPos) {
+    private void safeTeleport(Entity player, BlockPos blockPos) {
         World world = player.getWorld();
         Vec3d playerPos = player.getPos();
         BlockState floorBlock = world.getBlockState(blockPos);
@@ -93,17 +86,15 @@ public class EnderElevator {
         if ( !bottomBlock.shouldSuffocate(world, blockPos) && !topBlock.shouldSuffocate(world, blockPos) ) {
             Vec3d velocity = player.getVelocity();
             double dY = BlockUtils.isBottomSlab(floorBlock) ? 0.5 : 1;
+            dY = BlockUtils.isBottomSlab(bottomBlock) ? 1.5 : dY;
             player.requestTeleport(
-                    (playerPos.getX()),
-                    ((double) blockPos.getY() + dY + 0.05),
-                    (playerPos.getZ())
+                (playerPos.getX()),
+                ((double) blockPos.getY() + dY + 0.15),
+                (playerPos.getZ())
             );
             player.setVelocity(velocity);
             player.velocityModified = true;
             world.sendEntityStatus(player, (byte)46);
-            return true;
-        } else {
-            return false;
         }
     }
 

@@ -2,23 +2,25 @@
   "required": true,
   "minVersion": "0.8",
   "package": "nl.gjorgdy.vanillaplus.mixins",
-  "compatibilityLevel": "JAVA_17",
-  "mixins": [],
+  "compatibilityLevel": "JAVA_21",
+  "mixins": [
+    "ender_elevator.BlockStateMixin"
+  ],
   "client": [],
   "server": [
     "ItemMixin",
-    "PlayerEntityMixin",
-    "growable_grass.BoneMealItemMixin",
-    "explosive_enhancements.ExplosionMixin",
-    "past_paths.ShovelItemMixin",
+    "bracing_bars.PlayerEntityMixin",
     "custom_generator.FluidBlockMixin",
     "custom_generator.LavaFluidMixin",
-    "enhanced_ender.EntityMixin",
     "enhanced_ender.ChorusFruitItemMixin",
     "enhanced_ender.EnderPearlEntityMixin",
+    "enhanced_ender.EntityMixin",
     "enhanced_ender.ThrownItemEntityMixin",
+    "explosive_enhancements.ExplosionMixin",
     "faster_farming.HoeItemMixin",
+    "growable_grass.BoneMealItemMixin",
     "lowering_ladders.LadderBlockMixin",
+    "past_paths.ShovelItemMixin",
     "smooth_sleep.ServerWorldMixin"
   ],
   "injectors": {
