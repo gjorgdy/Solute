@@ -4,7 +4,6 @@
   "package": "nl.gjorgdy.vanillaplus.mixins",
   "compatibilityLevel": "JAVA_21",
   "mixins": [
-    "ender_elevator.BlockStateMixin"
   ],
   "client": [],
   "server": [
@@ -12,9 +11,9 @@
     "bracing_bars.PlayerEntityMixin",
     "custom_generator.FluidBlockMixin",
     "custom_generator.LavaFluidMixin",
+    "ender_elevator.BlockStateMixin",
     "enhanced_ender.ChorusFruitItemMixin",
     "enhanced_ender.EnderPearlEntityMixin",
-    "enhanced_ender.EntityMixin",
     "enhanced_ender.ThrownItemEntityMixin",
     "explosive_enhancements.ExplosionMixin",
     "faster_farming.HoeItemMixin",

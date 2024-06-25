@@ -4,15 +4,21 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.server.world.ServerWorld;
+import net.minecraft.sound.SoundCategory;
+import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Box;
 import net.minecraft.util.math.Vec3d;
+import net.minecraft.world.TeleportTarget;
 import net.minecraft.world.World;
 import nl.gjorgdy.vanillaplus.utils.BlockUtils;
 
+import java.util.ArrayList;
 import java.util.List;
 
-public class EnderElevator extends Thread {
+public class EnderElevator {
 
     static final List<Block> elevatorBlocks = List.of(
             Blocks.PURPUR_BLOCK,
@@ -30,8 +36,7 @@ public class EnderElevator extends Thread {
         this.pos = pos;
     }
 
-    @Override
-    public void run() {
+    public void activate() {
         List<Entity> entities = getEntities();
         if (entities.isEmpty()) return;
         BlockPos destination = getDestinationPosition();
@@ -41,8 +46,8 @@ public class EnderElevator extends Thread {
 
     private List<Entity> getEntities() {
         return world.getOtherEntities(null, new Box(
-            pos.north().east().toCenterPos(),
-            pos.west().south().up(2).toCenterPos()
+            pos.toCenterPos().add(-0.5, 0, -0.5),
+            pos.toCenterPos().add(0.5, 2, 0.5)
         ));
     }
 
@@ -84,18 +89,29 @@ public class EnderElevator extends Thread {
         BlockState bottomBlock = world.getBlockState(blockPos.add(0,1,0));
         BlockState topBlock = world.getBlockState(blockPos.add(0,2,0));
         if ( !bottomBlock.shouldSuffocate(world, blockPos) && !topBlock.shouldSuffocate(world, blockPos) ) {
-            Vec3d velocity = player.getVelocity();
             double dY = BlockUtils.isBottomSlab(floorBlock) ? 0.5 : 1;
             dY = BlockUtils.isBottomSlab(bottomBlock) ? 1.5 : dY;
-            player.requestTeleport(
-                (playerPos.getX()),
-                ((double) blockPos.getY() + dY + 0.15),
-                (playerPos.getZ())
+            TeleportTarget teleportTarget = new TeleportTarget(
+                (ServerWorld) world,
+                new Vec3d(
+                    (playerPos.getX()),
+                    ((double) blockPos.getY() + dY + 0.15),
+                    (playerPos.getZ())
+                ),
+                player.getVelocity(),
+                player.getYaw(),
+                player.getPitch(),
+                EnderElevator::enderTeleport
             );
-            player.setVelocity(velocity);
-            player.velocityModified = true;
-            world.sendEntityStatus(player, (byte)46);
+            player.teleportTo(teleportTarget);
         }
+    }
+
+    private static void enderTeleport(Entity entity) {
+        if (entity instanceof PlayerEntity playerEntity) {
+            entity.getWorld().playSound(playerEntity, entity.getBlockPos(), SoundEvents.ENTITY_ENDERMAN_TELEPORT, SoundCategory.PLAYERS);
+        }
+        entity.getWorld().sendEntityStatus(entity, (byte)46);
     }
 
 }

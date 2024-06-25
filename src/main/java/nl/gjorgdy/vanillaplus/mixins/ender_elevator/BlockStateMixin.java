@@ -37,7 +37,7 @@ public abstract class BlockStateMixin {
         if (EnderElevator.isElevatorBlock(getBlock())) {
             if (world.getEmittedRedstonePower(pos, Direction.NORTH) > 0) {
                 if (!isPowered) {
-                    new EnderElevator(world, pos).start();
+                    new EnderElevator(world, pos).activate();
                 }
                 isPowered = true;
             } else {
