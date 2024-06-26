@@ -1,4 +1,4 @@
-package nl.gjorgdy.vanillaplus.mixins.explosive_enhancements;
+package nl.gjorgdy.vanillaplus.mixins.enhanced_explosions;
 
 import com.mojang.datafixers.util.Pair;
 import net.minecraft.item.ItemStack;
@@ -36,12 +36,12 @@ public class ExplosionMixin {
                 drop = new ItemStack(Items.GRAVEL, count * drop.getCount());
             }
         } else if (drop.isOf(Items.SANDSTONE)) {
-            int count = random.nextInt(9) - 4;
+            int count = random.nextInt(9) - 5;
             if (count > 0) {
                 drop = new ItemStack(Items.SAND, drop.getCount() * count);
             }
         } else if (drop.isOf(Items.RED_SANDSTONE)) {
-            int count = random.nextInt(9) - 4;
+            int count = random.nextInt(9) - 5;
             if (count > 0) {
                 drop = new ItemStack(Items.RED_SAND, drop.getCount() * count);
             }

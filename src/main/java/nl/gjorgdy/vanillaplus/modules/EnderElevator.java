@@ -85,24 +85,33 @@ public class EnderElevator {
     private void safeTeleport(Entity player, BlockPos blockPos) {
         World world = player.getWorld();
         Vec3d playerPos = player.getPos();
-        BlockState floorBlock = world.getBlockState(blockPos);
-        BlockState bottomBlock = world.getBlockState(blockPos.add(0,1,0));
-        BlockState topBlock = world.getBlockState(blockPos.add(0,2,0));
-        if ( !bottomBlock.shouldSuffocate(world, blockPos) && !topBlock.shouldSuffocate(world, blockPos) ) {
-            double dY = BlockUtils.isBottomSlab(floorBlock) ? 0.5 : 1;
-            dY = BlockUtils.isBottomSlab(bottomBlock) ? 1.5 : dY;
+
+        BlockState[] blockStates = new BlockState[]{
+            world.getBlockState(blockPos),
+            world.getBlockState(blockPos.up(1)),
+            world.getBlockState(blockPos.up(2))
+        };
+
+        if ( !blockStates[1].shouldSuffocate(world, blockPos) && !blockStates[1].shouldSuffocate(world, blockPos) ) {
+
+            double dx = playerPos.getX() - blockPos.toCenterPos().x;
+            double dY = BlockUtils.isBottomSlab(blockStates[0]) ? 0.5 : 1;
+            dY = BlockUtils.isBottomSlab(blockStates[1]) ? 1.5 : dY;
+            double dz = playerPos.getZ() - blockPos.toCenterPos().z;
+
             TeleportTarget teleportTarget = new TeleportTarget(
                 (ServerWorld) world,
                 new Vec3d(
-                    (playerPos.getX()),
+                    blockPos.toCenterPos().x + Math.min(0.2, Math.max(-0.2, dx)),
                     ((double) blockPos.getY() + dY + 0.15),
-                    (playerPos.getZ())
+                    blockPos.toCenterPos().z + Math.min(0.2, Math.max(-0.2, dz))
                 ),
                 player.getVelocity(),
                 player.getYaw(),
                 player.getPitch(),
                 EnderElevator::enderTeleport
             );
+
             player.teleportTo(teleportTarget);
         }
     }
