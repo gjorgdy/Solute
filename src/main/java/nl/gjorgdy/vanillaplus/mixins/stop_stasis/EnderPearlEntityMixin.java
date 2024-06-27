@@ -1,16 +1,14 @@
-package nl.gjorgdy.vanillaplus.mixins.enhanced_ender;
+package nl.gjorgdy.vanillaplus.mixins.stop_stasis;
 
 import net.minecraft.entity.projectile.thrown.EnderPearlEntity;
 import net.minecraft.util.hit.EntityHitResult;
 import net.minecraft.util.hit.HitResult;
-import net.minecraft.world.World;
 import nl.gjorgdy.vanillaplus.interfaces.EnderPearlEntityInterface;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.ModifyArg;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(EnderPearlEntity.class)
@@ -25,14 +23,11 @@ public abstract class EnderPearlEntityMixin implements EnderPearlEntityInterface
     @Unique
     EnderPearlEntity pearlEntity = (EnderPearlEntity) (Object) this;
 
-    @ModifyArg(method = "onCollision", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/Entity;damage(Lnet/minecraft/entity/damage/DamageSource;F)Z"), index = 1)
-    public float finishUsing(float amount) {
-        if (pearlEntity.getWorld().getRegistryKey() == World.END) {
-            return 0;
-        } else {
-            return amount;
-        }
-    }
+// no pearl damage in the end
+//    @ModifyArg(method = "onCollision", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/Entity;damage(Lnet/minecraft/entity/damage/DamageSource;F)Z"), index = 1)
+//    public float finishUsing(float amount) {
+//        return pearlEntity.getWorld().getRegistryKey() == World.END ? 0 : amount;
+//    }
 
     @Inject(method = "tick", at = @At("TAIL"))
     void onTick(CallbackInfo ci) {

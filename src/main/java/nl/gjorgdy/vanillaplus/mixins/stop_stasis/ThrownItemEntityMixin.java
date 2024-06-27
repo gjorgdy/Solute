@@ -1,4 +1,4 @@
-package nl.gjorgdy.vanillaplus.mixins.enhanced_ender;
+package nl.gjorgdy.vanillaplus.mixins.stop_stasis;
 
 import net.minecraft.entity.projectile.thrown.ThrownItemEntity;
 import net.minecraft.nbt.NbtCompound;
