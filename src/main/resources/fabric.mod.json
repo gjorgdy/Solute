@@ -37,9 +37,7 @@
   },
   "custom": {
     "loom:injected_interfaces": {
-      "net/minecraft/block/entity/SignBlockEntity.class": ["nl/gjorgdy/vanillaplus/interfaces/SignShopInterface.java"],
-      "net/minecraft/block/entity/LootableContainerBlockEntity.class": ["nl/gjorgdy/vanillaplus/interfaces/HoloShopInterface.java"],
-      "net/minecraft/entity/player/PlayerEntity.class": ["nl/gjorgdy/vanillaplus/interfaces/PlayerEntityInterface.java"],
+      "net/minecraft/server/network/ServerPlayerEntity.class": ["nl/gjorgdy/vanillaplus/interfaces/ServerPlayerEntityInterface.java"],
       "net/minecraft/projectile/thrown/EnderPearlEntity.class": ["nl/gjorgdy/vanillaplus/interfaces/EnderPearlEntityInterface.java"]
     }
   }
