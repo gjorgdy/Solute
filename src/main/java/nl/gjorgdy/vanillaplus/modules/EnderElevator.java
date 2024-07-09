@@ -4,10 +4,7 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.MovementType;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.network.packet.c2s.play.PlayerMoveC2SPacket;
-import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
@@ -20,8 +17,12 @@ import nl.gjorgdy.vanillaplus.interfaces.ServerPlayerEntityInterface;
 import nl.gjorgdy.vanillaplus.utils.BlockUtils;
 
 import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class EnderElevator {
+
+    private static final ExecutorService executor = Executors.newFixedThreadPool(2);
 
     static final List<Block> elevatorBlocks = List.of(
             Blocks.PURPUR_BLOCK,
@@ -40,13 +41,13 @@ public class EnderElevator {
     }
 
     public void activate() {
-        new Thread(() -> {
+        executor.submit(() -> {
             List<Entity> entities = getEntities();
-            if (entities.isEmpty()) return;
+            if (entities == null || entities.isEmpty()) return;
             BlockPos destination = getDestinationPosition();
             if (destination == null) return;
             entities.forEach(entity -> safeTeleport(entity, destination));
-        }).start();
+        });
     }
 
     private List<Entity> getEntities() {

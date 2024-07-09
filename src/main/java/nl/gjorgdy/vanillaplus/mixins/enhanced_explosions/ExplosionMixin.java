@@ -31,17 +31,17 @@ public class ExplosionMixin {
         ItemStack drop = pair.getFirst();
 
         if (drop.isOf(Items.COBBLESTONE)) {
-            int count = random.nextInt(5) - 2;
+            int count = random.nextInt(7) - 2;
             if (count > 0) {
                 drop = new ItemStack(Items.GRAVEL, count * drop.getCount());
             }
         } else if (drop.isOf(Items.SANDSTONE)) {
-            int count = random.nextInt(9) - 5;
+            int count = random.nextInt(11) - 5;
             if (count > 0) {
                 drop = new ItemStack(Items.SAND, drop.getCount() * count);
             }
         } else if (drop.isOf(Items.RED_SANDSTONE)) {
-            int count = random.nextInt(9) - 5;
+            int count = random.nextInt(11) - 5;
             if (count > 0) {
                 drop = new ItemStack(Items.RED_SAND, drop.getCount() * count);
             }
