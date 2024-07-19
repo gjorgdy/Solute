@@ -1,19 +1,7 @@
-# Hexasis Vanilla Plus
+# Gjorgdy's Vanilla Plus
 
-## Helix SMP
+## Helix Survival
 
-Developed for the **Helix SMP** server
+Developed for the **Helix Survival** server
 
-## Planned features;
-
-- Custom stone generators;
-
-  Andesite, Granite, Diorite, Netherrack, Blackstone, End Stone, Sandstone, Red Sandstone, Deepslate, Tuff, or Calcite
- 
-- Crusher;
-
-  Cobblestone -> Gravel, Sandstone -> Sand, Red Sandstone -> Red Sand
- 
-- Chest shops
-
-- Chorus Elevators
+Read the documentation at https://docs.hexasis.eu/mods/vanillaplus/
