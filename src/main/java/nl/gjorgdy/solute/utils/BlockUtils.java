@@ -1,0 +1,109 @@
+package nl.gjorgdy.solute.utils;
+
+import net.minecraft.block.*;
+import net.minecraft.block.enums.BlockHalf;
+import net.minecraft.block.enums.SlabType;
+import net.minecraft.block.enums.StairShape;
+import net.minecraft.block.enums.WallShape;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import net.minecraft.state.property.DirectionProperty;
+import net.minecraft.state.property.EnumProperty;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Direction;
+import net.minecraft.world.World;
+
+public class BlockUtils {
+
+    public static BlockState changeStairs(BlockState state, Block block) {
+        if (state.getBlock() instanceof StairsBlock && block instanceof StairsBlock) {
+            Direction facing = state.get(StairsBlock.FACING);
+            BlockHalf half = state.get(StairsBlock.HALF);
+            StairShape shape = state.get(StairsBlock.SHAPE);
+            Boolean waterlogged = state.get(StairsBlock.WATERLOGGED);
+            return block.getDefaultState()
+                    .with(StairsBlock.FACING, facing)
+                    .with(StairsBlock.HALF, half)
+                    .with(StairsBlock.SHAPE, shape)
+                    .with(StairsBlock.WATERLOGGED, waterlogged);
+        }
+        return state;
+    }
+
+    public static BlockState changeSlab(BlockState state, Block block) {
+        if (state.getBlock() instanceof SlabBlock && block instanceof SlabBlock) {
+            SlabType type = state.get(SlabBlock.TYPE);
+            boolean waterlogged = state.get(SlabBlock.WATERLOGGED);
+            return block.getDefaultState()
+                .with(SlabBlock.TYPE, type)
+                .with(SlabBlock.WATERLOGGED, waterlogged);
+        }
+        return state;
+    }
+
+    public static BlockState changeWall(BlockState state, Block block) {
+        if (state.getBlock() instanceof WallBlock && block instanceof WallBlock) {
+            WallShape northShape = state.get(WallBlock.NORTH_SHAPE);
+            WallShape eastShape = state.get(WallBlock.EAST_SHAPE);
+            WallShape southShape = state.get(WallBlock.SOUTH_SHAPE);
+            WallShape westShape = state.get(WallBlock.WEST_SHAPE);
+            boolean waterlogged = state.get(WallBlock.WATERLOGGED);
+            boolean up = state.get(WallBlock.UP);
+            return block.getDefaultState()
+                .with(WallBlock.NORTH_SHAPE, northShape)
+                .with(WallBlock.EAST_SHAPE, eastShape)
+                .with(WallBlock.SOUTH_SHAPE, southShape)
+                .with(WallBlock.WEST_SHAPE, westShape)
+                .with(WallBlock.WATERLOGGED, waterlogged)
+                .with(WallBlock.UP, up);
+        }
+        return state;
+    }
+
+    public static boolean isBottomSlab(BlockState blockState) {
+        return blockState.getBlock() instanceof SlabBlock
+                && blockState.get(SlabBlock.TYPE) == SlabType.BOTTOM;
+    }
+
+    public static boolean canBeMossy(Block block) {
+        return block == Blocks.COBBLESTONE
+                || block == Blocks.COBBLESTONE_WALL
+                || block == Blocks.COBBLESTONE_STAIRS
+                || block == Blocks.COBBLESTONE_SLAB
+                || block == Blocks.STONE_BRICKS
+                || block == Blocks.STONE_BRICK_WALL
+                || block == Blocks.STONE_BRICK_STAIRS
+                || block == Blocks.STONE_BRICK_SLAB
+                || block == Blocks.INFESTED_STONE_BRICKS;
+    }
+
+    public static boolean isMossy(Block block) {
+        return block == Blocks.MOSSY_COBBLESTONE
+                || block == Blocks.MOSSY_COBBLESTONE_WALL
+                || block == Blocks.MOSSY_COBBLESTONE_STAIRS
+                || block == Blocks.MOSSY_COBBLESTONE_SLAB
+                || block == Blocks.MOSSY_STONE_BRICKS
+                || block == Blocks.MOSSY_STONE_BRICK_WALL
+                || block == Blocks.MOSSY_STONE_BRICK_STAIRS
+                || block == Blocks.MOSSY_STONE_BRICK_SLAB
+                || block == Blocks.INFESTED_MOSSY_STONE_BRICKS;
+    }
+
+    public static boolean canCrack(Block block) {
+        return block == Blocks.STONE_BRICKS
+                || block == Blocks.DEEPSLATE_BRICKS
+                || block == Blocks.DEEPSLATE_TILES
+                || block == Blocks.NETHER_BRICKS
+                || block == Blocks.POLISHED_BLACKSTONE_BRICKS
+                || block == Blocks.INFESTED_STONE_BRICKS;
+    }
+
+    public static boolean isConcretePowder(Item item) {
+        return isConcretePowder(Block.getBlockFromItem(item));
+    }
+
+    public static boolean isConcretePowder(Block block) {
+        return block instanceof ConcretePowderBlock;
+    }
+
+}

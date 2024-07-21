@@ -1,0 +1,31 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "nl.gjorgdy.solute.mixins",
+  "compatibilityLevel": "JAVA_21",
+  "mixins": [
+    "cauldron.ConcretePowderBlockMixin"
+  ],
+  "client": [],
+  "server": [
+    "ItemMixin",
+    "bed.ServerWorldMixin",
+    "creeper.EntityMixin",
+    "ender_pearl.ChorusFruitItemMixin",
+    "ender_pearl.EnderPearlEntityMixin",
+    "ender_pearl.ThrownItemEntityMixin",
+    "farmland.HoeItemMixin",
+    "grass.BoneMealItemMixin",
+    "iron_bars.PlayerEntityMixin",
+    "ladder.LadderBlockMixin",
+    "lava.FluidBlockMixin",
+    "lava.LavaFluidMixin",
+    "path.ShovelItemMixin",
+    "purpur.BlockStateMixin",
+    "purpur.ServerPlayerEntityMixin",
+    "tnt.ExplosionMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}

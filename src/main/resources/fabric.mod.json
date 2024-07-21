@@ -3,27 +3,27 @@
   "id": "vanillaplus",
   "version": "${version}",
 
-  "name": "Hexasis VanillaPlus",
-  "description": "This is an example description! Tell everyone what your mod is about!",
+  "name": "Solute by Gjorgdy",
+  "description": "A solute is an element used together with a base to create an alloy using the best features of both.",
   "authors": [
     "Gjorgdy"
   ],
   "contact": {
-    "homepage": "https://fabricmc.net/",
+    "homepage": "https://hexasis.eu/",
     "sources": "https://github.com/FabricMC/fabric-example-mod"
   },
 
   "license": "CC0-1.0",
-  "icon": "assets/vanillaplus/icon.png",
+  "icon": "assets/solute/icon.png",
 
   "environment": "*",
   "entrypoints": {
     "main": [
-      "nl.gjorgdy.vanillaplus.VanillaPlus"
+      "nl.gjorgdy.solute.Solute"
     ]
   },
   "mixins": [
-    "vanillaplus.mixins.json"
+    "solute.mixins.json"
   ],
 
   "depends": {
@@ -34,11 +34,5 @@
   },
   "suggests": {
     "another-mod": "*"
-  },
-  "custom": {
-    "loom:injected_interfaces": {
-      "net/minecraft/server/network/ServerPlayerEntity.class": ["nl/gjorgdy/vanillaplus/interfaces/ServerPlayerEntityInterface.java"],
-      "net/minecraft/projectile/thrown/EnderPearlEntity.class": ["nl/gjorgdy/vanillaplus/interfaces/EnderPearlEntityInterface.java"]
-    }
   }
 }
