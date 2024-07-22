@@ -11,7 +11,6 @@
     "ItemMixin",
     "bed.ServerWorldMixin",
     "creeper.EntityMixin",
-    "ender_pearl.ChorusFruitItemMixin",
     "ender_pearl.EnderPearlEntityMixin",
     "ender_pearl.ThrownItemEntityMixin",
     "farmland.HoeItemMixin",
