@@ -1,19 +1,16 @@
 package nl.gjorgdy.solute.mixins.path;
 
+import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.entity.EquipmentSlot;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.MovementType;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemUsageContext;
 import net.minecraft.item.ShovelItem;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Box;
 import net.minecraft.util.math.Direction;
-import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.minecraft.world.event.GameEvent;
 import org.spongepowered.asm.mixin.Mixin;
@@ -33,17 +30,10 @@ public class ShovelItemMixin {
             if (blockState.isOf(Blocks.DIRT_PATH)) {
 
                 PlayerEntity playerEntity = context.getPlayer();
-                BlockState dirt = Blocks.DIRT.getDefaultState();
-                world.setBlockState(blockPos, dirt, 11);
-                world.emitGameEvent(GameEvent.BLOCK_CHANGE, blockPos, GameEvent.Emitter.of(playerEntity, dirt));
-
-                world.getOtherEntities(null, new Box(
-                    blockPos.toCenterPos(), blockPos.up().toCenterPos()
-                )).forEach(entity -> {
-                    if (entity instanceof LivingEntity) {
-                        entity.move(MovementType.PISTON, new Vec3d(0, (double) 1 /16, 0));
-                    }
-                });
+                BlockState dirtState = Blocks.DIRT.getDefaultState();
+                Block.pushEntitiesUpBeforeBlockChange(blockState, dirtState, world, blockPos);
+                world.setBlockState(blockPos, dirtState, 11);
+                world.emitGameEvent(GameEvent.BLOCK_CHANGE, blockPos, GameEvent.Emitter.of(playerEntity, dirtState));
 
                 if (playerEntity != null) {
                     context.getStack().damage(1, playerEntity, context.getHand() == Hand.MAIN_HAND ? EquipmentSlot.MAINHAND : EquipmentSlot.OFFHAND);

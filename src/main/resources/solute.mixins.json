@@ -4,12 +4,13 @@
   "package": "nl.gjorgdy.solute.mixins",
   "compatibilityLevel": "JAVA_21",
   "mixins": [
-    "cauldron.ConcretePowderBlockMixin"
+    "farmland.FarmLandBlockMixin"
   ],
   "client": [],
   "server": [
     "ItemMixin",
     "bed.ServerWorldMixin",
+    "cauldron.ConcretePowderBlockMixin",
     "creeper.EntityMixin",
     "ender_pearl.EnderPearlEntityMixin",
     "ender_pearl.ThrownItemEntityMixin",
