@@ -98,10 +98,6 @@ public class BlockUtils {
                 || block == Blocks.INFESTED_STONE_BRICKS;
     }
 
-    public static boolean isConcretePowder(Item item) {
-        return isConcretePowder(Block.getBlockFromItem(item));
-    }
-
     public static boolean isConcretePowder(Block block) {
         return block instanceof ConcretePowderBlock;
     }

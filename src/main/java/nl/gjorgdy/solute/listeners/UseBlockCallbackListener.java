@@ -14,7 +14,6 @@ import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.minecraft.util.hit.BlockHitResult;
-import net.minecraft.util.hit.HitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import nl.gjorgdy.solute.modules.Bricks;
@@ -23,9 +22,7 @@ import nl.gjorgdy.solute.utils.BlockUtils;
 import nl.gjorgdy.solute.utils.ItemUtils;
 
 import java.util.Random;
-import java.util.function.Consumer;
 import java.util.function.Function;
-import java.util.function.Supplier;
 
 public class UseBlockCallbackListener implements UseBlockCallback {
 
@@ -64,7 +61,7 @@ public class UseBlockCallbackListener implements UseBlockCallback {
             }
         }
         // concrete powder on cauldron
-        else if (!player.isSneaking() && BlockUtils.isConcretePowder(player.getStackInHand(hand).getItem()) && blockState.isOf(Blocks.WATER_CAULDRON)) {
+        else if (!player.isSneaking() && ItemUtils.isConcretePowder(player.getStackInHand(hand).getItem()) && blockState.isOf(Blocks.WATER_CAULDRON)) {
             return cauldronWash(player, hand, world, hitResult.getBlockPos(), ItemUtils::hardenConcretePowder);
         }
         // concrete powder on cauldron

@@ -16,7 +16,7 @@ public class HoeItemMixin {
     @Inject(at = @At("HEAD"), method="useOnBlock", cancellable = true)
     public void onUse(ItemUsageContext context, CallbackInfoReturnable<ActionResult> cir) {
         if (context.getWorld().getBlockState(context.getBlockPos()).getBlock() instanceof CropBlock) {
-            Farmland.farmArea(context.getWorld(), context.getBlockPos(), context.getPlayer(), context.getStack());
+            Farmland.farmArea(context);
             cir.setReturnValue(ActionResult.PASS);
         }
     }

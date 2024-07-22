@@ -1,6 +1,7 @@
 package nl.gjorgdy.solute.utils;
 
 import net.minecraft.block.Block;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import nl.gjorgdy.solute.interfaces.ConcretePowderBlockInterface;
@@ -16,6 +17,10 @@ public class ItemUtils {
 
     public static boolean canBecomeMud(final ItemStack stack) {
         return stack.isOf(Items.DIRT) || stack.isOf(Items.COARSE_DIRT)  || stack.isOf(Items.ROOTED_DIRT);
+    }
+
+    public static boolean isConcretePowder(Item item) {
+        return BlockUtils.isConcretePowder(Block.getBlockFromItem(item));
     }
 
 }
