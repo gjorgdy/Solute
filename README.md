@@ -1,6 +1,7 @@
-# Solute
+# Solute #
 
-Previously known as Hexasis VanillaPlus, Solute is a QOL adding minor features to vanilla.
+*Previously known as Hexasis VanillaPlus, Solute is a QOL adding minor features to vanilla.*
+
 --------
 
 ### Bed
@@ -48,7 +49,7 @@ Made powered rail crafted with copper give 8 rails.
 ### Creeper
 *Don't let mobs break your builds*
 
-Disables block damage of creepers and ghast fireballs 
+Disables block damage caused by creepers and ghast fireballs 
 
 --------
 
@@ -70,15 +71,15 @@ The higher tier the hoe is, the bigger the range of harvested crops will be.
 
 Enchants (like fortune) work the same way as they would when breaking the crop with the hoe in vanilla.
 
-
+The minimum fall damage height for trampling farmland is increased to 8 blocks.
 
 --------
 
 ### Glow Berry
 *Sometimes you just need some extra sparkle in your life*
 
-When eating a glow berry you will temporarily receive the 'glow' effect
-    
+When eating a glow berry, you will temporarily receive the 'glow' effect
+
 --------
 
 ### Grass
@@ -91,12 +92,12 @@ Use bone meal on a grass block to spread grass blocks faster.
 ### Iron Bars
 *Live your craziest fireman fantasies in Minecraft*   
    
-When falling down while being in the same block as free standing Iron Bars or End Rods. Your falling speed will be minimized, and your fall damage neglected.  
+When falling down while being in the same block as freestanding Iron Bars or End Rods. Your falling speed will be minimized, and your fall damage neglected.  
 
-Iron Bars have to be fully free standing, they can't connect to any block horizontally.   
+Iron Bars have to be fully freestanding, they can't connect to any block horizontally.   
 
-If you have already built up speed it will take some time before you slowed down enough. Meaning you will still take fall damage if you 'grab on' to the bars too late.   
-   
+If you have already built up speed it will take some time before you slowed down enough. Meaning you will still take fall damage if you 'grab on' to the bars too late.
+
 --------
 
 ### Ladder
@@ -168,7 +169,7 @@ The Purpur Blocks itself can be a slab, and can be covered by a single bottom sl
 --------
 
 ### Shulker
-*Shulkers are a way to solve Minecrafts inventory issue...*
+*Shulkers are a way to solve Minecraft's inventory issue...*
 
 Shulkers drop a higher amount of shells. 
 With a minimum of 2 and a max of 3, shulker boxes are way easier and quicker to get.
