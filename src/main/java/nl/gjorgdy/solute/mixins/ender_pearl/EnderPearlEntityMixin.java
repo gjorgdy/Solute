@@ -23,12 +23,6 @@ public abstract class EnderPearlEntityMixin implements EnderPearlEntityInterface
     @Unique
     EnderPearlEntity pearlEntity = (EnderPearlEntity) (Object) this;
 
-// no pearl damage in the end
-//    @ModifyArg(method = "onCollision", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/Entity;damage(Lnet/minecraft/entity/damage/DamageSource;F)Z"), index = 1)
-//    public float finishUsing(float amount) {
-//        return pearlEntity.getWorld().getRegistryKey() == World.END ? 0 : amount;
-//    }
-
     @Inject(method = "tick", at = @At("TAIL"))
     void onTick(CallbackInfo ci) {
         if (solute$getTimeToLive(true) <= 0 && pearlEntity.getOwner() != null) {

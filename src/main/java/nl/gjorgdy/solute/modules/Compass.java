@@ -32,31 +32,21 @@ public class Compass {
             new Vec2f(-1, -1)
     );
 
-    private enum modes {
-        slime
-    }
-
     public static void use(PlayerEntity player) {
-        List<Vec2f> scanned = scan(player, modes.slime);
-        if (scanned.size() == 0) {
+        List<Vec2f> scanned = scan(player);
+        if (scanned.isEmpty()) {
             MutableText text = Text.empty().append(Text.of("No Slime Chunks"));
             player.sendMessage(text.setStyle(Style.EMPTY.withColor(16724530)), true);
             return;
         }
         MutableText text = Text.empty();
         text.append(Text.of("Slime Chunks"));
-        scanned.forEach(vec -> {
-                text.append(BULLET)
-                        .append(
-                                Text.of(vec2dir(vec))
-                        );
-            }
-        );
+        scanned.forEach(vec -> text.append(BULLET).append(Text.of(vec2dir(vec))));
         player.sendMessage(text.setStyle(Style.EMPTY.withColor(5308240)), true);
         player.getItemCooldownManager().set(Items.COMPASS, 80);
     }
 
-    public static List<Vec2f> scan(PlayerEntity player, modes mode) {
+    private static List<Vec2f> scan(PlayerEntity player) {
         List<Vec2f> chunks = new ArrayList<>();
         World world = player.getWorld();
         ChunkPos chunkPos = player.getChunkPos();
@@ -65,18 +55,15 @@ public class Compass {
 
         DELTAS.forEach(vec -> {
             Chunk chunk = world.getChunk( chunkX + (int) vec.x, chunkZ + (int) vec.y);
-            if (isChunk(world, chunk, mode))
+            if (isSlimeChunk(world, chunk))
                 chunks.add(vec);
         });
 
         return chunks;
     }
 
-    public static boolean isChunk(World world, Chunk chunk, modes mode) {
-        if (mode == modes.slime) {
-            return ChunkRandom.getSlimeRandom(chunk.getPos().x, chunk.getPos().z, ((StructureWorldAccess) world).getSeed(), 987234911L).nextInt(10) == 0;
-        }
-        return false;
+    public static boolean isSlimeChunk(World world, Chunk chunk) {
+        return ChunkRandom.getSlimeRandom(chunk.getPos().x, chunk.getPos().z, ((StructureWorldAccess) world).getSeed(), 987234911L).nextInt(10) == 0;
     }
 
     @Nullable

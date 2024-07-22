@@ -23,14 +23,6 @@ public class Cobblestone {
             BiomeKeys.SNOWY_TAIGA,
             BiomeKeys.OLD_GROWTH_SPRUCE_TAIGA
     );
-    static final List<RegistryKey<Biome>> MOUNTAIN_BIOMES = List.of(
-            BiomeKeys.FROZEN_PEAKS,
-            BiomeKeys.JAGGED_PEAKS,
-            BiomeKeys.STONY_PEAKS,
-            BiomeKeys.MEADOW,
-            BiomeKeys.GROVE,
-            BiomeKeys.SNOWY_SLOPES
-    );
     static final List<RegistryKey<Biome>> BADLAND_BIOMES = List.of(
             BiomeKeys.BADLANDS,
             BiomeKeys.ERODED_BADLANDS,

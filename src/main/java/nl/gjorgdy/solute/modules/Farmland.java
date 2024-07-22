@@ -96,7 +96,7 @@ public class Farmland {
         public void farmCrop(BlockPos pos, BlockState state) {
             // Loop through the items that should be dropped
             AtomicBoolean hasReplanted = new AtomicBoolean(false);
-            Block.getDroppedStacks(state, (ServerWorld) world, pos, null, player, toolStack).forEach((stack) -> {
+            Block.getDroppedStacks(state, world, pos, null, player, toolStack).forEach((stack) -> {
                 // If drop is a seed and block is air
                 if (!hasReplanted.get()
                         && stack.getItem() instanceof BlockItem blockItem

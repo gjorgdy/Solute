@@ -5,13 +5,7 @@ import net.minecraft.block.enums.BlockHalf;
 import net.minecraft.block.enums.SlabType;
 import net.minecraft.block.enums.StairShape;
 import net.minecraft.block.enums.WallShape;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.state.property.DirectionProperty;
-import net.minecraft.state.property.EnumProperty;
-import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
-import net.minecraft.world.World;
 
 public class BlockUtils {
 
@@ -35,8 +29,8 @@ public class BlockUtils {
             SlabType type = state.get(SlabBlock.TYPE);
             boolean waterlogged = state.get(SlabBlock.WATERLOGGED);
             return block.getDefaultState()
-                .with(SlabBlock.TYPE, type)
-                .with(SlabBlock.WATERLOGGED, waterlogged);
+                    .with(SlabBlock.TYPE, type)
+                    .with(SlabBlock.WATERLOGGED, waterlogged);
         }
         return state;
     }
@@ -50,12 +44,12 @@ public class BlockUtils {
             boolean waterlogged = state.get(WallBlock.WATERLOGGED);
             boolean up = state.get(WallBlock.UP);
             return block.getDefaultState()
-                .with(WallBlock.NORTH_SHAPE, northShape)
-                .with(WallBlock.EAST_SHAPE, eastShape)
-                .with(WallBlock.SOUTH_SHAPE, southShape)
-                .with(WallBlock.WEST_SHAPE, westShape)
-                .with(WallBlock.WATERLOGGED, waterlogged)
-                .with(WallBlock.UP, up);
+                    .with(WallBlock.NORTH_SHAPE, northShape)
+                    .with(WallBlock.EAST_SHAPE, eastShape)
+                    .with(WallBlock.SOUTH_SHAPE, southShape)
+                    .with(WallBlock.WEST_SHAPE, westShape)
+                    .with(WallBlock.WATERLOGGED, waterlogged)
+                    .with(WallBlock.UP, up);
         }
         return state;
     }
