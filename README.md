@@ -149,7 +149,7 @@ Obsidian has a 1/16 chance to generate as crying obsidian.
 --------
 
 ### Path
-*"Goddamnit wrong dirt block"*
+*"Damn it, wrong dirt block"*
 
 You can turn path blocks back into dirt blocks by clicking on them with a shovel.
 
@@ -165,7 +165,7 @@ The maximum distance between said Purpur Blocks is 16 blocks.
 When looking for the nearest block, it will prioritize going upwards.
 
 The Purpur Blocks itself can be a slab, and can be covered by a single bottom slab.
-     
+
 --------
 
 ### Shulker

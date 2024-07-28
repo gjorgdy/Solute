@@ -35,7 +35,7 @@ public class Cobblestone {
     }
 
     public static boolean chance(World world, int favourable, int possible) {
-        return random(world, possible) > favourable;
+        return random(world, possible) <= favourable;
     }
 
     public static int random(World world, int possible) {
