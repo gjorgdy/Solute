@@ -12,15 +12,15 @@
               "count": {
                 "type": "minecraft:uniform",
                 "max": 2.0,
-                "min": 2.0
+                "min": 1.95
               },
               "function": "minecraft:set_count"
             },
             {
               "count": {
                 "type": "minecraft:uniform",
-                "max": 3.0,
-                "min": 2.0
+                "max": 0.35,
+                "min": 0.05
               },
               "enchantment": "minecraft:looting",
               "function": "minecraft:enchanted_count_increase"

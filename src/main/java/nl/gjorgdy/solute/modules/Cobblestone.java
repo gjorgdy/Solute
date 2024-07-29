@@ -171,7 +171,7 @@ public class Cobblestone {
                 return entry.getKey();
             }
         }
-        return (Block) blocks.values().toArray()[blocks.size() - 1];
+        return (Block) blocks.keySet().toArray()[blocks.size() - 1];
     }
 
     private static BlockState generateObsidian(World world) {
