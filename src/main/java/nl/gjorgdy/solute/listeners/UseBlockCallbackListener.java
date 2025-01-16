@@ -45,6 +45,7 @@ public class UseBlockCallbackListener implements UseBlockCallback {
                 }
                 world.playSound(null, hitResult.getBlockPos(), SoundEvents.ENTITY_BOGGED_SHEAR, SoundCategory.BLOCKS);
                 player.getStackInHand(hand).damage(1, player, null);
+                player.swingHand(hand, true);
                 return ActionResult.SUCCESS;
             }
         }
@@ -53,6 +54,7 @@ public class UseBlockCallbackListener implements UseBlockCallback {
             if (Bricks.pickaxeStone((ServerWorld) world, hitResult.getBlockPos(), blockState)) {
                 world.playSound(null, hitResult.getBlockPos(), SoundEvents.BLOCK_DEEPSLATE_BRICKS_BREAK, SoundCategory.BLOCKS);
                 player.getStackInHand(hand).damage(1, player, null);
+                player.swingHand(hand, true);
                 return ActionResult.SUCCESS;
             }
         }
@@ -60,6 +62,7 @@ public class UseBlockCallbackListener implements UseBlockCallback {
         else if (!player.isSneaking() && player.getStackInHand(hand).isOf(Items.VINE) && BlockUtils.canBeMossy(blockState.getBlock())) {
             if (Bricks.placeVines((ServerWorld) world, hitResult.getBlockPos(), blockState)) {
                 player.getStackInHand(hand).decrementUnlessCreative(1, player);
+                player.swingHand(hand, true);
                 return ActionResult.SUCCESS;
             }
         }
@@ -82,6 +85,7 @@ public class UseBlockCallbackListener implements UseBlockCallback {
         world.playSound(null, blockPos, SoundEvents.BLOCK_POINTED_DRIPSTONE_DRIP_WATER_INTO_CAULDRON, SoundCategory.BLOCKS);
         player.getItemCooldownManager().set(stackInHand, 8);
         stackInHand.decrementUnlessCreative(1, player);
+        player.swingHand(hand, true);
         if (!player.giveItemStack(resultStack)) {
             Block.dropStack(world, blockPos, resultStack);
         }
