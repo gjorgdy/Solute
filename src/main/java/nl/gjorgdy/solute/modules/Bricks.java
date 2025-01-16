@@ -8,8 +8,17 @@ import nl.gjorgdy.solute.utils.BlockUtils;
 
 public class Bricks {
 
-    public static boolean pickaxeStone(ServerWorld world, BlockPos pos, BlockState state) {
+    public static boolean usePickaxeOnStone(ServerWorld world, BlockPos pos, BlockState state) {
         BlockState newState = crackStone(state);
+        if (newState != state) {
+            world.setBlockState(pos, newState);
+            return true;
+        }
+        return false;
+    }
+
+    public static boolean useClayOnStone(ServerWorld world, BlockPos pos, BlockState state) {
+        BlockState newState = repairStone(state);
         if (newState != state) {
             world.setBlockState(pos, newState);
             return true;
@@ -35,6 +44,28 @@ public class Bricks {
         }
         if (blockState.isOf(Blocks.INFESTED_STONE_BRICKS)) {
             return Blocks.INFESTED_CRACKED_STONE_BRICKS.getDefaultState();
+        }
+        return blockState;
+    }
+
+    private static BlockState repairStone(BlockState blockState) {
+        if (blockState.isOf(Blocks.CRACKED_STONE_BRICKS)) {
+            return Blocks.STONE_BRICKS.getDefaultState();
+        }
+        if (blockState.isOf(Blocks.CRACKED_DEEPSLATE_BRICKS)) {
+            return Blocks.DEEPSLATE_BRICKS.getDefaultState();
+        }
+        if (blockState.isOf(Blocks.CRACKED_DEEPSLATE_TILES)) {
+            return Blocks.DEEPSLATE_TILES.getDefaultState();
+        }
+        if (blockState.isOf(Blocks.CRACKED_NETHER_BRICKS)) {
+            return Blocks.NETHER_BRICKS.getDefaultState();
+        }
+        if (blockState.isOf(Blocks.CRACKED_POLISHED_BLACKSTONE_BRICKS)) {
+            return Blocks.POLISHED_BLACKSTONE_BRICKS.getDefaultState();
+        }
+        if (blockState.isOf(Blocks.INFESTED_CRACKED_STONE_BRICKS)) {
+            return Blocks.INFESTED_STONE_BRICKS.getDefaultState();
         }
         return blockState;
     }

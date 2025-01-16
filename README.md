@@ -14,9 +14,10 @@ When sleeping, the game will not skip to the morning, it will speed up time till
 ### Bricks
 *Wear and tear details have never been this easy*
 
-Use vines on a block to turn it into its mossy variant. (sneak to normally place the vines)
-Use shears on a moss blocks to turn it into its base variant.
-Use a pickaxe on a block to turn it into its cracked variant.
+- Use vines on a block to turn it into its mossy variant. (sneak to normally place the vines)
+- Use shears on a moss blocks to turn it into its base variant.
+- Use a pickaxe on a block to turn it into its cracked variant.
+- ``[1.21.4+]`` Use a clay ball on a block to turn it back into its normal variant.
 
 --------
 

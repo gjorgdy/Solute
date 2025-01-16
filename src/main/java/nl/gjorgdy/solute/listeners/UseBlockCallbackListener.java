@@ -12,10 +12,8 @@ import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.minecraft.util.hit.BlockHitResult;
-import net.minecraft.util.hit.HitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import net.minecraft.world.event.GameEvent;
 import nl.gjorgdy.solute.modules.Bricks;
 import nl.gjorgdy.solute.modules.Ladder;
 import nl.gjorgdy.solute.utils.BlockUtils;
@@ -51,9 +49,18 @@ public class UseBlockCallbackListener implements UseBlockCallback {
         }
         // pickaxe on crackable block
         else if (player.getStackInHand(hand).getItem() instanceof PickaxeItem && BlockUtils.canCrack(blockState.getBlock())) {
-            if (Bricks.pickaxeStone((ServerWorld) world, hitResult.getBlockPos(), blockState)) {
+            if (Bricks.usePickaxeOnStone((ServerWorld) world, hitResult.getBlockPos(), blockState)) {
                 world.playSound(null, hitResult.getBlockPos(), SoundEvents.BLOCK_DEEPSLATE_BRICKS_BREAK, SoundCategory.BLOCKS);
                 player.getStackInHand(hand).damage(1, player, null);
+                player.swingHand(hand, true);
+                return ActionResult.SUCCESS;
+            }
+        }
+        // clay ball on cracked block
+        else if (player.getStackInHand(hand).getItem().equals(Items.CLAY_BALL) && BlockUtils.isCracked(blockState.getBlock())) {
+            if (Bricks.useClayOnStone((ServerWorld) world, hitResult.getBlockPos(), blockState)) {
+                world.playSound(null, hitResult.getBlockPos(), SoundEvents.BLOCK_DEEPSLATE_BRICKS_PLACE, SoundCategory.BLOCKS);
+                player.getStackInHand(hand).decrementUnlessCreative(1, player);
                 player.swingHand(hand, true);
                 return ActionResult.SUCCESS;
             }

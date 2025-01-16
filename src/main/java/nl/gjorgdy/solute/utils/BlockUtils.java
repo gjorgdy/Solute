@@ -92,6 +92,15 @@ public class BlockUtils {
                 || block == Blocks.INFESTED_STONE_BRICKS;
     }
 
+    public static boolean isCracked(Block block) {
+        return block == Blocks.CRACKED_STONE_BRICKS
+                || block == Blocks.CRACKED_DEEPSLATE_BRICKS
+                || block == Blocks.CRACKED_DEEPSLATE_TILES
+                || block == Blocks.CRACKED_NETHER_BRICKS
+                || block == Blocks.CRACKED_POLISHED_BLACKSTONE_BRICKS
+                || block == Blocks.INFESTED_CRACKED_STONE_BRICKS;
+    }
+
     public static boolean isConcretePowder(Block block) {
         return block instanceof ConcretePowderBlock;
     }
