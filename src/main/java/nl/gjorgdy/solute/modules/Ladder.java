@@ -12,10 +12,11 @@ import net.minecraft.util.math.Direction;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldAccess;
 import net.minecraft.world.WorldView;
+import net.minecraft.world.event.GameEvent;
 
 public class Ladder {
 
-    public static void lower(PlayerEntity player, ItemStack stack, World world, BlockPos pos) {
+    public static boolean lower(PlayerEntity player, ItemStack stack, World world, BlockPos pos) {
         BlockState ladderBlock = world.getBlockState(pos);
         for (int i = 0 ; i < 16 ; i++) {
             BlockPos _pos = pos.down(i);
@@ -24,14 +25,12 @@ public class Ladder {
                 if (world.canPlayerModifyAt(player, _pos)) {
                     world.setBlockState(_pos, ladderBlock);
                     world.playSound(null, _pos, SoundEvents.BLOCK_LADDER_PLACE, SoundCategory.BLOCKS);
-                    if (!player.isCreative())
-                        stack.setCount(stack.getCount() - 1);
+                    stack.decrementUnlessCreative(1, player);
+                    return true;
                 }
-                return;
-            } else if (!_block.isOf(Blocks.LADDER)) {
-                return;
-            }
+            } else if (!_block.isOf(Blocks.LADDER)) break;
         }
+        return false;
     }
 
     public static boolean isSupported(WorldView world, BlockPos pos) {

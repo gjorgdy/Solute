@@ -5,17 +5,17 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
-import net.minecraft.item.PickaxeItem;
+import net.minecraft.item.*;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.minecraft.util.hit.BlockHitResult;
+import net.minecraft.util.hit.HitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraft.world.event.GameEvent;
 import nl.gjorgdy.solute.modules.Bricks;
 import nl.gjorgdy.solute.modules.Ladder;
 import nl.gjorgdy.solute.utils.BlockUtils;
@@ -29,10 +29,13 @@ public class UseBlockCallbackListener implements UseBlockCallback {
     @Override
     public ActionResult interact(PlayerEntity player, World world, Hand hand, BlockHitResult hitResult) {
         BlockState blockState = world.getBlockState(hitResult.getBlockPos());
+        ItemStack itemStack = player.getStackInHand(hand);
         // use ladder
-        if (player.getMainHandStack().isOf(Items.LADDER) && blockState.isOf(Blocks.LADDER)) {
-            Ladder.lower(player, player.getMainHandStack(), world, hitResult.getBlockPos());
-            return ActionResult.SUCCESS;
+        if (itemStack.isOf(Items.LADDER) && blockState.isOf(Blocks.LADDER)) {
+            if (Ladder.lower(player, itemStack, world, hitResult.getBlockPos())) {
+                player.swingHand(hand, true);
+            }
+            return ActionResult.PASS;
         }
         // shears on mossy block
         else if (player.getStackInHand(hand).isOf(Items.SHEARS) && BlockUtils.isMossy(blockState.getBlock())) {
