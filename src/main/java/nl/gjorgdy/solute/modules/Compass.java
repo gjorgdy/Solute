@@ -43,7 +43,7 @@ public class Compass {
         text.append(Text.of("Slime Chunks"));
         scanned.forEach(vec -> text.append(BULLET).append(Text.of(vec2dir(vec))));
         player.sendMessage(text.setStyle(Style.EMPTY.withColor(5308240)), true);
-        player.getItemCooldownManager().set(Items.COMPASS, 80);
+        player.getItemCooldownManager().set(player.getMainHandStack(), 80);
     }
 
     private static List<Vec2f> scan(PlayerEntity player) {

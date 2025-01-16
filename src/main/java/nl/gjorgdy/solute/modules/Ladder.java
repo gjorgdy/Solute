@@ -11,6 +11,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldAccess;
+import net.minecraft.world.WorldView;
 
 public class Ladder {
 
@@ -33,28 +34,30 @@ public class Ladder {
         }
     }
 
-    public static boolean isSupported(WorldAccess world, BlockPos pos) {
+    public static boolean isSupported(WorldView world, BlockPos pos) {
         BlockState block = world.getBlockState(pos);
         BlockState upperBlock = world.getBlockState(pos.up());
         return block.equals(upperBlock);
     }
 
-    public static void updateLadder(WorldAccess world, BlockPos pos) {
-        BlockState block = world.getBlockState(pos);
-        int x = pos.getX();
-        int z = pos.getZ();
-        for (int y = pos.getY() - 1 ; y > -64 ; y--) {
-            BlockPos _pos = new BlockPos(x, y, z);
-            BlockState _block = world.getBlockState(_pos);
-            if (_block.equals(block) ) {
-                Direction _facing = _block.get(LadderBlock.FACING);
-                BlockPos _facingPos = _pos.offset(_facing.getOpposite());
-                if (!world.getBlockState(_facingPos).isSolidBlock(world, _facingPos)) {
-                    world.breakBlock(_pos, true);
-                    continue;
+    public static void updateLadder(WorldView world, BlockPos pos) {
+        if (world instanceof WorldAccess worldAccess) {
+            BlockState block = world.getBlockState(pos);
+            int x = pos.getX();
+            int z = pos.getZ();
+            for (int y = pos.getY() - 1; y > -64; y--) {
+                BlockPos _pos = new BlockPos(x, y, z);
+                BlockState _block = world.getBlockState(_pos);
+                if (_block.equals(block)) {
+                    Direction _facing = _block.get(LadderBlock.FACING);
+                    BlockPos _facingPos = _pos.offset(_facing.getOpposite());
+                    if (!world.getBlockState(_facingPos).isSolidBlock(world, _facingPos)) {
+                        worldAccess.breakBlock(_pos, true);
+                        continue;
+                    }
                 }
+                return;
             }
-            return;
         }
     }
 

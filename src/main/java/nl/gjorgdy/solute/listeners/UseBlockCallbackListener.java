@@ -74,10 +74,10 @@ public class UseBlockCallbackListener implements UseBlockCallback {
 
     private ActionResult cauldronWash(PlayerEntity player, Hand hand, World world, BlockPos blockPos, Function<ItemStack, ItemStack> itemStackConsumer) {
         ItemStack stackInHand = player.getStackInHand(hand);
-        if (player.getItemCooldownManager().isCoolingDown(stackInHand.getItem())) return ActionResult.FAIL;
+        if (player.getItemCooldownManager().isCoolingDown(stackInHand)) return ActionResult.FAIL;
         ItemStack resultStack = itemStackConsumer.apply(stackInHand);
         world.playSound(null, blockPos, SoundEvents.BLOCK_POINTED_DRIPSTONE_DRIP_WATER_INTO_CAULDRON, SoundCategory.BLOCKS);
-        player.getItemCooldownManager().set(stackInHand.getItem(), 8);
+        player.getItemCooldownManager().set(stackInHand, 8);
         stackInHand.decrementUnlessCreative(1, player);
         if (!player.giveItemStack(resultStack)) {
             Block.dropStack(world, blockPos, resultStack);

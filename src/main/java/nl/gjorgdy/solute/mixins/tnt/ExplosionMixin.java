@@ -1,34 +1,28 @@
 package nl.gjorgdy.solute.mixins.tnt;
 
-import com.mojang.datafixers.util.Pair;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.explosion.Explosion;
+import net.minecraft.world.explosion.ExplosionImpl;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Redirect;
-
-import java.util.Iterator;
-import java.util.List;
+import org.spongepowered.asm.mixin.injection.ModifyArgs;
+import org.spongepowered.asm.mixin.injection.invoke.arg.Args;
 import java.util.Random;
 
-@Mixin(Explosion.class)
+@Mixin(ExplosionImpl.class)
 public class ExplosionMixin {
 
     @Unique
     private static final Random random = new Random();
 
-    @Redirect(method = "affectWorld", at = @At(value = "INVOKE", target = "Ljava/util/List;iterator()Ljava/util/Iterator;"))
-    private Iterator<?> affectWorld(List<Pair<ItemStack, BlockPos>> list) {
-        return list.stream().map(this::getDrop).iterator();
+    @ModifyArgs(method = "destroyBlocks", at = @At(value = "INVOKE", target = "Lnet/minecraft/block/Block;dropStack(Lnet/minecraft/world/World;Lnet/minecraft/util/math/BlockPos;Lnet/minecraft/item/ItemStack;)V"))
+    private void affectWorld(Args args) {
+        args.set(2, getDrop(args.get(2)));
     }
 
     @Unique
-    private Pair<ItemStack, BlockPos> getDrop(Pair<ItemStack, BlockPos> pair) {
-
-        ItemStack drop = pair.getFirst();
+    private static ItemStack getDrop(ItemStack drop) {
 
         if (drop.isOf(Items.COBBLESTONE)) {
             int count = random.nextInt(7) - 2;
@@ -46,7 +40,7 @@ public class ExplosionMixin {
                 drop = new ItemStack(Items.RED_SAND, drop.getCount() * count);
             }
         }
-        return new Pair<>(drop, pair.getSecond());
+        return drop;
     }
 
 }

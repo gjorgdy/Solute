@@ -34,7 +34,7 @@ public class Farmland {
 
     private static int getRange(ItemStack toolStack) {
         int range = 0;
-        if (toolStack.getItem() instanceof ToolItem toolItem) {
+        if (toolStack.getItem() instanceof Item toolItem) {
             if (toolItem.equals(Items.WOODEN_HOE))
                 range = 1;
             else if (toolItem.equals(Items.STONE_HOE))

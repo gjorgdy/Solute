@@ -5,6 +5,7 @@ import net.minecraft.block.Block;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.world.World;
+import net.minecraft.world.block.WireOrientation;
 import nl.gjorgdy.solute.modules.Purpur;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -23,7 +24,7 @@ public abstract class BlockStateMixin {
     public abstract Block getBlock();
 
     @Inject(method = "neighborUpdate", at = @At("RETURN"))
-    public void onNeighborUpdate(World world, BlockPos pos, Block sourceBlock, BlockPos sourcePos, boolean notify, CallbackInfo ci) {
+    public void onNeighborUpdate(World world, BlockPos pos, Block sourceBlock, WireOrientation wireOrientation, boolean notify, CallbackInfo ci) {
         if (!Purpur.isElevatorBlock(sourceBlock) && Purpur.isElevatorBlock(getBlock())) {
             if (world.getEmittedRedstonePower(pos, Direction.NORTH) > 0) {
                 if (!isPowered) {

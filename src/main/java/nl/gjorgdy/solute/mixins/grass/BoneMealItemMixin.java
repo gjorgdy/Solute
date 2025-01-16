@@ -57,7 +57,7 @@ public class BoneMealItemMixin {
         });
     }
 
-    @Inject(method = "useOnBlock", at = @At(value = "INVOKE", target = "Lnet/minecraft/util/ActionResult;success(Z)Lnet/minecraft/util/ActionResult;", ordinal = 0))
+    @Inject(method = "useOnBlock", at = @At(value = "RETURN"))
     private void useOnGrass(ItemUsageContext context, CallbackInfoReturnable<ActionResult> cir) {
         World w = context.getWorld();
         BlockPos bp = context.getBlockPos();

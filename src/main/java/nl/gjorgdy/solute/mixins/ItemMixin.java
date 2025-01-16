@@ -8,7 +8,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.util.Hand;
-import net.minecraft.util.TypedActionResult;
+import net.minecraft.util.ActionResult;
 import net.minecraft.world.World;
 import nl.gjorgdy.solute.modules.Compass;
 import org.spongepowered.asm.mixin.Mixin;
@@ -26,8 +26,8 @@ public class ItemMixin {
         }
     }
 
-    @Inject(method = "use", at = @At(value = "INVOKE", target = "Lnet/minecraft/util/TypedActionResult;pass(Ljava/lang/Object;)Lnet/minecraft/util/TypedActionResult;"))
-    public void use(World world, PlayerEntity user, Hand hand, CallbackInfoReturnable<TypedActionResult<ItemStack>> cir) {
+    @Inject(method = "use", at = @At(value = "RETURN"))
+    public void use(World world, PlayerEntity user, Hand hand, CallbackInfoReturnable<ActionResult> cir) {
         ItemStack mainHand = user.getMainHandStack();
         ItemStack offHand = user.getOffHandStack();
         if (mainHand.isOf(Items.COMPASS) || offHand.isOf(Items.COMPASS)) {
