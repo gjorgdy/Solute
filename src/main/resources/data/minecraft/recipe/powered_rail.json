@@ -1,6 +1,7 @@
 {
   "type": "minecraft:crafting_shaped",
   "group": "powered_rail",
+  "category": "redstone",
   "pattern": [
     "GRG",
     "GSG",
