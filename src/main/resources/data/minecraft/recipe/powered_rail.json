@@ -7,15 +7,9 @@
     "GRG"
   ],
   "key": {
-    "G": {
-      "item": "minecraft:gold_ingot"
-    },
-    "S": {
-      "item": "minecraft:stick"
-    },
-    "R": {
-      "item": "minecraft:redstone"
-    }
+    "G": "minecraft:gold_ingot",
+    "S": "minecraft:stick",
+    "R": "minecraft:redstone"
   },
   "result": {
     "id": "minecraft:powered_rail",
