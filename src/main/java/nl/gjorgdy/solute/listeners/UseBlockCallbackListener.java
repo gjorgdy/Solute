@@ -28,6 +28,10 @@ public class UseBlockCallbackListener implements UseBlockCallback {
     public ActionResult interact(PlayerEntity player, World world, Hand hand, BlockHitResult hitResult) {
         BlockState blockState = world.getBlockState(hitResult.getBlockPos());
         ItemStack itemStack = player.getStackInHand(hand);
+
+        if (hand == Hand.MAIN_HAND && player.getOffHandStack().getItem() instanceof BlockItem) return ActionResult.PASS;
+        if (hand == Hand.OFF_HAND && player.getMainHandStack().getItem() instanceof BlockItem) return ActionResult.PASS;
+
         // use ladder
         if (itemStack.isOf(Items.LADDER) && blockState.isOf(Blocks.LADDER)) {
             if (Ladder.lower(player, itemStack, world, hitResult.getBlockPos())) {
