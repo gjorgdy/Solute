@@ -37,17 +37,17 @@ public class BlockUtils {
 
     public static BlockState changeWall(BlockState state, Block block) {
         if (state.getBlock() instanceof WallBlock && block instanceof WallBlock) {
-            WallShape northShape = state.get(WallBlock.NORTH_SHAPE);
-            WallShape eastShape = state.get(WallBlock.EAST_SHAPE);
-            WallShape southShape = state.get(WallBlock.SOUTH_SHAPE);
-            WallShape westShape = state.get(WallBlock.WEST_SHAPE);
+            WallShape northShape = state.get(WallBlock.NORTH_WALL_SHAPE);
+            WallShape eastShape = state.get(WallBlock.EAST_WALL_SHAPE);
+            WallShape southShape = state.get(WallBlock.SOUTH_WALL_SHAPE);
+            WallShape westShape = state.get(WallBlock.WEST_WALL_SHAPE);
             boolean waterlogged = state.get(WallBlock.WATERLOGGED);
             boolean up = state.get(WallBlock.UP);
             return block.getDefaultState()
-                    .with(WallBlock.NORTH_SHAPE, northShape)
-                    .with(WallBlock.EAST_SHAPE, eastShape)
-                    .with(WallBlock.SOUTH_SHAPE, southShape)
-                    .with(WallBlock.WEST_SHAPE, westShape)
+                    .with(WallBlock.NORTH_WALL_SHAPE, northShape)
+                    .with(WallBlock.EAST_WALL_SHAPE, eastShape)
+                    .with(WallBlock.SOUTH_WALL_SHAPE, southShape)
+                    .with(WallBlock.WEST_WALL_SHAPE, westShape)
                     .with(WallBlock.WATERLOGGED, waterlogged)
                     .with(WallBlock.UP, up);
         }

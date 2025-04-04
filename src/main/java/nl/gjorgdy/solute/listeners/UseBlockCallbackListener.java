@@ -18,6 +18,7 @@ import nl.gjorgdy.solute.modules.Bricks;
 import nl.gjorgdy.solute.modules.Ladder;
 import nl.gjorgdy.solute.utils.BlockUtils;
 import nl.gjorgdy.solute.utils.ItemUtils;
+import nl.gjorgdy.solute.utils.ToolUtils;
 
 import java.util.Random;
 import java.util.function.Function;
@@ -52,7 +53,7 @@ public class UseBlockCallbackListener implements UseBlockCallback {
             }
         }
         // pickaxe on crackable block
-        else if (player.getStackInHand(hand).getItem() instanceof PickaxeItem && BlockUtils.canCrack(blockState.getBlock())) {
+        else if (ToolUtils.isPickaxe(player.getStackInHand(hand)) && BlockUtils.canCrack(blockState.getBlock())) {
             if (Bricks.usePickaxeOnStone((ServerWorld) world, hitResult.getBlockPos(), blockState)) {
                 world.playSound(null, hitResult.getBlockPos(), SoundEvents.BLOCK_DEEPSLATE_BRICKS_BREAK, SoundCategory.BLOCKS);
                 player.getStackInHand(hand).damage(1, player, null);

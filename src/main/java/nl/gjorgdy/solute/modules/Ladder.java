@@ -12,7 +12,6 @@ import net.minecraft.util.math.Direction;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldAccess;
 import net.minecraft.world.WorldView;
-import net.minecraft.world.event.GameEvent;
 
 public class Ladder {
 
@@ -22,7 +21,7 @@ public class Ladder {
             BlockPos _pos = pos.down(i);
             BlockState _block = world.getBlockState(_pos);
             if (_block.isOf(Blocks.AIR) || _block.isOf(Blocks.WATER)) {
-                if (world.canPlayerModifyAt(player, _pos)) {
+                if (world. canEntityModifyAt(player, _pos)) {
                     world.setBlockState(_pos, ladderBlock);
                     world.playSound(null, _pos, SoundEvents.BLOCK_LADDER_PLACE, SoundCategory.BLOCKS);
                     stack.decrementUnlessCreative(1, player);

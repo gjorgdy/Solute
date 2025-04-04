@@ -9,6 +9,8 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
+import java.util.Optional;
+
 @Mixin(ThrownItemEntity.class)
 public class ThrownItemEntityMixin {
 
@@ -25,7 +27,9 @@ public class ThrownItemEntityMixin {
     @Inject(method = "readCustomDataFromNbt", at = @At("TAIL"))
     void readNbt(NbtCompound nbt, CallbackInfo ci) {
         if (thrownItemEntity instanceof EnderPearlEntityInterface) {
-            ((EnderPearlEntityInterface) thrownItemEntity).solute$setTimeToLive(nbt.getInt("vp$timeToLive"));
+            Optional<Integer> timeToLive = nbt.getInt("vp$timeToLive");
+            if (timeToLive.isEmpty()) return;
+            ((EnderPearlEntityInterface) thrownItemEntity).solute$setTimeToLive(timeToLive.get());
             nbt.remove("vp$timeToLive");
         }
     }
