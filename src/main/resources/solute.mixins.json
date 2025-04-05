@@ -12,8 +12,6 @@
     "bed.ServerWorldMixin",
     "cauldron.ConcretePowderBlockMixin",
     "creeper.EntityMixin",
-    "ender_pearl.EnderPearlEntityMixin",
-    "ender_pearl.ThrownItemEntityMixin",
     "farmland.HoeItemMixin",
     "grass.BoneMealItemMixin",
     "iron_bars.PlayerEntityMixin",
@@ -22,8 +20,7 @@
     "lava.LavaFluidMixin",
     "path.ShovelItemMixin",
     "purpur.BlockStateMixin",
-    "purpur.ServerPlayerEntityMixin",
-    "tnt.ExplosionMixin"
+    "purpur.ServerPlayerEntityMixin"
   ],
   "injectors": {
     "defaultRequire": 1
