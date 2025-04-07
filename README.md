@@ -54,10 +54,27 @@ Disables block damage caused by creepers and ghast fireballs
 
 --------
 
-### Ender Pearls
-*Ender Pearl stasis does not fit into the vanilla game*
+### Enchantment
+*Don't dig a strip, dig a tunnel*
 
-Gives ender pearls a limited lifetime of 10 minutes, after which they will disappear.   
+Crusher [*pickaxe*]
+- Crushes blocks into their 'crushed' version
+- Cobblestone -> Gravel
+- (Red) Sandstone  -> (Red) Sand
+- Concrete -> Concrete Powder
+- Fortune increase the amount of drops (with gravel and sand)
+- Can not be combined with Silk Touch
+
+Drilling [*pickaxe, shovel*]
+- Increases depth per level, up to level 3
+- Mine deeper when mining compatible blocks with similar hardness
+- Can be gotten in an enchanting table from level 30
+- Can not be combined with Excavation
+
+Excavation [*pickaxe, shovel*]
+- Mine a 3x3 area when mining compatible blocks with similar hardness
+- Can be gotten in an enchanting table from level 30
+- Can not be combined with Drilling
 
 --------
 
@@ -173,20 +190,7 @@ The Purpur Blocks itself can be a slab, and can be covered by a single bottom sl
 *Shulkers are a way to solve Minecraft's inventory issue...*
 
 Shulkers drop a higher amount of shells. 
-With a minimum of 2 and a max of 3, shulker boxes are way easier and quicker to get.
-
---------
-  
-### TNT
-*Don't want to waste your time digging for sand and gravel? Just blow shit up*   
-   
-If an explosion breaks certain blocks it has a chance on dropping their 'broken' form.   
-
-Cobblestone has a chance of turning into 0-3 gravel   
-
-Sandstone has a chance of turning into 0-4 sand   
-
-Red Sandstone has a chance of turning into 0-4 red sand   
+With a minimum of 2 and a max of 3, shulker boxes are way easier and quicker to get. 
 
      
 
