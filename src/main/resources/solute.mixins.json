@@ -4,6 +4,7 @@
   "package": "nl.gjorgdy.solute.mixins",
   "compatibilityLevel": "JAVA_21",
   "mixins": [
+    "enchantment.PlayerEntityMixin",
     "farmland.FarmLandBlockMixin"
   ],
   "client": [],

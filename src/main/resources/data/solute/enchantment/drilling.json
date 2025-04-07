@@ -1,7 +1,7 @@
 {
   "anvil_cost": 8,
   "description": {
-    "translate": "Excavation"
+    "translate": "Drilling"
   },
   "effects": {},
   "max_level": 1,
