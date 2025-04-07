@@ -3,6 +3,7 @@
   "description": {
     "translate": "Excavation"
   },
+  "exclusive_set": "solute:drilling",
   "effects": {},
   "max_level": 1,
   "min_cost": {

@@ -1,6 +1,7 @@
 package nl.gjorgdy.solute.modules;
 
 import net.minecraft.block.BlockState;
+import net.minecraft.block.Blocks;
 import net.minecraft.component.DataComponentTypes;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.hit.BlockHitResult;
@@ -14,6 +15,27 @@ import nl.gjorgdy.solute.utils.ToolUtils;
 import java.util.function.Consumer;
 
 public class Enchantment {
+
+    public static void drill(World world, PlayerEntity player, BlockPos pos, BlockState blockState, int depth) {
+        var toolHandler = new ToolUtils.ToolHandler(player.getMainHandStack());
+        if (!toolHandler.test(blockState)) return;
+        HitResult hitResult = player.raycast(player.getBlockInteractionRange(), 0, false);
+
+        if (hitResult.getType() == HitResult.Type.BLOCK) {
+            BlockHitResult bhr = (BlockHitResult) hitResult;
+            float hardnessRef = blockState.getBlock().getHardness();
+            var dir = bhr.getSide().getVector().multiply(-1);
+            for (int i = 0; i < depth; i++) {
+                var _pos = pos.add(dir.multiply(i));
+                BlockState _blockState = world.getBlockState(_pos);
+                float hardness = _blockState.getBlock().getHardness();
+                if (Math.abs(hardnessRef - hardness) < 0.5f && toolHandler.test(_blockState)) {
+                    world.breakBlock(_pos, !player.isCreative(), player);
+                } else break;
+            }
+        }
+
+    }
 
     public static void excavate(World world, PlayerEntity player, BlockPos pos, BlockState blockState) {
         var toolHandler = new ToolUtils.ToolHandler(player.getMainHandStack());

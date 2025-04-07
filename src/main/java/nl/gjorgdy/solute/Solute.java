@@ -31,8 +31,12 @@ public class Solute implements ModInitializer {
 		PlayerBlockBreakEvents.BEFORE.register(new PlayerBlockBreakListener());
 
 		ServerLifecycleEvents.SERVER_STARTED.register(server -> {
+			// Excavation
 			var excavation = EnchantmentUtils.getEnchantmentFromString(server, "solute:excavation");
             excavation.ifPresent(enchantmentReference -> ENCHANTMENTS.EXCAVATION = enchantmentReference);
+			// Drilling
+			var drilling = EnchantmentUtils.getEnchantmentFromString(server, "solute:drilling");
+			drilling.ifPresent(enchantmentReference -> ENCHANTMENTS.DRILLING = enchantmentReference);
 		});
 
 	}

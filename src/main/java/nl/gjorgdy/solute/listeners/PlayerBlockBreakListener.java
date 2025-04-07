@@ -14,7 +14,7 @@ import nl.gjorgdy.solute.modules.Enchantment;
 import nl.gjorgdy.solute.modules.Ladder;
 import org.jetbrains.annotations.Nullable;
 
-public class PlayerBlockBreakListener implements PlayerBlockBreakEvents.Before {
+public class PlayerBlockBreakListener implements PlayerBlockBreakEvents.Before, PlayerBlockBreakEvents.After {
 
     @Override
     public boolean beforeBlockBreak(World world, PlayerEntity player, BlockPos pos, BlockState state, @Nullable BlockEntity blockEntity) {
@@ -25,7 +25,22 @@ public class PlayerBlockBreakListener implements PlayerBlockBreakEvents.Before {
         ItemStack playerTool = player.getMainHandStack();
         int excavation = EnchantmentHelper.getLevel(Solute.ENCHANTMENTS.EXCAVATION, playerTool);
         if (excavation > 0) Enchantment.excavate(world, player, pos, state);
+        int drilling = EnchantmentHelper.getLevel(Solute.ENCHANTMENTS.DRILLING, playerTool);
+        if (drilling > 0) {
+            int depth = switch (drilling) {
+                case 1 -> 2;
+                case 2 -> 4;
+                case 3 -> 5;
+                default -> 0;
+            };
+            Enchantment.drill(world, player, pos, state, depth);
+        }
+
         return true;
     }
 
+    @Override
+    public void afterBlockBreak(World world, PlayerEntity playerEntity, BlockPos blockPos, BlockState blockState, @Nullable BlockEntity blockEntity) {
+
+    }
 }
