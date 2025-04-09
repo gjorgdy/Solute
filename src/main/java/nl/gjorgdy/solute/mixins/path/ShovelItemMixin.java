@@ -1,5 +1,6 @@
 package nl.gjorgdy.solute.mixins.path;
 
+import net.fabricmc.fabric.api.event.player.PlayerBlockBreakEvents;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
@@ -34,6 +35,7 @@ public class ShovelItemMixin {
                 Block.pushEntitiesUpBeforeBlockChange(blockState, dirtState, world, blockPos);
                 world.setBlockState(blockPos, dirtState, 11);
                 world.emitGameEvent(GameEvent.BLOCK_CHANGE, blockPos, GameEvent.Emitter.of(playerEntity, dirtState));
+                PlayerBlockBreakEvents.AFTER.invoker().afterBlockBreak(world, context.getPlayer(), context.getBlockPos(), blockState, null);
 
                 if (playerEntity != null) {
                     context.getStack().damage(1, playerEntity, context.getHand() == Hand.MAIN_HAND ? EquipmentSlot.MAINHAND : EquipmentSlot.OFFHAND);
