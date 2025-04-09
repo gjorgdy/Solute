@@ -1,13 +1,42 @@
 package nl.gjorgdy.solute.utils;
 
+import net.fabricmc.fabric.api.event.player.PlayerBlockBreakEvents;
 import net.minecraft.block.*;
+import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.enums.BlockHalf;
 import net.minecraft.block.enums.SlabType;
 import net.minecraft.block.enums.StairShape;
 import net.minecraft.block.enums.WallShape;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.ItemStack;
+import net.minecraft.server.world.ServerWorld;
+import net.minecraft.stat.Stats;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
+import net.minecraft.world.World;
+
+import java.util.List;
 
 public class BlockUtils {
+
+    public static List<ItemStack> breakBlockReturnDrop(World world, BlockPos pos, PlayerEntity player, ItemStack tool) {
+        BlockState _blockState = world.getBlockState(pos);
+        BlockEntity _blockEntity = world.getBlockEntity(pos);
+        var drops = Block.getDroppedStacks(
+                _blockState,
+                (ServerWorld) world,
+                pos,
+                _blockEntity,
+                player,
+                tool
+        );
+        world.breakBlock(pos, false, player);
+        tool.postMine(world, _blockState, pos, player);
+        player.incrementStat(Stats.MINED.getOrCreateStat(_blockState.getBlock()));
+        player.addExhaustion(0.005F);
+        PlayerBlockBreakEvents.AFTER.invoker().afterBlockBreak(world, player, pos, _blockState, _blockEntity);
+        return drops;
+    }
 
     public static BlockState changeStairs(BlockState state, Block block) {
         if (state.getBlock() instanceof StairsBlock && block instanceof StairsBlock) {

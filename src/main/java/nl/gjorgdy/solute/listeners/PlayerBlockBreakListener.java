@@ -23,8 +23,10 @@ public class PlayerBlockBreakListener implements PlayerBlockBreakEvents.Before, 
             Ladder.updateLadder(world, pos);
         // Enchantments
         ItemStack playerTool = player.getMainHandStack();
+        // Excavation
         int excavation = EnchantmentHelper.getLevel(Solute.ENCHANTMENTS.EXCAVATION, playerTool);
         if (excavation > 0) Enchantment.excavate(world, player, pos, state);
+        // Drilling
         int drilling = EnchantmentHelper.getLevel(Solute.ENCHANTMENTS.DRILLING, playerTool);
         if (drilling > 0) {
             int depth = switch (drilling) {
@@ -35,7 +37,6 @@ public class PlayerBlockBreakListener implements PlayerBlockBreakEvents.Before, 
             };
             Enchantment.drill(world, player, pos, state, depth);
         }
-
         return true;
     }
 

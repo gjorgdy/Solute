@@ -37,6 +37,9 @@ public class Solute implements ModInitializer {
 			// Drilling
 			var drilling = EnchantmentUtils.getEnchantmentFromString(server, "solute:drilling");
 			drilling.ifPresent(enchantmentReference -> ENCHANTMENTS.DRILLING = enchantmentReference);
+			// Crushing
+			var crushing = EnchantmentUtils.getEnchantmentFromString(server, "solute:crushing");
+			crushing.ifPresent(enchantmentReference -> ENCHANTMENTS.CRUSHING = enchantmentReference);
 		});
 
 	}
@@ -44,5 +47,6 @@ public class Solute implements ModInitializer {
 	public static class ENCHANTMENTS {
 		public static RegistryEntry.Reference<Enchantment> EXCAVATION;
 		public static RegistryEntry.Reference<Enchantment> DRILLING;
+		public static RegistryEntry.Reference<Enchantment> CRUSHING;
 	}
 }

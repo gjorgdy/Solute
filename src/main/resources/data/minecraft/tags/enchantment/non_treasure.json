@@ -1,6 +1,8 @@
 ﻿{
   "replace": false,
   "values": [
-    "solute:excavation"
+    "solute:excavation",
+    "solute:drilling",
+    "solute:crushing"
   ]
 }
