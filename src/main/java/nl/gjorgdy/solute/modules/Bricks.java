@@ -1,12 +1,25 @@
 package nl.gjorgdy.solute.modules;
 
+import net.fabricmc.fabric.api.event.player.PlayerBlockBreakEvents;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.BlockPos;
 import nl.gjorgdy.solute.utils.BlockUtils;
 
 public class Bricks {
+
+    private static boolean setBlock(ServerWorld world, BlockPos pos, BlockState state, PlayerEntity player, BlockState newState) {
+        if (newState != state) {
+            var oldState = world.getBlockState(pos);
+            var entity = world.getBlockEntity(pos);
+            world.setBlockState(pos, newState);
+            PlayerBlockBreakEvents.AFTER.invoker().afterBlockBreak(world, player, pos, oldState, entity);
+            return true;
+        }
+        return false;
+    }
 
     public static boolean usePickaxeOnStone(ServerWorld world, BlockPos pos, BlockState state) {
         BlockState newState = crackStone(state);
@@ -17,13 +30,9 @@ public class Bricks {
         return false;
     }
 
-    public static boolean useClayOnStone(ServerWorld world, BlockPos pos, BlockState state) {
+    public static boolean useClayOnStone(ServerWorld world, BlockPos pos, BlockState state, PlayerEntity player) {
         BlockState newState = repairStone(state);
-        if (newState != state) {
-            world.setBlockState(pos, newState);
-            return true;
-        }
-        return false;
+        return setBlock(world, pos, state, player, newState);
     }
 
     private static BlockState crackStone(BlockState blockState) {
@@ -70,13 +79,9 @@ public class Bricks {
         return blockState;
     }
 
-    public static boolean shearMoss(ServerWorld world, BlockPos pos, BlockState state) {
+    public static boolean shearMoss(ServerWorld world, BlockPos pos, BlockState state, PlayerEntity player) {
         BlockState newState = removeMoss(state);
-        if (newState != state) {
-            world.setBlockState(pos, newState);
-            return true;
-        }
-        return false;
+        return setBlock(world, pos, state, player, newState);
     }
 
     private static BlockState removeMoss(BlockState blockState) {
@@ -112,13 +117,9 @@ public class Bricks {
         return blockState;
     }
 
-    public static boolean placeVines(ServerWorld world, BlockPos pos, BlockState state) {
+    public static boolean placeVines(ServerWorld world, BlockPos pos, BlockState state, PlayerEntity player) {
         BlockState newState = addMoss(state);
-        if (newState != state) {
-            world.setBlockState(pos, newState);
-            return true;
-        }
-        return false;
+        return setBlock(world, pos, state, player, newState);
     }
 
     private static BlockState addMoss(BlockState blockState) {

@@ -42,7 +42,7 @@ public class UseBlockCallbackListener implements UseBlockCallback {
         }
         // shears on mossy block
         else if (player.getStackInHand(hand).isOf(Items.SHEARS) && BlockUtils.isMossy(blockState.getBlock())) {
-            if (Bricks.shearMoss((ServerWorld) world, hitResult.getBlockPos(), blockState)) {
+            if (Bricks.shearMoss((ServerWorld) world, hitResult.getBlockPos(), blockState, player)) {
                 if (new Random().nextInt(4) > 1) {
                     Block.dropStack(world, hitResult.getBlockPos().offset(hitResult.getSide()), Items.VINE.getDefaultStack());
                 }
@@ -63,7 +63,7 @@ public class UseBlockCallbackListener implements UseBlockCallback {
         }
         // clay ball on cracked block
         else if (player.getStackInHand(hand).getItem().equals(Items.CLAY_BALL) && BlockUtils.isCracked(blockState.getBlock())) {
-            if (Bricks.useClayOnStone((ServerWorld) world, hitResult.getBlockPos(), blockState)) {
+            if (Bricks.useClayOnStone((ServerWorld) world, hitResult.getBlockPos(), blockState, player)) {
                 world.playSound(null, hitResult.getBlockPos(), SoundEvents.BLOCK_DEEPSLATE_BRICKS_PLACE, SoundCategory.BLOCKS);
                 player.getStackInHand(hand).decrementUnlessCreative(1, player);
                 player.swingHand(hand, true);
@@ -72,7 +72,7 @@ public class UseBlockCallbackListener implements UseBlockCallback {
         }
         // vines on block
         else if (!player.isSneaking() && player.getStackInHand(hand).isOf(Items.VINE) && BlockUtils.canBeMossy(blockState.getBlock())) {
-            if (Bricks.placeVines((ServerWorld) world, hitResult.getBlockPos(), blockState)) {
+            if (Bricks.placeVines((ServerWorld) world, hitResult.getBlockPos(), blockState, player)) {
                 player.getStackInHand(hand).decrementUnlessCreative(1, player);
                 player.swingHand(hand, true);
                 return ActionResult.SUCCESS;
