@@ -95,10 +95,10 @@ public abstract class ServerWorldMixin {
     @Inject(method = "tick", at=@At("HEAD"))
     private void tickTime(CallbackInfo ci) {
         long dayTime = serverWorld.getTimeOfDay() % 24000L;
-        int day = (int) (serverWorld.getTime() / 24000L);
-        String dayString = "-- Day " + day + " --";
-        if (dayTime > 110L && dayTime < 310L) {
-            int i = (int) ((dayTime - 110) / 5);
+        if (dayTime > 23600) {
+            int day = (int) (serverWorld.getTime() / 24000L);
+            String dayString = "-- Day " + day + " --";
+            int i = (int) ((dayTime - 23600) / 5);
             if (dayTime % 5 == 0 && i <= dayString.length()) {
                 server.getPlayerManager().getPlayerList().forEach(player -> {
                     serverWorld.playSound(null, player.getBlockPos(), SoundEvents.BLOCK_NOTE_BLOCK_HAT.value(), SoundCategory.AMBIENT, i, i);
