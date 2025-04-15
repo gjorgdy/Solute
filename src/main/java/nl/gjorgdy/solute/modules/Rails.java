@@ -2,10 +2,12 @@ package nl.gjorgdy.solute.modules;
 
 import net.minecraft.block.*;
 import net.minecraft.block.enums.RailShape;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.state.property.Properties;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.Vec3i;
 import net.minecraft.world.World;
 import nl.gjorgdy.solute.utils.ItemUtils;
@@ -15,31 +17,43 @@ public class Rails {
     public static boolean place(ServerPlayerEntity player, ItemStack railItem, BlockState blockState, BlockPos pos) {
         World world = player.getWorld();
         RailShape shape = getRailShape(blockState);
-        var mvVec = player.getMovementDirection().getVector();
-        Vec3i vec = switch (shape) {
-            case RailShape.EAST_WEST -> new Vec3i(1, 0, 0);
-            case RailShape.NORTH_SOUTH -> new Vec3i(0, 0, 1);
-            default -> throw new IllegalStateException("Unexpected value: " + shape);
-        };
-        if (!isSameAxis(mvVec, vec)) return false;
-        BlockPos _pos = pos;
-        for (int i = 0; i < 16; i++) {
-            _pos = _pos.add(mvVec);
-            var _blockState = world.getBlockState(_pos);
-            if (_blockState.isOf(Blocks.AIR)) {
-                return ItemUtils.place(railItem, player, _pos);
-            } else if (world.getBlockState(_pos).getBlock() instanceof AbstractRailBlock) {
-                if (getRailShape(_blockState) != shape) break;
-            } else break;
-        }
-        return false;
+        var playerDirection = player.getMovementDirection();
+        boolean xAxisRails = isXAxis(shape);
+        boolean xAxisPlayer = (playerDirection == Direction.EAST) || (playerDirection == Direction.WEST);
+        return xAxisRails == xAxisPlayer &&
+            forward(world, player, playerDirection.getVector(), railItem, pos, xAxisRails, 8, false);
     }
 
-    private static boolean isSameAxis(Vec3i vecA, Vec3i vecB) {
-        boolean x = (vecA.getX() == 0) == (vecB.getX() == 0);
-        boolean y = (vecA.getY() == 0) == (vecB.getY() == 0);
-        boolean z = (vecA.getZ() == 0) == (vecB.getZ() == 0);
-        return x && y && z;
+    private static boolean forward(World world, PlayerEntity player, Vec3i vec, ItemStack railItem, BlockPos pos, boolean xAxisRails, int depth, boolean movedVertically) {
+        if (depth == 0) return false;
+        var _blockState = world.getBlockState(pos);
+        // if there is place
+        if (_blockState.isAir()) {
+            var _blockStateDown = world.getBlockState(pos.down());
+            if ((_blockStateDown.isAir() || _blockStateDown.getBlock() instanceof AbstractRailBlock) && !movedVertically) {
+                pos = pos.down();
+                movedVertically = true;
+                depth++;
+            } else {
+                return ItemUtils.place(railItem, player, pos);
+            }
+        }
+        // if block in way
+        if (!_blockState.isAir() && !(_blockState.getBlock() instanceof AbstractRailBlock) && !movedVertically) {
+            pos = pos.up();
+            movedVertically = true;
+            depth++;
+        }
+        // if rails and on same axis
+        if (_blockState.getBlock() instanceof AbstractRailBlock && isXAxis(getRailShape(_blockState)) == xAxisRails) {
+            pos = pos.add(vec);
+            movedVertically = false;
+        }
+        return forward(world, player, vec, railItem, pos, xAxisRails, depth - 1, movedVertically);
+    }
+
+    private static boolean isXAxis(RailShape shape) {
+        return (shape == RailShape.EAST_WEST) || (shape == RailShape.ASCENDING_EAST) || (shape == RailShape.ASCENDING_WEST);
     }
 
     private static RailShape getRailShape(BlockState state) {
