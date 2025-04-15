@@ -186,6 +186,14 @@ The Purpur Blocks itself can be a slab, and can be covered by a single bottom sl
 
 --------
 
+### Rails
+*Build your journey*
+
+When placing rails, you can keep placing to extend the rails into the direction you are looking.
+If a block is in the way, the rails will be placed on top of it to start going uphill.
+
+--------
+
 ### Shulker
 *Shulkers are a way to solve Minecraft's inventory issue...*
 

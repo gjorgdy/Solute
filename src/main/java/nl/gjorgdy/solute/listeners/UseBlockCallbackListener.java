@@ -1,11 +1,10 @@
 package nl.gjorgdy.solute.listeners;
 
 import net.fabricmc.fabric.api.event.player.UseBlockCallback;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
+import net.minecraft.block.*;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.*;
+import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
@@ -16,6 +15,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import nl.gjorgdy.solute.modules.Bricks;
 import nl.gjorgdy.solute.modules.Ladder;
+import nl.gjorgdy.solute.modules.Rails;
 import nl.gjorgdy.solute.utils.BlockUtils;
 import nl.gjorgdy.solute.utils.ItemUtils;
 import nl.gjorgdy.solute.utils.ToolUtils;
@@ -39,6 +39,14 @@ public class UseBlockCallbackListener implements UseBlockCallback {
                 player.swingHand(hand, true);
             }
             return ActionResult.PASS;
+        }
+        // rails on rails
+        else if (ItemUtils.isRails(itemStack) && blockState.getBlock() instanceof AbstractRailBlock) {
+//            System.out.println("Trying to extend rails");
+            if (Rails.place((ServerPlayerEntity) player, itemStack, blockState, hitResult.getBlockPos())) {
+                player.swingHand(hand, true);
+                return ActionResult.SUCCESS;
+            }
         }
         // shears on mossy block
         else if (player.getStackInHand(hand).isOf(Items.SHEARS) && BlockUtils.isMossy(blockState.getBlock())) {

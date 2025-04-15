@@ -1,9 +1,16 @@
 package nl.gjorgdy.solute.utils;
 
+import net.fabricmc.fabric.api.event.player.PlayerBlockBreakEvents;
 import net.minecraft.block.Block;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.*;
+import net.minecraft.registry.tag.ItemTags;
+import net.minecraft.util.ActionResult;
+import net.minecraft.util.Hand;
+import net.minecraft.util.hit.BlockHitResult;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Direction;
+import net.minecraft.util.math.Vec3d;
 import nl.gjorgdy.solute.interfaces.ConcretePowderBlockInterface;
 
 public class ItemUtils {
@@ -21,6 +28,22 @@ public class ItemUtils {
 
     public static boolean isConcretePowder(Item item) {
         return BlockUtils.isConcretePowder(Block.getBlockFromItem(item));
+    }
+
+    public static boolean isRails(ItemStack item) {
+        return item.isIn(ItemTags.RAILS);
+    }
+
+    public static boolean place(ItemStack item, PlayerEntity player, BlockPos pos) {
+        if (item.getItem() instanceof BlockItem blockItem) {
+            var result = blockItem.place(new ItemPlacementContext(
+                player,
+                Hand.MAIN_HAND,
+                item,
+                BlockHitResult.createMissed(Vec3d.ZERO, Direction.DOWN, pos)
+            ));
+            return result == ActionResult.SUCCESS;
+        } else return false;
     }
 
 }
