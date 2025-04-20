@@ -24,4 +24,11 @@ public class LadderBlockMixin {
             Ladder.updateLadder(world, pos);
     }
 
+    @Inject(method = "canPlaceAt", at = @At("RETURN"), cancellable = true)
+    public void canPlaceAt(BlockState state, WorldView world, BlockPos pos, CallbackInfoReturnable<Boolean> cir) {
+        if (!cir.getReturnValue()) {
+            cir.setReturnValue(Ladder.canBeSupported(state, world, pos));
+        }
+    }
+
 }

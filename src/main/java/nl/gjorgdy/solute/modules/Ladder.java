@@ -12,19 +12,17 @@ import net.minecraft.util.math.Direction;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldAccess;
 import net.minecraft.world.WorldView;
+import nl.gjorgdy.solute.utils.ItemUtils;
 
 public class Ladder {
 
     public static boolean lower(PlayerEntity player, ItemStack stack, World world, BlockPos pos) {
-        BlockState ladderBlock = world.getBlockState(pos);
         for (int i = 0 ; i < 16 ; i++) {
             BlockPos _pos = pos.down(i);
             BlockState _block = world.getBlockState(_pos);
             if (_block.isOf(Blocks.AIR) || _block.isOf(Blocks.WATER)) {
-                if (world. canEntityModifyAt(player, _pos)) {
-                    world.setBlockState(_pos, ladderBlock);
+                if (ItemUtils.place(stack, player, _pos)) {
                     world.playSound(null, _pos, SoundEvents.BLOCK_LADDER_PLACE, SoundCategory.BLOCKS);
-                    stack.decrementUnlessCreative(1, player);
                     return true;
                 }
             } else if (!_block.isOf(Blocks.LADDER)) break;
@@ -32,10 +30,14 @@ public class Ladder {
         return false;
     }
 
+    public static boolean canBeSupported(BlockState blockState, WorldView world, BlockPos pos) {
+        BlockState upperBlock = world.getBlockState(pos.up());
+        return blockState.equals(upperBlock);
+    }
+
     public static boolean isSupported(WorldView world, BlockPos pos) {
         BlockState block = world.getBlockState(pos);
-        BlockState upperBlock = world.getBlockState(pos.up());
-        return block.equals(upperBlock);
+        return canBeSupported(block, world, pos);
     }
 
     public static void updateLadder(WorldView world, BlockPos pos) {
