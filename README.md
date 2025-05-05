@@ -176,13 +176,15 @@ You can turn path blocks back into dirt blocks by clicking on them with a shovel
 ### Purpur
 *Control the power of chorus fruit using redstone*
 
-When powering a Purpur Block with redstone it will teleport all entities on top of it to the other nearest Purpur Block in a vertical direction.
+When powering a Purpur Block with redstone it will be able to be used as a short range elevator.
+
+When standing on a Purpur Block you can jump or sneak to travel up and down.
+
+Both the 'origin' and 'destination' Purpur Blocks need to be powered to work.
 
 The maximum distance between said Purpur Blocks is 16 blocks.
 
-When looking for the nearest block, it will prioritize going upwards.
-
-The Purpur Blocks itself can be a slab, and can be covered by a single bottom slab.
+The Purpur Blocks itself can be covered by a single bottom slab.
 
 --------
 

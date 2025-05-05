@@ -6,7 +6,8 @@
   "mixins": [
     "enchantment.BlockMixin",
     "enchantment.PlayerEntityMixin",
-    "farmland.FarmLandBlockMixin"
+    "farmland.FarmLandBlockMixin",
+    "purpur.EntityMixin"
   ],
   "client": [],
   "server": [
@@ -21,7 +22,6 @@
     "lava.FluidBlockMixin",
     "lava.LavaFluidMixin",
     "path.ShovelItemMixin",
-    "purpur.BlockStateMixin",
     "purpur.ServerPlayerEntityMixin"
   ],
   "injectors": {

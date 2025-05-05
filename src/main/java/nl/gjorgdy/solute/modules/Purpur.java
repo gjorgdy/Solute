@@ -5,6 +5,7 @@ import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
@@ -22,8 +23,6 @@ import java.util.concurrent.Executors;
 
 public class Purpur {
 
-    private static final ExecutorService executor = Executors.newFixedThreadPool(2);
-
     static final List<Block> elevatorBlocks = List.of(
             Blocks.PURPUR_BLOCK,
             Blocks.PURPUR_PILLAR,
@@ -32,54 +31,35 @@ public class Purpur {
     );
     static final int range = 16;
 
-    private final World world;
-    private final BlockPos pos;
-
-    public Purpur(World world, BlockPos pos) {
-        this.world = world;
-        this.pos = pos;
+    public static void up(Entity entity) {
+        activate(entity, true);
     }
 
-    public void activate() {
-        executor.submit(() -> {
-            List<Entity> entities = getEntities();
-            if (entities == null || entities.isEmpty()) return;
-            BlockPos destination = getDestinationPosition();
-            if (destination == null) return;
-            entities.forEach(entity -> safeTeleport(entity, destination));
-        });
+    public static void down(Entity entity) {
+        activate(entity, false);
     }
 
-    private List<Entity> getEntities() {
-        return world.getOtherEntities(null, new Box(
-            pos.toCenterPos().add(-0.45, 0, -0.45),
-            pos.toCenterPos().add(0.45, 1.5, 0.45)
-        ));
-    }
+    private static void activate(Entity entity, boolean up) {
+        if (entity instanceof ServerPlayerEntityInterface player) {
+            if (player.solute$isOnElevatorCooldown()) return;
+            else player.solute$setElevatorCooldown();
+        }
 
-    private BlockPos getDestinationPosition() {
-        for (int i = 1; i < range; i++) {
-            BlockPos posAbove = pos.up(i);
-            BlockPos posBelow = pos.down(i);
-            if (isElevatorBlock(posAbove)) {
-                return posAbove;
-            } else if (isElevatorBlock(posBelow)) {
-                return posBelow;
+        if (!isPoweredElevatorBlock(entity.getWorld(), entity.getBlockPos().down())) return;
+        for (int i = 2; i < range; i++) {
+            BlockPos posAbove = entity.getBlockPos().add(0, up ? i : -1 * i, 0);
+//            System.out.println(posAbove);
+            if (isPoweredElevatorBlock(entity.getWorld(), posAbove)) {
+                safeTeleport(entity, posAbove);
+                return;
             }
         }
-        return null;
     }
 
-    private boolean isElevatorBlock(BlockPos pos) {
-        return isElevatorBlock(world, pos);
-    }
-
-    public static boolean isElevatorBlock(World world, BlockPos pos) {
-        return elevatorBlocks.contains(world.getBlockState(pos).getBlock());
-    }
-
-    public static boolean isElevatorBlock(Block block) {
-        return elevatorBlocks.contains(block);
+    public static boolean isPoweredElevatorBlock(World world, BlockPos pos) {
+        return
+            elevatorBlocks.contains(world.getBlockState(pos).getBlock())
+                && BlockUtils.isRedstonePowered(world, pos);
     }
 
     /**
@@ -88,12 +68,7 @@ public class Purpur {
      * @param entity   instance of player to teleport
      * @param blockPos location to teleport player to
      */
-    private void safeTeleport(Entity entity, BlockPos blockPos) {
-        if (entity instanceof ServerPlayerEntityInterface player) {
-            if (player.solute$isOnElevatorCooldown()) return;
-            else player.solute$setElevatorCooldown();
-        }
-
+    private static void safeTeleport(Entity entity, BlockPos blockPos) {
         World world = entity.getWorld();
         Vec3d playerPos = entity.getPos();
 
@@ -118,11 +93,11 @@ public class Purpur {
         }
     }
 
-    private synchronized void teleportEntity(Entity entity, Vec3d destination) {
+    private static synchronized void teleportEntity(Entity entity, Vec3d destination) {
         TeleportTarget teleportTarget = new TeleportTarget(
-                (ServerWorld) world,
+                (ServerWorld) entity.getWorld(),
                 destination,
-                entity.getVelocity(),
+                entity.getVelocity().multiply(0.85),
                 entity.getYaw(),
                 entity.getPitch(),
                 Purpur::enderEffect
@@ -133,8 +108,8 @@ public class Purpur {
     }
 
     private static void enderEffect(Entity entity) {
-        if (entity instanceof PlayerEntity playerEntity) {
-            entity.getWorld().playSound(playerEntity, entity.getBlockPos(), SoundEvents.ENTITY_ENDERMAN_TELEPORT, SoundCategory.PLAYERS);
+        if (entity instanceof ServerPlayerEntity playerEntity) {
+            playerEntity.getServerWorld().playSound(null, entity.getBlockPos(), SoundEvents.ENTITY_ENDERMAN_TELEPORT, SoundCategory.PLAYERS);
         }
         entity.getWorld().sendEntityStatus(entity, (byte)46);
     }

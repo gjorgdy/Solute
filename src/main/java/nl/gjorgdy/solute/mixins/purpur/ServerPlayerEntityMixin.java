@@ -2,6 +2,7 @@ package nl.gjorgdy.solute.mixins.purpur;
 
 import net.minecraft.server.network.ServerPlayerEntity;
 import nl.gjorgdy.solute.interfaces.ServerPlayerEntityInterface;
+import nl.gjorgdy.solute.modules.Purpur;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
@@ -12,11 +13,14 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 public class ServerPlayerEntityMixin implements ServerPlayerEntityInterface {
 
     @Unique
+    private ServerPlayerEntity playerEntity = (ServerPlayerEntity) (Object) this;
+
+    @Unique
     private int elevatorCooldown = 0;
 
     @Override
     public void solute$setElevatorCooldown() {
-        elevatorCooldown = 5;
+        elevatorCooldown = 10;
     }
 
     @Override
@@ -27,6 +31,11 @@ public class ServerPlayerEntityMixin implements ServerPlayerEntityInterface {
     @Inject(method = "tick", at = @At("HEAD"))
     public void onTick(CallbackInfo ci) {
         if (elevatorCooldown > 0) elevatorCooldown--;
+    }
+
+    @Inject(method = "jump", at = @At("RETURN"))
+    public void onJump(CallbackInfo ci) {
+        Purpur.up(playerEntity);
     }
 
 }

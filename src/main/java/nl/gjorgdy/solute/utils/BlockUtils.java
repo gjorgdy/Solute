@@ -19,6 +19,10 @@ import java.util.List;
 
 public class BlockUtils {
 
+    public static boolean isRedstonePowered(World world, BlockPos pos) {
+        return world.getEmittedRedstonePower(pos, Direction.NORTH) > 0;
+    }
+
     public static List<ItemStack> breakBlockReturnDrop(World world, BlockPos pos, PlayerEntity player, ItemStack tool) {
         BlockState _blockState = world.getBlockState(pos);
         BlockEntity _blockEntity = world.getBlockEntity(pos);
