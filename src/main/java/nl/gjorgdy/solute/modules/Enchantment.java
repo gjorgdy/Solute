@@ -6,6 +6,7 @@ import net.minecraft.block.Blocks;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
+import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.hit.HitResult;
 import net.minecraft.util.math.BlockPos;
@@ -13,6 +14,8 @@ import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.Vec3i;
 import net.minecraft.util.math.random.Random;
 import net.minecraft.world.World;
+import nl.gjorgdy.solute.models.Drops;
+import nl.gjorgdy.solute.utils.BlockUtils;
 import nl.gjorgdy.solute.utils.ToolUtils;
 
 import java.util.ArrayList;
@@ -104,7 +107,7 @@ public class Enchantment {
         if (!toolHandler.test(blockState)) return;
         HitResult hitResult = player.raycast(player.getBlockInteractionRange(), 0, false);
 
-        List<ItemStack> drops = new ArrayList<>();
+        List<Drops> dropsInstances = new ArrayList<>();
 
         if (hitResult.getType() == HitResult.Type.BLOCK) {
             BlockHitResult bhr = (BlockHitResult) hitResult;
@@ -112,14 +115,18 @@ public class Enchantment {
             var dir = bhr.getSide().getVector().multiply(-1);
             for (int i = 0; i < depth; i++) {
                 var _pos = pos.add(dir.multiply(i));
-                var breakDrops = tryBreakBlock(world, _pos, player, tool, hardnessRef, toolHandler);
-                if (breakDrops.isEmpty()) break;
-                drops.addAll(breakDrops);
+                dropsInstances.add(tryBreakBlock(world, _pos, player, tool, hardnessRef, toolHandler));
             }
         }
 
-        if (!player.isCreative())
-            drops.forEach(drop -> Block.dropStack(world, pos, drop));
+        Drops drops = Drops.Merge(dropsInstances);
+
+        if (!player.isCreative()) {
+            // drop items
+            drops.items().forEach(drop -> Block.dropStack(world, pos, drop));
+            // drop experience
+            BlockUtils.dropExperience((ServerWorld) world, pos, drops.experience());
+        }
     }
 
     public static void excavate(World world, PlayerEntity player, BlockPos pos, BlockState blockState) {
@@ -127,29 +134,33 @@ public class Enchantment {
         var toolHandler = new ToolUtils.ToolHandler(tool);
         if (!toolHandler.test(blockState)) return;
 
-        List<ItemStack> drops = new ArrayList<>();
+        List<Drops> dropsInstances = new ArrayList<>();
 
         HitResult hitResult = player.raycast(player.getBlockInteractionRange(), 0, false);
         if (hitResult.getType() == HitResult.Type.BLOCK) {
             BlockHitResult bhr = (BlockHitResult) hitResult;
             float hardnessRef = blockState.getBlock().getHardness();
-            ForAxis(bhr.getSide(), pos, (_pos) -> {
-                drops.addAll(tryBreakBlock(world, _pos, player, tool, hardnessRef, toolHandler));
-            });
+            ForAxis(bhr.getSide(), pos, (_pos) -> dropsInstances.add(tryBreakBlock(world, _pos, player, tool, hardnessRef, toolHandler)));
         }
 
-        if (!player.isCreative())
-            drops.forEach(drop -> Block.dropStack(world, pos, drop));
+        Drops drops = Drops.Merge(dropsInstances);
+
+        if (!player.isCreative()) {
+            // drop items
+            drops.items().forEach(drop -> Block.dropStack(world, pos, drop));
+            // drop experience
+            BlockUtils.dropExperience((ServerWorld) world, pos, drops.experience());
+        }
     }
 
-    private static List<ItemStack> tryBreakBlock(World world, BlockPos pos, PlayerEntity player, ItemStack tool, float hardnessRef, ToolUtils.ToolHandler toolHandler) {
+    private static Drops tryBreakBlock(World world, BlockPos pos, PlayerEntity player, ItemStack tool, float hardnessRef, ToolUtils.ToolHandler toolHandler) {
 
         BlockState _blockState = world.getBlockState(pos);
         float hardness = _blockState.getBlock().getHardness();
         if (Math.abs(hardnessRef - hardness) < 0.5f && toolHandler.test(_blockState)) {
-            return breakBlockReturnDrop(world, pos, player, tool);
+            return breakBlockReturnDrop((ServerWorld) world, pos, player, tool);
         }
-        return List.of();
+        return Drops.EMPTY;
     }
 
     private static void ForAxis(Direction direction, BlockPos center, Consumer<BlockPos> consumer) {

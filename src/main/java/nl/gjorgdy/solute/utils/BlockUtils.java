@@ -7,39 +7,53 @@ import net.minecraft.block.enums.BlockHalf;
 import net.minecraft.block.enums.SlabType;
 import net.minecraft.block.enums.StairShape;
 import net.minecraft.block.enums.WallShape;
+import net.minecraft.entity.ExperienceOrbEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.stat.Stats;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
+import net.minecraft.util.math.Vec3d;
+import net.minecraft.world.GameRules;
 import net.minecraft.world.World;
-
-import java.util.List;
+import nl.gjorgdy.solute.models.Drops;
 
 public class BlockUtils {
+
+    public static void dropExperience(ServerWorld world, BlockPos pos, int size) {
+        if (world.getGameRules().getBoolean(GameRules.DO_TILE_DROPS)) {
+            ExperienceOrbEntity.spawn(world, Vec3d.ofCenter(pos), size);
+        }
+    }
 
     public static boolean isRedstonePowered(World world, BlockPos pos) {
         return world.getEmittedRedstonePower(pos, Direction.NORTH) > 0;
     }
 
-    public static List<ItemStack> breakBlockReturnDrop(World world, BlockPos pos, PlayerEntity player, ItemStack tool) {
+    public static Drops breakBlockReturnDrop(ServerWorld world, BlockPos pos, PlayerEntity player, ItemStack tool) {
         BlockState _blockState = world.getBlockState(pos);
+        Block _block = _blockState.getBlock();
         BlockEntity _blockEntity = world.getBlockEntity(pos);
-        var drops = Block.getDroppedStacks(
+        boolean hasEntity = _blockEntity != null;
+        // get drops
+        var items = Block.getDroppedStacks(
                 _blockState,
-                (ServerWorld) world,
+                world,
                 pos,
                 _blockEntity,
                 player,
                 tool
         );
-        world.breakBlock(pos, false, player);
+        int experience = EnchantmentUtils.getExperienceDrops(world, tool, _block);
+        // break the block and handle context
+        world.breakBlock(pos, !hasEntity, player);
         tool.postMine(world, _blockState, pos, player);
-        player.incrementStat(Stats.MINED.getOrCreateStat(_blockState.getBlock()));
+        player.incrementStat(Stats.MINED.getOrCreateStat(_block));
         player.addExhaustion(0.005F);
         PlayerBlockBreakEvents.AFTER.invoker().afterBlockBreak(world, player, pos, _blockState, _blockEntity);
-        return drops;
+        // return drops
+        return hasEntity ? Drops.EMPTY : new Drops(items, experience);
     }
 
     public static BlockState changeStairs(BlockState state, Block block) {

@@ -5,6 +5,7 @@
   "compatibilityLevel": "JAVA_21",
   "mixins": [
     "enchantment.BlockMixin",
+    "enchantment.ExperienceDroppingBlockMixin",
     "enchantment.PlayerEntityMixin",
     "farmland.FarmLandBlockMixin",
     "purpur.EntityMixin"
