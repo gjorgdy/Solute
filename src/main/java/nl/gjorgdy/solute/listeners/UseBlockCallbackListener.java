@@ -42,7 +42,6 @@ public class UseBlockCallbackListener implements UseBlockCallback {
         }
         // rails on rails
         else if (ItemUtils.isRails(itemStack) && blockState.getBlock() instanceof AbstractRailBlock) {
-//            System.out.println("Trying to extend rails");
             if (Rails.place((ServerPlayerEntity) player, itemStack, blockState, hitResult.getBlockPos())) {
                 player.swingHand(hand, true);
                 return ActionResult.SUCCESS;
@@ -55,7 +54,7 @@ public class UseBlockCallbackListener implements UseBlockCallback {
                     Block.dropStack(world, hitResult.getBlockPos().offset(hitResult.getSide()), Items.VINE.getDefaultStack());
                 }
                 world.playSound(null, hitResult.getBlockPos(), SoundEvents.ENTITY_BOGGED_SHEAR, SoundCategory.BLOCKS);
-                player.getStackInHand(hand).damage(1, player, null);
+                player.getStackInHand(hand).damage(1, player);
                 player.swingHand(hand, true);
                 return ActionResult.SUCCESS;
             }
@@ -64,7 +63,7 @@ public class UseBlockCallbackListener implements UseBlockCallback {
         else if (ToolUtils.isPickaxe(player.getStackInHand(hand)) && BlockUtils.canCrack(blockState.getBlock())) {
             if (Bricks.usePickaxeOnStone((ServerWorld) world, hitResult.getBlockPos(), blockState)) {
                 world.playSound(null, hitResult.getBlockPos(), SoundEvents.BLOCK_DEEPSLATE_BRICKS_BREAK, SoundCategory.BLOCKS);
-                player.getStackInHand(hand).damage(1, player, null);
+                player.getStackInHand(hand).damage(1, player);
                 player.swingHand(hand, true);
                 return ActionResult.SUCCESS;
             }

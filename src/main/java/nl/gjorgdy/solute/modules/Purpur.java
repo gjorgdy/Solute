@@ -4,13 +4,11 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Box;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.TeleportTarget;
 import net.minecraft.world.World;
@@ -18,8 +16,6 @@ import nl.gjorgdy.solute.interfaces.ServerPlayerEntityInterface;
 import nl.gjorgdy.solute.utils.BlockUtils;
 
 import java.util.List;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 public class Purpur {
 
@@ -48,7 +44,6 @@ public class Purpur {
         if (!isPoweredElevatorBlock(entity.getWorld(), entity.getBlockPos().down())) return;
         for (int i = 2; i < range; i++) {
             BlockPos posAbove = entity.getBlockPos().add(0, up ? i : -1 * i, 0);
-//            System.out.println(posAbove);
             if (isPoweredElevatorBlock(entity.getWorld(), posAbove)) {
                 safeTeleport(entity, posAbove);
                 return;
@@ -109,7 +104,7 @@ public class Purpur {
 
     private static void enderEffect(Entity entity) {
         if (entity instanceof ServerPlayerEntity playerEntity) {
-            playerEntity.getServerWorld().playSound(null, entity.getBlockPos(), SoundEvents.ENTITY_ENDERMAN_TELEPORT, SoundCategory.PLAYERS);
+            playerEntity.getWorld().playSound(null, entity.getBlockPos(), SoundEvents.ENTITY_ENDERMAN_TELEPORT, SoundCategory.PLAYERS);
         }
         entity.getWorld().sendEntityStatus(entity, (byte)46);
     }
