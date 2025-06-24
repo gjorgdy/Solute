@@ -1,8 +1,6 @@
 package nl.gjorgdy.solute.modules;
 
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
-import net.minecraft.block.LadderBlock;
+import net.minecraft.block.*;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.sound.SoundCategory;
@@ -24,6 +22,8 @@ public class Ladder {
                 if (ItemUtils.place(stack, player, _pos)) {
                     world.playSound(null, _pos, SoundEvents.BLOCK_LADDER_PLACE, SoundCategory.BLOCKS);
                     return true;
+                } else {
+                    break;
                 }
             } else if (!_block.isOf(Blocks.LADDER)) break;
         }
@@ -32,7 +32,7 @@ public class Ladder {
 
     public static boolean canBeSupported(BlockState blockState, WorldView world, BlockPos pos) {
         BlockState upperBlock = world.getBlockState(pos.up());
-        return blockState.equals(upperBlock);
+        return blockState.get(HorizontalFacingBlock.FACING) == upperBlock.get(HorizontalFacingBlock.FACING);
     }
 
     public static boolean isSupported(WorldView world, BlockPos pos) {

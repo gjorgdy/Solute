@@ -38,7 +38,7 @@ public class UseBlockCallbackListener implements UseBlockCallback {
             if (Ladder.lower(player, itemStack, world, hitResult.getBlockPos())) {
                 player.swingHand(hand, true);
             }
-            return ActionResult.PASS;
+            return ActionResult.SUCCESS;
         }
         // rails on rails
         else if (ItemUtils.isRails(itemStack) && blockState.getBlock() instanceof AbstractRailBlock) {
