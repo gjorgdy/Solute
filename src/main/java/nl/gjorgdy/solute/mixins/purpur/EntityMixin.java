@@ -16,7 +16,7 @@ public class EntityMixin {
 
     @Inject(method = "setSneaking", at = @At("HEAD"))
     public void setSneaking(boolean sneaking, CallbackInfo ci) {
-        Purpur.down(entity);
+        if (sneaking) Purpur.down(entity);
     }
 
 }

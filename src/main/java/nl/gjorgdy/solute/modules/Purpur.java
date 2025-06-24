@@ -43,22 +43,21 @@ public class Purpur {
 
         if (!isPoweredElevatorBlock(entity.getWorld(), entity.getBlockPos().down())) return;
         for (int i = 2; i < range; i++) {
-            BlockPos posAbove = entity.getBlockPos().add(0, up ? i : -1 * i, 0);
-            if (isPoweredElevatorBlock(entity.getWorld(), posAbove)) {
-                safeTeleport(entity, posAbove);
+            BlockPos _pos = entity.getBlockPos().add(0, up ? (i) : (-1 * i), 0);
+            if (isPoweredElevatorBlock(entity.getWorld(), _pos)) {
+                safeTeleport(entity, _pos);
                 return;
             }
         }
     }
 
     public static boolean isPoweredElevatorBlock(World world, BlockPos pos) {
-        return
-            elevatorBlocks.contains(world.getBlockState(pos).getBlock())
-                && BlockUtils.isRedstonePowered(world, pos);
+        return BlockUtils.isRedstonePowered(world, pos) &&
+            elevatorBlocks.contains(world.getBlockState(pos).getBlock());
     }
 
     /**
-     * Teleports the player to the BlockPos if location is valid
+     * Teleports the player to the BlockPos if the location is valid
      *
      * @param entity   instance of player to teleport
      * @param blockPos location to teleport player to
