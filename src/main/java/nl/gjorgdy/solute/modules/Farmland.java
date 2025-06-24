@@ -83,7 +83,7 @@ public class Farmland {
             BlockPosUtils.forNeighbours(centerPos, blockPos -> {
                 if (blockPos.equals(sourcePos)) return;
                 BlockState relativeState = itemUsageContext.getWorld().getBlockState(blockPos);
-                if (relativeState.getBlock() instanceof CropBlock) {
+                if (relativeState.getBlock() instanceof CropBlock crop && crop.isMature(relativeState)) {
                     farmArea(blockPos, sourcePos, depth - 1);
                 }
             });
