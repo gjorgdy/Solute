@@ -3,7 +3,6 @@ package nl.gjorgdy.solute.modules;
 import net.minecraft.block.*;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
-import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
@@ -19,8 +18,7 @@ public class Ladder {
             BlockPos _pos = pos.down(i);
             BlockState _block = world.getBlockState(_pos);
             if (_block.isOf(Blocks.AIR) || _block.isOf(Blocks.WATER)) {
-                if (ItemUtils.place(stack, player, _pos)) {
-                    world.playSound(null, _pos, SoundEvents.BLOCK_LADDER_PLACE, SoundCategory.BLOCKS);
+                if (ItemUtils.place(stack, player, _pos, SoundEvents.BLOCK_LADDER_PLACE)) {
                     return true;
                 } else {
                     break;
