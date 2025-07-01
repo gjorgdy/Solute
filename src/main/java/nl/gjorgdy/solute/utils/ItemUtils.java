@@ -5,6 +5,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.*;
 import net.minecraft.registry.tag.ItemTags;
 import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvent;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
@@ -49,7 +50,7 @@ public class ItemUtils {
             ));
             boolean placed = result == ActionResult.SUCCESS;
             if (placed && soundEvent != null) {
-                PlayerUtils.playDirectSound((ServerPlayerEntity) player, soundEvent);
+                PlayerUtils.playDirectSound((ServerPlayerEntity) player, soundEvent, SoundCategory.BLOCKS);
             }
             return placed;
         } else return false;
