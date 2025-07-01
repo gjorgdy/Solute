@@ -18,9 +18,9 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 public class Farmland {
 
-    public static void farmArea(ItemUsageContext context) {
+    public static boolean farmArea(ItemUsageContext context) {
         PlayerEntity player = context.getPlayer();
-        if (player == null) return;
+        if (player == null) return false;
         ItemStack toolStack = context.getStack();
         int range = getRange(toolStack);
         // farm the crops
@@ -30,6 +30,7 @@ public class Farmland {
         // deal damage to tool
         int damage = affectedBlocks / range;
         toolStack.damage(damage, player, context.getHand() == Hand.MAIN_HAND ? EquipmentSlot.MAINHAND : EquipmentSlot.OFFHAND);
+        return affectedBlocks > 0;
     }
 
     private static int getRange(ItemStack toolStack) {
