@@ -32,7 +32,8 @@ public class Ladder {
 
     public static boolean canBeSupported(BlockState blockState, WorldView world, BlockPos pos) {
         BlockState upperBlock = world.getBlockState(pos.up());
-        return blockState.get(HorizontalFacingBlock.FACING) == upperBlock.get(HorizontalFacingBlock.FACING);
+        if (!blockState.isOf(Blocks.LADDER) || !upperBlock.isOf(Blocks.LADDER)) return false;
+        return blockState.get(LadderBlock.FACING) == upperBlock.get(LadderBlock.FACING);
     }
 
     public static boolean isSupported(WorldView world, BlockPos pos) {
@@ -48,7 +49,7 @@ public class Ladder {
             for (int y = pos.getY() - 1; y > -64; y--) {
                 BlockPos _pos = new BlockPos(x, y, z);
                 BlockState _block = world.getBlockState(_pos);
-                if (_block.equals(block)) {
+                if (_block.isOf(Blocks.LADDER) && _block.equals(block)) {
                     Direction _facing = _block.get(LadderBlock.FACING);
                     BlockPos _facingPos = _pos.offset(_facing.getOpposite());
                     if (!world.getBlockState(_facingPos).isSolidBlock(world, _facingPos)) {
