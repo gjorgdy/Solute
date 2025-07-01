@@ -8,6 +8,8 @@ import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemUsageContext;
 import net.minecraft.item.ShovelItem;
+import net.minecraft.sound.SoundCategory;
+import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
@@ -34,10 +36,13 @@ public class ShovelItemMixin {
                 BlockState dirtState = Blocks.DIRT.getDefaultState();
                 Block.pushEntitiesUpBeforeBlockChange(blockState, dirtState, world, blockPos);
                 world.setBlockState(blockPos, dirtState, 11);
+                world.playSound(null, blockPos, SoundEvents.ITEM_SHOVEL_FLATTEN, SoundCategory.BLOCKS, 1.0F, 0.75F);
                 world.emitGameEvent(GameEvent.BLOCK_CHANGE, blockPos, GameEvent.Emitter.of(playerEntity, dirtState));
                 PlayerBlockBreakEvents.AFTER.invoker().afterBlockBreak(world, context.getPlayer(), context.getBlockPos(), blockState, null);
 
+
                 if (playerEntity != null) {
+                    playerEntity.swingHand(context.getHand(), true);
                     context.getStack().damage(1, playerEntity, context.getHand() == Hand.MAIN_HAND ? EquipmentSlot.MAINHAND : EquipmentSlot.OFFHAND);
                 }
             }
