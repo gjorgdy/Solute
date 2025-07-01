@@ -1,10 +1,11 @@
 package nl.gjorgdy.solute.utils;
 
-import net.fabricmc.fabric.api.event.player.PlayerBlockBreakEvents;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.*;
 import net.minecraft.registry.tag.ItemTags;
+import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.sound.SoundEvent;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.minecraft.util.hit.BlockHitResult;
@@ -35,6 +36,10 @@ public class ItemUtils {
     }
 
     public static boolean place(ItemStack item, PlayerEntity player, BlockPos pos) {
+        return place(item, player, pos, null);
+    }
+
+    public static boolean place(ItemStack item, PlayerEntity player, BlockPos pos, SoundEvent soundEvent) {
         if (item.getItem() instanceof BlockItem blockItem) {
             var result = blockItem.place(new ItemPlacementContext(
                 player,
@@ -42,7 +47,11 @@ public class ItemUtils {
                 item,
                 BlockHitResult.createMissed(Vec3d.ZERO, Direction.DOWN, pos)
             ));
-            return result == ActionResult.SUCCESS;
+            boolean placed = result == ActionResult.SUCCESS;
+            if (placed && soundEvent != null) {
+                PlayerUtils.playDirectSound((ServerPlayerEntity) player, soundEvent);
+            }
+            return placed;
         } else return false;
     }
 

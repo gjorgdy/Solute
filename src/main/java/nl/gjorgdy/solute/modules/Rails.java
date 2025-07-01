@@ -5,6 +5,7 @@ import net.minecraft.block.enums.RailShape;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.sound.BlockSoundGroup;
 import net.minecraft.state.property.Properties;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
@@ -35,7 +36,7 @@ public class Rails {
                 movedVertically = true;
                 depth++;
             } else {
-                return ItemUtils.place(railItem, player, pos);
+                return ItemUtils.place(railItem, player, pos, BlockSoundGroup.METAL.getPlaceSound());
             }
         }
         // if block in way
