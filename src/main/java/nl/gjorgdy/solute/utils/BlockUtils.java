@@ -47,7 +47,7 @@ public class BlockUtils {
         );
         int experience = EnchantmentUtils.getExperienceDrops(world, tool, _block);
         // break the block and handle context
-        world.breakBlock(pos, !hasEntity, player);
+        world.breakBlock(pos, hasEntity, player);
         tool.postMine(world, _blockState, pos, player);
         player.incrementStat(Stats.MINED.getOrCreateStat(_block));
         player.addExhaustion(0.005F);

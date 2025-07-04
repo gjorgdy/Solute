@@ -2,13 +2,10 @@ package nl.gjorgdy.solute;
 
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
-import net.fabricmc.fabric.api.event.player.AttackBlockCallback;
 import net.fabricmc.fabric.api.event.player.PlayerBlockBreakEvents;
 import net.fabricmc.fabric.api.event.player.UseBlockCallback;
-import net.minecraft.client.session.telemetry.WorldLoadedEvent;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.registry.entry.RegistryEntry;
-import net.minecraft.world.WorldEvents;
 import nl.gjorgdy.solute.listeners.PlayerBlockBreakListener;
 import nl.gjorgdy.solute.listeners.UseBlockCallbackListener;
 import nl.gjorgdy.solute.utils.EnchantmentUtils;

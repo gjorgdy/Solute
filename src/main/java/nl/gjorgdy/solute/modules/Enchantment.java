@@ -3,6 +3,7 @@ package nl.gjorgdy.solute.modules;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
+import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
@@ -119,14 +120,7 @@ public class Enchantment {
             }
         }
 
-        Drops drops = Drops.Merge(dropsInstances);
-
-        if (!player.isCreative()) {
-            // drop items
-            drops.items().forEach(drop -> Block.dropStack(world, pos, drop));
-            // drop experience
-            BlockUtils.dropExperience((ServerWorld) world, pos, drops.experience());
-        }
+        DropDrops(world, player, pos, dropsInstances);
     }
 
     public static void excavate(World world, PlayerEntity player, BlockPos pos, BlockState blockState) {
@@ -143,9 +137,16 @@ public class Enchantment {
             ForAxis(bhr.getSide(), pos, (_pos) -> dropsInstances.add(tryBreakBlock(world, _pos, player, tool, hardnessRef, toolHandler)));
         }
 
+        DropDrops(world, player, pos, dropsInstances);
+    }
+
+    private static void DropDrops(World world, PlayerEntity player, BlockPos pos, List<Drops> dropsInstances) {
         Drops drops = Drops.Merge(dropsInstances);
 
-        if (!player.isCreative()) {
+        BlockEntity _blockEntity = world.getBlockEntity(pos);
+        boolean hasEntity = _blockEntity != null;
+
+        if (!player.isCreative() && !hasEntity) {
             // drop items
             drops.items().forEach(drop -> Block.dropStack(world, pos, drop));
             // drop experience
