@@ -30,10 +30,6 @@ public class SoluteConfig extends Config {
     @Comment(value = "Disables block damage caused by creepers and ghast fireballs.")
     public ToggleModuleConfig creeperModule = new ToggleModuleConfig(true);
 
-    @Translation(prefix = "solute.enchantmentsModule")
-    @Comment(value = "Add custom enchantments for easier mining. This only controls the functionality, the enchants still exist in-game.")
-    public EnchantmentModuleConfig enchantmentsModule = new EnchantmentModuleConfig(true);
-
     @Translation(prefix = "solute.farmlandModule")
     @Comment(value = "Farm an area of crops in an instant using a hoe. Reduce the impact of fall damage on farmland.")
     public ToggleModuleConfig farmlandModule = new ToggleModuleConfig(true);
