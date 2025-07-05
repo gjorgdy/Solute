@@ -30,13 +30,6 @@ Use dirt on a cauldron to turn it into mud.
 
 --------
 
-### Compass
-*Forget going to swamps or guessing where slime chunks are*
-
-When right-clicking a compass it will check for slime chunks around you. This will be shown as cardinal direction (N, E, S, W) and C for center, if you're standing in a slime chunk.
-
---------
-
 ### Crafting Table
 *Improving on and adding recipes*
 
@@ -202,5 +195,10 @@ If a block is in the way, the rails will be placed on top of it to start going u
 Shulkers drop a higher amount of shells. 
 With a minimum of 2 and a max of 3, shulker boxes are way easier and quicker to get. 
 
-     
+--------
 
+### Slime
+*Forget going to swamps or guessing where slime chunks are*
+
+Right-click with a slime ball to figure out if the chunk you're in is a slime chunk.
+If it shows slime particles, you are currently in a slime chunk.
