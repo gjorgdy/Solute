@@ -25,10 +25,10 @@ public class PlayerBlockBreakListener implements PlayerBlockBreakEvents.Before, 
         ItemStack playerTool = player.getMainHandStack();
         // Excavation
         int excavation = EnchantmentHelper.getLevel(Solute.ENCHANTMENTS.EXCAVATION, playerTool);
-        if (excavation > 0) Enchantment.excavate(world, player, pos, state);
+        if (excavation > 0 && !player.isSneaking()) Enchantment.excavate(world, player, pos, state);
         // Drilling
         int drilling = EnchantmentHelper.getLevel(Solute.ENCHANTMENTS.DRILLING, playerTool);
-        if (drilling > 0) {
+        if (drilling > 0 && !player.isSneaking()) {
             int depth = switch (drilling) {
                 case 1 -> 2;
                 case 2 -> 4;
