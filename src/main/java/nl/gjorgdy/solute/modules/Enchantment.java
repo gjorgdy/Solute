@@ -12,6 +12,7 @@ import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.hit.HitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.math.Vec3i;
 import net.minecraft.util.math.random.Random;
 import net.minecraft.world.World;
@@ -113,10 +114,13 @@ public class Enchantment {
         if (hitResult.getType() == HitResult.Type.BLOCK) {
             BlockHitResult bhr = (BlockHitResult) hitResult;
             float hardnessRef = blockState.getBlock().getHardness();
-            var dir = bhr.getSide().getVector().multiply(-1);
-            for (int i = 0; i < depth; i++) {
-                var _pos = pos.add(dir.multiply(i));
-                dropsInstances.add(tryBreakBlock(world, _pos, player, tool, hardnessRef, toolHandler));
+            var targetVec = bhr.getSide().getVector();
+            if (isLookingAt(player.getRotationVector(), targetVec, 0.55f, 0.55f)) {
+                var dir = targetVec.multiply(-1);
+                for (int i = 0; i < depth; i++) {
+                    var _pos = pos.add(dir.multiply(i));
+                    dropsInstances.add(tryBreakBlock(world, _pos, player, tool, hardnessRef, toolHandler));
+                }
             }
         }
 
@@ -134,7 +138,7 @@ public class Enchantment {
         if (hitResult.getType() == HitResult.Type.BLOCK) {
             BlockHitResult bhr = (BlockHitResult) hitResult;
             float hardnessRef = blockState.getBlock().getHardness();
-            ForAxis(bhr.getSide(), pos, (_pos) -> dropsInstances.add(tryBreakBlock(world, _pos, player, tool, hardnessRef, toolHandler)));
+            ForAxis(player, bhr.getSide(), pos, (_pos) -> dropsInstances.add(tryBreakBlock(world, _pos, player, tool, hardnessRef, toolHandler)));
         }
 
         DropDrops(world, player, pos, dropsInstances);
@@ -164,9 +168,20 @@ public class Enchantment {
         return Drops.EMPTY;
     }
 
-    private static void ForAxis(Direction direction, BlockPos center, Consumer<BlockPos> consumer) {
+    private static void ForAxis(PlayerEntity player, Direction direction, BlockPos center, Consumer<BlockPos> consumer) {
         Vec3i vec = direction.getVector();
-        ForAxis(vec.getX() == 0, vec.getY() == 0, vec.getZ() == 0, center, consumer);
+        if (isLookingAt(player.getRotationVector(), vec, 0.6f, 0.35f)) {
+            // execute for each axis
+            ForAxis(vec.getX() == 0, vec.getY() == 0, vec.getZ() == 0, center, consumer);
+        }
+    }
+
+    private static boolean isLookingAt(Vec3d playerRotationVector, Vec3i targetVector, float verticalTolerance, float horizontalTolerance) {
+        Vec3d playerVec = playerRotationVector.multiply(-1);
+        // if the player looks too far away, return false
+        return (Math.abs(targetVector.getX() - playerVec.getX()) <= horizontalTolerance)
+                && (Math.abs(targetVector.getY() - playerVec.getY()) <= verticalTolerance)
+                && (Math.abs(targetVector.getZ() - playerVec.getZ()) <= horizontalTolerance);
     }
 
     private static void ForAxis(boolean xAxis, boolean yAxis, boolean zAxis, BlockPos center, Consumer<BlockPos> consumer) {
