@@ -6,11 +6,13 @@ import net.minecraft.block.Blocks;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.BlockPos;
+import nl.gjorgdy.solute.Solute;
 import nl.gjorgdy.solute.utils.BlockUtils;
 
 public class Bricks {
 
     private static boolean setBlock(ServerWorld world, BlockPos pos, BlockState state, PlayerEntity player, BlockState newState) {
+        if (!Solute.CONFIG.bricksModule.enabled) return false;
         if (newState != state) {
             var oldState = world.getBlockState(pos);
             var entity = world.getBlockEntity(pos);
@@ -22,6 +24,7 @@ public class Bricks {
     }
 
     public static boolean usePickaxeOnStone(ServerWorld world, BlockPos pos, BlockState state) {
+        if (!Solute.CONFIG.bricksModule.enabled) return false;
         BlockState newState = crackStone(state);
         if (newState != state) {
             world.setBlockState(pos, newState);
@@ -31,6 +34,7 @@ public class Bricks {
     }
 
     public static boolean useClayOnStone(ServerWorld world, BlockPos pos, BlockState state, PlayerEntity player) {
+        if (!Solute.CONFIG.bricksModule.enabled) return false;
         BlockState newState = repairStone(state);
         return setBlock(world, pos, state, player, newState);
     }
@@ -80,6 +84,7 @@ public class Bricks {
     }
 
     public static boolean shearMoss(ServerWorld world, BlockPos pos, BlockState state, PlayerEntity player) {
+        if (!Solute.CONFIG.bricksModule.enabled) return false;
         BlockState newState = removeMoss(state);
         return setBlock(world, pos, state, player, newState);
     }
@@ -118,6 +123,7 @@ public class Bricks {
     }
 
     public static boolean placeVines(ServerWorld world, BlockPos pos, BlockState state, PlayerEntity player) {
+        if (!Solute.CONFIG.bricksModule.enabled) return false;
         BlockState newState = addMoss(state);
         return setBlock(world, pos, state, player, newState);
     }

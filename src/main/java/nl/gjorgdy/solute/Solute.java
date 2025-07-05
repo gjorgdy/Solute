@@ -30,17 +30,17 @@ public class Solute implements ModInitializer {
 		PlayerBlockBreakEvents.BEFORE.register(new PlayerBlockBreakListener());
 
 		ServerLifecycleEvents.SERVER_STARTED.register(server -> {
-			if (CONFIG.enchantmentsModule.excavation) {
+			if (CONFIG.enchantmentsModule.enabled && CONFIG.enchantmentsModule.excavation) {
 				// Excavation
 				var excavation = EnchantmentUtils.getEnchantmentFromString(server, "solute:excavation");
 				excavation.ifPresent(enchantmentReference -> ENCHANTMENTS.EXCAVATION = enchantmentReference);
 			}
-			if (CONFIG.enchantmentsModule.drilling) {
+			if (CONFIG.enchantmentsModule.enabled && CONFIG.enchantmentsModule.drilling) {
 				// Drilling
 				var drilling = EnchantmentUtils.getEnchantmentFromString(server, "solute:drilling");
 				drilling.ifPresent(enchantmentReference -> ENCHANTMENTS.DRILLING = enchantmentReference);
 			}
-			if (CONFIG.enchantmentsModule.crushing) {
+			if (CONFIG.enchantmentsModule.enabled && CONFIG.enchantmentsModule.crushing) {
 				// Crushing
 				var crushing = EnchantmentUtils.getEnchantmentFromString(server, "solute:crushing");
 				crushing.ifPresent(enchantmentReference -> ENCHANTMENTS.CRUSHING = enchantmentReference);

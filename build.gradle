@@ -59,6 +59,12 @@ tasks.withType(JavaCompile).configureEach {
 	}
 }
 
+fabricApi {
+	configureDataGeneration() {
+		client = true
+	}
+}
+
 java {
 	def javaVersion = JavaVersion.toVersion(targetJavaVersion)
 	if (JavaVersion.current() < javaVersion) {

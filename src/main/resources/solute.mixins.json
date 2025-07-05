@@ -10,6 +10,10 @@
     "bed.ServerWorldMixin",
     "cauldron.ConcretePowderBlockMixin",
     "creeper.EntityMixin",
+    "enchantment.BlockMixin",
+    "enchantment.ExperienceDroppingBlockMixin",
+    "enchantment.PlayerEntityMixin",
+    "farmland.FarmLandBlockMixin",
     "farmland.HoeItemMixin",
     "grass.BoneMealItemMixin",
     "iron_bars.PlayerEntityMixin",
@@ -17,12 +21,8 @@
     "lava.FluidBlockMixin",
     "lava.LavaFluidMixin",
     "path.ShovelItemMixin",
-    "purpur.ServerPlayerEntityMixin",
-    "enchantment.BlockMixin",
-    "enchantment.ExperienceDroppingBlockMixin",
-    "enchantment.PlayerEntityMixin",
-    "farmland.FarmLandBlockMixin",
-    "purpur.EntityMixin"
+    "purpur.EntityMixin",
+    "purpur.ServerPlayerEntityMixin"
   ],
   "injectors": {
     "defaultRequire": 1

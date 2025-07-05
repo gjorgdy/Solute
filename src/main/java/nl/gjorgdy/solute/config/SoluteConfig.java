@@ -26,12 +26,8 @@ public class SoluteConfig extends Config {
     @Comment(value = "Washing blocks in cauldrons. example ; concrete powder to concrete")
     public ToggleModuleConfig cauldronModule = new ToggleModuleConfig(true);
 
-    @Translation(prefix = "solute.craftingTableModule")
-    @Comment(value = "Add a selection of new crafting recipes.")
-    public CraftingTableModuleConfig craftingTableModule = new CraftingTableModuleConfig(true);
-
     @Translation(prefix = "solute.enchantmentsModule")
-    @Comment(value = "Add custom enchantments for easier mining.")
+    @Comment(value = "Add custom enchantments for easier mining. This only controls the functionality, the enchants still exist in-game.")
     public EnchantmentModuleConfig enchantmentsModule = new EnchantmentModuleConfig(true);
 
 

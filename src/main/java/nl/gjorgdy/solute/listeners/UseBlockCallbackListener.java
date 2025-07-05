@@ -13,6 +13,7 @@ import net.minecraft.util.Hand;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import nl.gjorgdy.solute.Solute;
 import nl.gjorgdy.solute.modules.Bricks;
 import nl.gjorgdy.solute.modules.Ladder;
 import nl.gjorgdy.solute.modules.Rails;
@@ -98,6 +99,7 @@ public class UseBlockCallbackListener implements UseBlockCallback {
     }
 
     private ActionResult cauldronWash(PlayerEntity player, Hand hand, World world, BlockPos blockPos, Function<ItemStack, ItemStack> itemStackConsumer) {
+        if (!Solute.CONFIG.cauldronModule.enabled) return ActionResult.PASS;
         ItemStack stackInHand = player.getStackInHand(hand);
         if (player.getItemCooldownManager().isCoolingDown(stackInHand)) return ActionResult.FAIL;
         ItemStack resultStack = itemStackConsumer.apply(stackInHand);
