@@ -19,23 +19,26 @@ public class PlayerBlockBreakListener implements PlayerBlockBreakEvents.Before, 
     @Override
     public boolean beforeBlockBreak(World world, PlayerEntity player, BlockPos pos, BlockState state, @Nullable BlockEntity blockEntity) {
         // Ladders
-        if (world.getBlockState(pos).isOf(Blocks.LADDER))
+        if (Solute.CONFIG.ladderModule.enabled && world.getBlockState(pos).isOf(Blocks.LADDER)) {
             Ladder.updateLadder(world, pos);
-        // Enchantments
-        ItemStack playerTool = player.getMainHandStack();
-        // Excavation
-        int excavation = EnchantmentHelper.getLevel(Solute.ENCHANTMENTS.EXCAVATION, playerTool);
-        if (excavation > 0 && !player.isSneaking()) Enchantment.excavate(world, player, pos, state);
-        // Drilling
-        int drilling = EnchantmentHelper.getLevel(Solute.ENCHANTMENTS.DRILLING, playerTool);
-        if (drilling > 0 && !player.isSneaking()) {
-            int depth = switch (drilling) {
-                case 1 -> 2;
-                case 2 -> 4;
-                case 3 -> 5;
-                default -> 0;
-            };
-            Enchantment.drill(world, player, pos, state, depth);
+        }
+        if (Solute.CONFIG.enchantmentsModule.enabled) {
+            // Enchantments
+            ItemStack playerTool = player.getMainHandStack();
+            // Excavation
+            int excavation = EnchantmentHelper.getLevel(Solute.ENCHANTMENTS.EXCAVATION, playerTool);
+            if (excavation > 0 && !player.isSneaking()) Enchantment.excavate(world, player, pos, state);
+            // Drilling
+            int drilling = EnchantmentHelper.getLevel(Solute.ENCHANTMENTS.DRILLING, playerTool);
+            if (drilling > 0 && !player.isSneaking()) {
+                int depth = switch (drilling) {
+                    case 1 -> 2;
+                    case 2 -> 4;
+                    case 3 -> 5;
+                    default -> 0;
+                };
+                Enchantment.drill(world, player, pos, state, depth);
+            }
         }
         return true;
     }

@@ -11,11 +11,15 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.Vec3i;
 import net.minecraft.world.World;
+import nl.gjorgdy.solute.Solute;
 import nl.gjorgdy.solute.utils.ItemUtils;
 
 public class Rails {
 
     public static boolean place(ServerPlayerEntity player, ItemStack railItem, BlockState blockState, BlockPos pos) {
+        // early return if module disabled
+        if (!Solute.CONFIG.railsModule.enabled) return false;
+        // early return if module disabled
         World world = player.getWorld();
         RailShape shape = getRailShape(blockState);
         var playerDirection = player.getMovementDirection();
@@ -62,8 +66,5 @@ public class Rails {
             .getOrEmpty(Properties.STRAIGHT_RAIL_SHAPE)
             .orElseGet(() -> state.get(Properties.RAIL_SHAPE));
     }
-
-    // E-W X
-    // S-N Z
 
 }

@@ -40,8 +40,9 @@ public abstract class ServerWorldMixin {
 
     @Redirect(method = "tick(Ljava/util/function/BooleanSupplier;)V", at = @At(value = "INVOKE", target = "Lnet/minecraft/server/world/SleepManager;canSkipNight(I)Z"))
     private boolean injected(SleepManager instance, int percentage) {
+        // early return if module disabled
         if (!Solute.CONFIG.bedModule.enabled) return instance.canSkipNight(percentage);
-
+        // early return if module disabled
         boolean doDayLightCycle = serverWorld.getGameRules().getBoolean(GameRules.DO_DAYLIGHT_CYCLE);
         boolean doWeatherCycle = serverWorld.getGameRules().getBoolean(GameRules.DO_WEATHER_CYCLE);
 

@@ -99,7 +99,9 @@ public class UseBlockCallbackListener implements UseBlockCallback {
     }
 
     private ActionResult cauldronWash(PlayerEntity player, Hand hand, World world, BlockPos blockPos, Function<ItemStack, ItemStack> itemStackConsumer) {
+        // early return if module disabled
         if (!Solute.CONFIG.cauldronModule.enabled) return ActionResult.PASS;
+        // early return if module disabled
         ItemStack stackInHand = player.getStackInHand(hand);
         if (player.getItemCooldownManager().isCoolingDown(stackInHand)) return ActionResult.FAIL;
         ItemStack resultStack = itemStackConsumer.apply(stackInHand);

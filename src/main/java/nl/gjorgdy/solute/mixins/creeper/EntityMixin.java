@@ -9,6 +9,7 @@ import net.minecraft.entity.projectile.FireballEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.explosion.Explosion;
+import nl.gjorgdy.solute.Solute;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
@@ -20,6 +21,9 @@ public class EntityMixin {
 
     @Inject(method = "canExplosionDestroyBlock", at = @At("RETURN"), cancellable = true)
     public void canExplosionDestroyBlock(Explosion explosion, BlockView world, BlockPos pos, BlockState state, float explosionPower, CallbackInfoReturnable<Boolean> cir) {
+        // early return if module disabled
+        if (!Solute.CONFIG.creeperModule.enabled) return;
+        // early return if module disabled
         if (getSelf() instanceof CreeperEntity
                 || getSelf() instanceof FireballEntity fireball && fireball.getOwner() instanceof GhastEntity
                 || getSelf() instanceof EndCrystalEntity) {

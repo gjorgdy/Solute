@@ -6,6 +6,7 @@ import net.minecraft.block.FarmlandBlock;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import nl.gjorgdy.solute.Solute;
 import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -23,6 +24,9 @@ public abstract class FarmLandBlockMixin {
         at = @At(value = "INVOKE", target = "Lnet/minecraft/block/FarmlandBlock;setToDirt(Lnet/minecraft/entity/Entity;Lnet/minecraft/block/BlockState;Lnet/minecraft/world/World;Lnet/minecraft/util/math/BlockPos;)V"
     ))
     public void onLandedUpon(Entity entity, BlockState state, World world, BlockPos pos, @Local(argsOnly = true) double fallDistance) {
+        // early return if module disabled
+        if (!Solute.CONFIG.farmlandModule.enabled) return;
+        // early return if module disabled
         if (fallDistance > 8.0f) setToDirt(entity, state, world, pos);
     }
 

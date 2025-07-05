@@ -1,6 +1,7 @@
 package nl.gjorgdy.solute.mixins.iron_bars;
 
 import net.minecraft.entity.player.PlayerEntity;
+import nl.gjorgdy.solute.Solute;
 import nl.gjorgdy.solute.modules.IronBars;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
@@ -16,6 +17,9 @@ public abstract class PlayerEntityMixin {
 
     @Inject(at = @At("TAIL"), method = "tick")
     private void tick(CallbackInfo ci) {
+        // early return if module disabled
+        if (!Solute.CONFIG.ironBarsModule.enabled) return;
+        // early return if module disabled
         IronBars.tick(player);
     }
 

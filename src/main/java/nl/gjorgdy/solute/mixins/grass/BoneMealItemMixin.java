@@ -7,6 +7,7 @@ import net.minecraft.item.ItemUsageContext;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import nl.gjorgdy.solute.Solute;
 import nl.gjorgdy.solute.utils.BlockPosUtils;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
@@ -15,7 +16,6 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import java.util.concurrent.atomic.AtomicInteger;
-import java.util.function.Consumer;
 
 @Mixin(BoneMealItem.class)
 public class BoneMealItemMixin {
@@ -61,6 +61,9 @@ public class BoneMealItemMixin {
 
     @Inject(method = "useOnBlock", at = @At(value = "RETURN"), cancellable = true)
     private void useOnGrass(ItemUsageContext context, CallbackInfoReturnable<ActionResult> cir) {
+        // early return if module disabled
+        if (!Solute.CONFIG.grassModule.enabled) return;
+        // early return if module disabled
         World w = context.getWorld();
         BlockPos bp = context.getBlockPos();
         if (w.getBlockState(bp).isOf(Blocks.GRASS_BLOCK)) {
@@ -71,6 +74,9 @@ public class BoneMealItemMixin {
 
     @Inject(method = "useOnBlock", at = @At(value = "RETURN", ordinal = 2), cancellable = true)
     private void useOnDirt(ItemUsageContext context, CallbackInfoReturnable<ActionResult> cir) {
+        // early return if module disabled
+        if (!Solute.CONFIG.grassModule.enabled) return;
+        // early return if module disabled
         World world = context.getWorld();
         BlockPos pos = context.getBlockPos();
         if (world.getBlockState(pos).isOf(Blocks.DIRT)) {

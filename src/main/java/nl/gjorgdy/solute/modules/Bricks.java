@@ -84,7 +84,9 @@ public class Bricks {
     }
 
     public static boolean shearMoss(ServerWorld world, BlockPos pos, BlockState state, PlayerEntity player) {
+        // early return if module disabled
         if (!Solute.CONFIG.bricksModule.enabled) return false;
+        // early return if module disabled
         BlockState newState = removeMoss(state);
         return setBlock(world, pos, state, player, newState);
     }
