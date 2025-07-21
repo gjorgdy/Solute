@@ -3,7 +3,6 @@ package nl.gjorgdy.solute.modules;
 import net.minecraft.block.*;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
-import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
@@ -19,8 +18,7 @@ public class Ladder {
             BlockPos _pos = pos.down(i);
             BlockState _block = world.getBlockState(_pos);
             if (_block.isOf(Blocks.AIR) || _block.isOf(Blocks.WATER)) {
-                if (ItemUtils.place(stack, player, _pos)) {
-                    world.playSound(null, _pos, SoundEvents.BLOCK_LADDER_PLACE, SoundCategory.BLOCKS);
+                if (ItemUtils.place(stack, player, _pos, SoundEvents.BLOCK_LADDER_PLACE)) {
                     return true;
                 } else {
                     break;
@@ -32,7 +30,8 @@ public class Ladder {
 
     public static boolean canBeSupported(BlockState blockState, WorldView world, BlockPos pos) {
         BlockState upperBlock = world.getBlockState(pos.up());
-        return blockState.get(HorizontalFacingBlock.FACING) == upperBlock.get(HorizontalFacingBlock.FACING);
+        if (!blockState.isOf(Blocks.LADDER) || !upperBlock.isOf(Blocks.LADDER)) return false;
+        return blockState.get(LadderBlock.FACING) == upperBlock.get(LadderBlock.FACING);
     }
 
     public static boolean isSupported(WorldView world, BlockPos pos) {
@@ -48,7 +47,7 @@ public class Ladder {
             for (int y = pos.getY() - 1; y > -64; y--) {
                 BlockPos _pos = new BlockPos(x, y, z);
                 BlockState _block = world.getBlockState(_pos);
-                if (_block.equals(block)) {
+                if (_block.isOf(Blocks.LADDER) && _block.equals(block)) {
                     Direction _facing = _block.get(LadderBlock.FACING);
                     BlockPos _facingPos = _pos.offset(_facing.getOpposite());
                     if (!world.getBlockState(_facingPos).isSolidBlock(world, _facingPos)) {

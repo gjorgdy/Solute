@@ -1,6 +1,7 @@
 package nl.gjorgdy.solute.mixins.purpur;
 
 import net.minecraft.server.network.ServerPlayerEntity;
+import nl.gjorgdy.solute.Solute;
 import nl.gjorgdy.solute.interfaces.ServerPlayerEntityInterface;
 import nl.gjorgdy.solute.modules.Purpur;
 import org.spongepowered.asm.mixin.Mixin;
@@ -30,11 +31,17 @@ public class ServerPlayerEntityMixin implements ServerPlayerEntityInterface {
 
     @Inject(method = "tick", at = @At("HEAD"))
     public void onTick(CallbackInfo ci) {
+        // early return if module disabled
+        if (!Solute.CONFIG.purpurModule.enabled) return;
+        // early return if module disabled
         if (elevatorCooldown > 0) elevatorCooldown--;
     }
 
     @Inject(method = "jump", at = @At("RETURN"))
     public void onJump(CallbackInfo ci) {
+        // early return if module disabled
+        if (!Solute.CONFIG.purpurModule.enabled) return;
+        // early return if module disabled
         Purpur.up(playerEntity);
     }
 

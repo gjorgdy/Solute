@@ -1,6 +1,7 @@
 package nl.gjorgdy.solute.mixins.purpur;
 
 import net.minecraft.entity.Entity;
+import nl.gjorgdy.solute.Solute;
 import nl.gjorgdy.solute.modules.Purpur;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
@@ -16,6 +17,9 @@ public class EntityMixin {
 
     @Inject(method = "setSneaking", at = @At("HEAD"))
     public void setSneaking(boolean sneaking, CallbackInfo ci) {
+        // early return if module disabled
+        if (!Solute.CONFIG.purpurModule.enabled) return;
+        // early return if module disabled
         if (sneaking) Purpur.down(entity);
     }
 

@@ -30,51 +30,10 @@ Use dirt on a cauldron to turn it into mud.
 
 --------
 
-### Compass
-*Forget going to swamps or guessing where slime chunks are*
-
-When right-clicking a compass it will check for slime chunks around you. This will be shown as cardinal direction (N, E, S, W) and C for center, if you're standing in a slime chunk.
-
---------
-
-### Crafting Table
-*Improving on and adding recipes*
-
-Added smelting and blasting of raw metal blocks.
-
-Made powered rail crafted with gold give 16 rails.
-Made powered rail crafted with copper give 8 rails.
-
---------
-
 ### Creeper
 *Don't let mobs break your builds*
 
 Disables block damage caused by creepers and ghast fireballs 
-
---------
-
-### Enchantment
-*Don't dig a strip, dig a tunnel*
-
-Crusher [*pickaxe*]
-- Crushes blocks into their 'crushed' version
-- Cobblestone -> Gravel
-- (Red) Sandstone  -> (Red) Sand
-- Concrete -> Concrete Powder
-- Fortune increase the amount of drops (with gravel and sand)
-- Can not be combined with Silk Touch
-
-Drilling [*pickaxe, shovel*]
-- Increases depth per level, up to level 3
-- Mine deeper when mining compatible blocks with similar hardness
-- Can be gotten in an enchanting table from level 30
-- Can not be combined with Excavation
-
-Excavation [*pickaxe, shovel*]
-- Mine a 3x3 area when mining compatible blocks with similar hardness
-- Can be gotten in an enchanting table from level 30
-- Can not be combined with Drilling
 
 --------
 
@@ -196,11 +155,8 @@ If a block is in the way, the rails will be placed on top of it to start going u
 
 --------
 
-### Shulker
-*Shulkers are a way to solve Minecraft's inventory issue...*
+### Slime
+*Forget going to swamps or guessing where slime chunks are*
 
-Shulkers drop a higher amount of shells. 
-With a minimum of 2 and a max of 3, shulker boxes are way easier and quicker to get. 
-
-     
-
+Right-click with a slime ball to figure out if the chunk you're in is a slime chunk.
+If it shows slime particles, you are currently in a slime chunk.

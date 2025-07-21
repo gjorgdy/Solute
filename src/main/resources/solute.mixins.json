@@ -3,19 +3,14 @@
   "minVersion": "0.8",
   "package": "nl.gjorgdy.solute.mixins",
   "compatibilityLevel": "JAVA_21",
-  "mixins": [
-    "enchantment.BlockMixin",
-    "enchantment.ExperienceDroppingBlockMixin",
-    "enchantment.PlayerEntityMixin",
-    "farmland.FarmLandBlockMixin",
-    "purpur.EntityMixin"
-  ],
+  "mixins": [],
   "client": [],
   "server": [
     "ItemMixin",
     "bed.ServerWorldMixin",
     "cauldron.ConcretePowderBlockMixin",
     "creeper.EntityMixin",
+    "farmland.FarmLandBlockMixin",
     "farmland.HoeItemMixin",
     "grass.BoneMealItemMixin",
     "iron_bars.PlayerEntityMixin",
@@ -23,6 +18,7 @@
     "lava.FluidBlockMixin",
     "lava.LavaFluidMixin",
     "path.ShovelItemMixin",
+    "purpur.EntityMixin",
     "purpur.ServerPlayerEntityMixin"
   ],
   "injectors": {

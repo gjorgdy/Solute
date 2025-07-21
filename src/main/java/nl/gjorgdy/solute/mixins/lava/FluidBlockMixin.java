@@ -4,6 +4,7 @@ import net.minecraft.block.BlockState;
 import net.minecraft.block.FluidBlock;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import nl.gjorgdy.solute.Solute;
 import nl.gjorgdy.solute.modules.Cobblestone;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -16,6 +17,9 @@ public class FluidBlockMixin {
 
     @ModifyArgs(method = "receiveNeighborFluids", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/World;setBlockState(Lnet/minecraft/util/math/BlockPos;Lnet/minecraft/block/BlockState;)Z", ordinal = 0))
     private void generateCobble(Args args, World world, BlockPos pos, BlockState fluidBlockState) {
+        // early return if module disabled
+        if (!Solute.CONFIG.lavaModule.enabled) return;
+        // early return if module disabled
         args.set(1, Cobblestone.replaceCobblestone(world, pos, args.get(1)));
     }
 

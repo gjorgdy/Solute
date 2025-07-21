@@ -18,9 +18,9 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 public class Farmland {
 
-    public static void farmArea(ItemUsageContext context) {
+    public static boolean farmArea(ItemUsageContext context) {
         PlayerEntity player = context.getPlayer();
-        if (player == null) return;
+        if (player == null) return false;
         ItemStack toolStack = context.getStack();
         int range = getRange(toolStack);
         // farm the crops
@@ -30,6 +30,7 @@ public class Farmland {
         // deal damage to tool
         int damage = affectedBlocks / range;
         toolStack.damage(damage, player, context.getHand() == Hand.MAIN_HAND ? EquipmentSlot.MAINHAND : EquipmentSlot.OFFHAND);
+        return affectedBlocks > 0;
     }
 
     private static int getRange(ItemStack toolStack) {
@@ -77,13 +78,14 @@ public class Farmland {
         private void farmArea(BlockPos centerPos, BlockPos sourcePos, int depth) {
             // farm block
             BlockState centerState = itemUsageContext.getWorld().getBlockState(centerPos);
-            if (centerState.getBlock() instanceof CropBlock) farmCrop(centerPos, centerState);
+            if (centerState.getBlock() instanceof CropBlock crop && crop.isMature(centerState)) farmCrop(centerPos, centerState);
+            else return;
             if (depth == 0) return;
             // get surrounding
             BlockPosUtils.forNeighbours(centerPos, blockPos -> {
                 if (blockPos.equals(sourcePos)) return;
                 BlockState relativeState = itemUsageContext.getWorld().getBlockState(blockPos);
-                if (relativeState.getBlock() instanceof CropBlock crop && crop.isMature(relativeState)) {
+                if (relativeState.getBlock() instanceof CropBlock _crop && _crop.isMature(relativeState)) {
                     farmArea(blockPos, sourcePos, depth - 1);
                 }
             });
