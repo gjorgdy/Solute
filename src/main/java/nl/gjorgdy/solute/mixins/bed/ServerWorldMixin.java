@@ -67,18 +67,23 @@ public abstract class ServerWorldMixin {
                     }
                 }).start();
 
+                if (!doWeatherCycle) return false;
+
                 int thunderTime = worldProperties.getThunderTime();
                 if (serverWorld.isThundering() && thunderTime > 0) {
                     int _thunderTime = Math.max(0, thunderTime - (timeDelta * 2));
                     worldProperties.setThunderTime(_thunderTime);
                     if (_thunderTime == 0) worldProperties.setThundering(false);
                 }
+
+                int rainTime = worldProperties.getRainTime();
+                if (serverWorld.isRaining() && rainTime > 0) {
+                    int _rainTime = Math.max(0, rainTime - (timeDelta * 20));
+                    worldProperties.setRainTime(_rainTime);
+                    if (_rainTime == 0) worldProperties.setRaining(false);
+                }
             } else {
                 wakeSleepingPlayers();
-                if (doWeatherCycle && (serverWorld.isRaining() || serverWorld.isThundering())) {
-                    int _rainTime = Math.min(500, worldProperties.getRainTime());
-                    worldProperties.setRainTime(_rainTime);
-                }
             }
         }
         return false;
