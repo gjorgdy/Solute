@@ -160,3 +160,15 @@ If a block is in the way, the rails will be placed on top of it to start going u
 
 Right-click with a slime ball to figure out if the chunk you're in is a slime chunk.
 If it shows slime particles, you are currently in a slime chunk.
+
+--------
+
+### TNT
+*Explode items into their 'crushed' variants.*
+
+Using TNT, you can blow up items to turn them into something else.
+
+- Sandstone -> 1-3 Sand
+- Red Sandstone -> 1-3 Red Sand
+- Cobblestone -> 1-3 Gravel
+- [Color] Concrete -> 1 [Color] Concrete Powder

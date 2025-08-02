@@ -70,5 +70,8 @@ public class SoluteConfig extends Config {
     @Comment(value = "Right-click a slime ball to see if you're in a slime chunk.")
     public ToggleModuleConfig slimeModule = new ToggleModuleConfig(true);
 
+    @Translation(prefix = "solute.tntModule")
+    @Comment(value = "Explode items into their 'crushed' alternative. (sandstone -> sand, cobblestone -> gravel)")
+    public ToggleModuleConfig tntModule = new ToggleModuleConfig(true);
 
 }

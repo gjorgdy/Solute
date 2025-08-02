@@ -3,10 +3,12 @@
   "minVersion": "0.8",
   "package": "nl.gjorgdy.solute.mixins",
   "compatibilityLevel": "JAVA_21",
-  "mixins": [],
+  "mixins": [
+  ],
   "client": [],
   "server": [
     "ItemMixin",
+    "tnt.ItemEntityMixin",
     "bed.ServerWorldMixin",
     "cauldron.ConcretePowderBlockMixin",
     "creeper.EntityMixin",
