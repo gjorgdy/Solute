@@ -8,7 +8,6 @@
   "client": [],
   "server": [
     "ItemMixin",
-    "tnt.ItemEntityMixin",
     "bed.ServerWorldMixin",
     "cauldron.ConcretePowderBlockMixin",
     "creeper.EntityMixin",
@@ -21,7 +20,9 @@
     "lava.LavaFluidMixin",
     "path.ShovelItemMixin",
     "purpur.EntityMixin",
-    "purpur.ServerPlayerEntityMixin"
+    "purpur.ServerPlayerEntityMixin",
+    "tinted_glass.TintedGlassBlockMixin",
+    "tnt.ItemEntityMixin"
   ],
   "injectors": {
     "defaultRequire": 1

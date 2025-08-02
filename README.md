@@ -163,6 +163,13 @@ If it shows slime particles, you are currently in a slime chunk.
 
 --------
 
+### Tinted Glass
+*For a bit safer destruction*
+
+Tinted Glass is now blast proof, making it useful for TNT-based farms or factories.
+
+--------
+
 ### TNT
 *Explode items into their 'crushed' variants.*
 
