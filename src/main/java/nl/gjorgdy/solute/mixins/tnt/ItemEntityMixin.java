@@ -1,7 +1,10 @@
 package nl.gjorgdy.solute.mixins.tnt;
 
+import com.llamalad7.mixinextras.sugar.Local;
 import net.minecraft.block.Block;
 import net.minecraft.entity.ItemEntity;
+import net.minecraft.entity.damage.DamageSource;
+import net.minecraft.entity.damage.DamageTypes;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
@@ -18,8 +21,8 @@ import java.util.Optional;
 public class ItemEntityMixin {
 
     @Redirect(method = "damage", at = @At(value = "INVOKE", target = "Lnet/minecraft/item/ItemStack;onItemEntityDestroyed(Lnet/minecraft/entity/ItemEntity;)V"))
-    public void onDamage(ItemStack stack, ItemEntity entity) {
-        if (Solute.CONFIG.tntModule.enabled) {
+    public void onDamage(ItemStack stack, ItemEntity entity, @Local(argsOnly = true) DamageSource source) {
+        if (Solute.CONFIG.tntModule.enabled && (source.isOf(DamageTypes.EXPLOSION) || source.isOf(DamageTypes.PLAYER_EXPLOSION))) {
             var crushed = crush(entity.getRandom(), stack);
             if (crushed.isPresent()) {
                 Block.dropStack(entity.getWorld(), entity.getBlockPos(), crushed.get());
