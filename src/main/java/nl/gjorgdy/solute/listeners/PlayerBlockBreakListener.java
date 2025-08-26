@@ -16,8 +16,9 @@ public class PlayerBlockBreakListener implements PlayerBlockBreakEvents.After {
     @Override
     public void afterBlockBreak(World world, PlayerEntity playerEntity, BlockPos blockPos, BlockState blockState, @Nullable BlockEntity blockEntity) {
         // Ladders
-        if (Solute.CONFIG.ladderModule.enabled && world.getBlockState(blockPos).isOf(Blocks.LADDER)) {
-            Ladder.updateLadder(world, blockPos);
+        if (Solute.CONFIG.ladderModule.enabled && blockState.isOf(Blocks.LADDER)) {
+            // update ladders this ladder might have been supporting
+            Ladder.updateLadder(world, blockPos.down());
         }
     }
 }

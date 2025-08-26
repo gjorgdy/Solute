@@ -22,10 +22,11 @@ public class LadderBlockMixin {
         // early return if module disabled
         if (!Solute.CONFIG.ladderModule.enabled) return;
         // early return if module disabled
-        if (Ladder.isSupported(world, pos))
+        if (Ladder.isSupported(world, pos)) {
             cir.setReturnValue(state);
-        else
+        } else {
             Ladder.updateLadder(world, pos);
+        }
     }
 
     @Inject(method = "canPlaceAt", at = @At("RETURN"), cancellable = true)

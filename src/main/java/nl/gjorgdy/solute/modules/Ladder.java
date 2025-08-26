@@ -42,20 +42,13 @@ public class Ladder {
     public static void updateLadder(WorldView world, BlockPos pos) {
         if (world instanceof WorldAccess worldAccess) {
             BlockState block = world.getBlockState(pos);
-            int x = pos.getX();
-            int z = pos.getZ();
-            for (int y = pos.getY() - 1; y > -64; y--) {
-                BlockPos _pos = new BlockPos(x, y, z);
-                BlockState _block = world.getBlockState(_pos);
-                if (_block.isOf(Blocks.LADDER) && _block.equals(block)) {
-                    Direction _facing = _block.get(LadderBlock.FACING);
-                    BlockPos _facingPos = _pos.offset(_facing.getOpposite());
-                    if (!world.getBlockState(_facingPos).isSolidBlock(world, _facingPos)) {
-                        worldAccess.breakBlock(_pos, true);
-                        continue;
-                    }
+            if (block.isOf(Blocks.LADDER)) {
+                Direction _facing = block.get(LadderBlock.FACING);
+                BlockPos _facingPos = pos.offset(_facing.getOpposite());
+                if (!(world.getBlockState(_facingPos).isSolidBlock(world, _facingPos) || isSupported(world, pos))) {
+                    worldAccess.breakBlock(pos, true);
+                    updateLadder(world, pos.down());
                 }
-                return;
             }
         }
     }
