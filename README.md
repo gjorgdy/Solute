@@ -99,8 +99,13 @@ When cobblestone, stone or obsidian would be generated with water and lava it ma
 * *In the desert,*
   <br> Sandstone will generate instead of cobblestone and smooth sandstone instead of stone
 
+
 * *In the badlands,*
-  <br> Red sandstone will generate in place of cobblestone and stone is replaced by a 50/50 chance on smooth red sandstone and terracotta
+  <br> Red sandstone will generate in place of cobblestone and stone is replaced by a mix of smooth red sandstone and terracotta:
+    - 30% chance of Terracotta
+    - 20% chance of Smooth Red Sandstone
+    - 10% chance of Red, Orange, Brown, White and Yellow Terracotta each
+
 
 * *In mossy biomes (taiga, jungle etc.),*
   <br> Cobblestone will have a 25% chance of generating as mossy cobblestone

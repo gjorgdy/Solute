@@ -145,7 +145,15 @@ public class Cobblestone {
         if (biomeKey == BiomeKeys.DESERT) {
             return Blocks.SMOOTH_SANDSTONE;
         } else if (BADLAND_BIOMES.contains(biomeKey)) {
-            return Blocks.SMOOTH_RED_SANDSTONE;
+            return randomBlock(world, Map.of(
+                Blocks.SMOOTH_RED_SANDSTONE, 2,
+                Blocks.TERRACOTTA, 3,
+                Blocks.RED_TERRACOTTA, 1,
+                Blocks.ORANGE_TERRACOTTA, 1,
+                Blocks.BROWN_TERRACOTTA, 1,
+                Blocks.WHITE_TERRACOTTA, 1,
+                Blocks.YELLOW_TERRACOTTA, 1
+            ));
         } else if (MOSSY_BIOMES.contains(biomeKey)) {
             return chance(world, 1, 3) ? Blocks.MOSSY_COBBLESTONE : Blocks.COBBLESTONE;
         } else {
