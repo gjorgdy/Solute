@@ -41,10 +41,10 @@ public class Purpur {
             else player.solute$setElevatorCooldown();
         }
 
-        if (!isPoweredElevatorBlock(entity.getWorld(), entity.getBlockPos().down())) return;
+        if (!isPoweredElevatorBlock(entity.getEntityWorld(), entity.getBlockPos().down())) return;
         for (int i = 2; i < range; i++) {
             BlockPos _pos = entity.getBlockPos().add(0, up ? (i) : (-1 * i), 0);
-            if (isPoweredElevatorBlock(entity.getWorld(), _pos)) {
+            if (isPoweredElevatorBlock(entity.getEntityWorld(), _pos)) {
                 safeTeleport(entity, _pos);
                 return;
             }
@@ -63,8 +63,8 @@ public class Purpur {
      * @param blockPos location to teleport player to
      */
     private static void safeTeleport(Entity entity, BlockPos blockPos) {
-        World world = entity.getWorld();
-        Vec3d playerPos = entity.getPos();
+        World world = entity.getEntityWorld();
+        Vec3d playerPos = entity.getEntityPos();
 
         BlockState[] blockStates = new BlockState[]{
             world.getBlockState(blockPos),
@@ -89,7 +89,7 @@ public class Purpur {
 
     private static synchronized void teleportEntity(Entity entity, Vec3d destination) {
         TeleportTarget teleportTarget = new TeleportTarget(
-                (ServerWorld) entity.getWorld(),
+                (ServerWorld) entity.getEntityWorld(),
                 destination,
                 entity.getVelocity().multiply(0.85),
                 entity.getYaw(),
@@ -103,9 +103,9 @@ public class Purpur {
 
     private static void enderEffect(Entity entity) {
         if (entity instanceof ServerPlayerEntity playerEntity) {
-            playerEntity.getWorld().playSound(null, entity.getBlockPos(), SoundEvents.ENTITY_ENDERMAN_TELEPORT, SoundCategory.PLAYERS);
+            playerEntity.getEntityWorld().playSound(null, entity.getBlockPos(), SoundEvents.ENTITY_ENDERMAN_TELEPORT, SoundCategory.PLAYERS);
         }
-        entity.getWorld().sendEntityStatus(entity, (byte)46);
+        entity.getEntityWorld().sendEntityStatus(entity, (byte)46);
     }
 
 }

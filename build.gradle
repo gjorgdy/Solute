@@ -1,5 +1,6 @@
 plugins {
-	id 'fabric-loom' version '1.10-SNAPSHOT'
+	id "com.modrinth.minotaur" version "2.+"
+	id 'fabric-loom' version "${loom_version}"
 	id 'maven-publish'
 }
 
@@ -20,7 +21,6 @@ repositories {
 		name = "FzzyMaven"
 		url = uri("https://maven.fzzyhmstrs.me/")
 	}
-
 }
 
 dependencies {
@@ -83,19 +83,47 @@ jar {
 	}
 }
 
-// configure the maven publication
-//publishing {
-//	publications {
-//		mavenJava(MavenPublication) {
-//			from components.java
-//		}
-//	}
-//
-//	// See https://docs.gradle.org/current/userguide/publishing_maven.html for information on how to set up publishing.
-//	repositories {
-//		// Add repositories to publish to here.
-//		// Notice: This block does NOT have the same function as the block in the top level.
-//		// The repositories here will be used for publishing your artifact, not for
-//		// retrieving dependencies.
-//	}
-//}
+// build.gradle
+modrinth {
+	token = "-"
+	projectId = project.archives_base_name
+	versionNumber = "1.11.1"
+	versionType = "release"
+	uploadFile = jar
+	gameVersions = [project.minecraft_version]
+	loaders = ["fabric"]
+	changelog = "FIX-11: items no longer turn into their crushed variants by lava\nFIX-12: ladders do not stay floating if a supporting ladder is removed\nchanged the generation of stone generators in badlands biomes"
+	dependencies {
+		required.project "fabric-api"
+		required.project "fzzy-config"
+	}
+}
+
+static String getModrinthToken() {
+    return new File('.env')
+            .readLines()
+            .findAll { it?.trim() && !it.trim().startsWith('#') }
+            .collect { it.split('=') }
+            .find { it[0] == 'MODRINTH_TOKEN' }[1]
+}
+
+static String readChangelog() {
+    return new File('changelog.md')
+            .readLines()
+            .join('\n')
+}
+
+modrinth {
+    token = getModrinthToken()
+    projectId = project.mod_id
+    versionNumber = "${project.version}"
+    changelog = readChangelog()
+    versionType = project.mod_release_type
+    uploadFile = remapJar
+    gameVersions = [project.minecraft_version]
+    loaders = ["fabric"]
+    dependencies {
+        required.project "fabric-api"
+        required.version "fzzy-config", project.fzzyConfigVersion
+    }
+}

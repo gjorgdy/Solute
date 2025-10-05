@@ -20,7 +20,7 @@ public class Rails {
         // early return if module disabled
         if (!Solute.CONFIG.railsModule.enabled) return false;
         // early return if module disabled
-        World world = player.getWorld();
+        World world = player.getEntityWorld();
         RailShape shape = getRailShape(blockState);
         var playerDirection = player.getMovementDirection();
         boolean xAxisRails = isXAxis(shape);

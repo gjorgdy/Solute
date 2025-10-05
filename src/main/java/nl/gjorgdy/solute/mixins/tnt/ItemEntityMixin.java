@@ -20,12 +20,12 @@ import java.util.Optional;
 @Mixin(ItemEntity.class)
 public class ItemEntityMixin {
 
-    @Redirect(method = "damage", at = @At(value = "INVOKE", target = "Lnet/minecraft/item/ItemStack;onItemEntityDestroyed(Lnet/minecraft/entity/ItemEntity;)V"))
+    @Redirect(method = "damage(Lnet/minecraft/server/world/ServerWorld;Lnet/minecraft/entity/damage/DamageSource;F)Z", at = @At(value = "INVOKE", target = "Lnet/minecraft/item/ItemStack;onItemEntityDestroyed(Lnet/minecraft/entity/ItemEntity;)V"))
     public void onDamage(ItemStack stack, ItemEntity entity, @Local(argsOnly = true) DamageSource source) {
         if (Solute.CONFIG.tntModule.enabled && (source.isOf(DamageTypes.EXPLOSION) || source.isOf(DamageTypes.PLAYER_EXPLOSION))) {
             var crushed = crush(entity.getRandom(), stack);
             if (crushed.isPresent()) {
-                Block.dropStack(entity.getWorld(), entity.getBlockPos(), crushed.get());
+                Block.dropStack(entity.getEntityWorld(), entity.getBlockPos(), crushed.get());
                 return;
             }
         }
@@ -40,93 +40,93 @@ public class ItemEntityMixin {
             stack.setCount(itemStack.getCount());
             return Optional.of(stack);
         }
-        if (item == Items.LIGHT_BLUE_CONCRETE) {
+        else if (item == Items.LIGHT_BLUE_CONCRETE) {
             var stack = Items.LIGHT_BLUE_CONCRETE_POWDER.getDefaultStack();
             stack.setCount(itemStack.getCount());
             return Optional.of(stack);
         }
-        if (item == Items.BLUE_CONCRETE) {
+        else if (item == Items.BLUE_CONCRETE) {
             var stack = Items.BLUE_CONCRETE_POWDER.getDefaultStack();
             stack.setCount(itemStack.getCount());
             return Optional.of(stack);
         }
-        if (item == Items.CYAN_CONCRETE) {
+        else if (item == Items.CYAN_CONCRETE) {
             var stack = Items.CYAN_CONCRETE_POWDER.getDefaultStack();
             stack.setCount(itemStack.getCount());
             return Optional.of(stack);
         }
-        if (item == Items.LIME_CONCRETE) {
+        else if (item == Items.LIME_CONCRETE) {
             var stack = Items.LIME_CONCRETE_POWDER.getDefaultStack();
             stack.setCount(itemStack.getCount());
             return Optional.of(stack);
         }
-        if (item == Items.GREEN_CONCRETE) {
+        else if (item == Items.GREEN_CONCRETE) {
             var stack = Items.GREEN_CONCRETE.getDefaultStack();
             stack.setCount(itemStack.getCount());
             return Optional.of(stack);
         }
-        if (item == Items.YELLOW_CONCRETE) {
+        else if (item == Items.YELLOW_CONCRETE) {
             var stack = Items.YELLOW_CONCRETE_POWDER.getDefaultStack();
             stack.setCount(itemStack.getCount());
             return Optional.of(stack);
         }
-        if (item == Items.ORANGE_CONCRETE) {
+        else if (item == Items.ORANGE_CONCRETE) {
             var stack = Items.ORANGE_CONCRETE_POWDER.getDefaultStack();
             stack.setCount(itemStack.getCount());
             return Optional.of(stack);
         }
-        if (item == Items.BROWN_CONCRETE) {
+        else if (item == Items.BROWN_CONCRETE) {
             var stack = Items.BROWN_CONCRETE_POWDER.getDefaultStack();
             stack.setCount(itemStack.getCount());
             return Optional.of(stack);
         }
-        if (item == Items.RED_CONCRETE) {
+        else if (item == Items.RED_CONCRETE) {
             var stack = Items.RED_CONCRETE_POWDER.getDefaultStack();
             stack.setCount(itemStack.getCount());
             return Optional.of(stack);
         }
-        if (item == Items.PURPLE_CONCRETE) {
+        else if (item == Items.PURPLE_CONCRETE) {
             var stack = Items.PURPLE_CONCRETE_POWDER.getDefaultStack();
             stack.setCount(itemStack.getCount());
             return Optional.of(stack);
         }
-        if (item == Items.MAGENTA_CONCRETE) {
+        else if (item == Items.MAGENTA_CONCRETE) {
             var stack = Items.MAGENTA_CONCRETE_POWDER.getDefaultStack();
             stack.setCount(itemStack.getCount());
             return Optional.of(stack);
         }
-        if (item == Items.PINK_CONCRETE) {
+        else if (item == Items.PINK_CONCRETE) {
             var stack = Items.PINK_CONCRETE_POWDER.getDefaultStack();
             stack.setCount(itemStack.getCount());
             return Optional.of(stack);
         }
-        if (item == Items.WHITE_CONCRETE) {
+        else if (item == Items.WHITE_CONCRETE) {
             var stack = Items.WHITE_CONCRETE_POWDER.getDefaultStack();
             stack.setCount(itemStack.getCount());
             return Optional.of(stack);
         }
-        if (item == Items.LIGHT_GRAY_CONCRETE) {
+        else if (item == Items.LIGHT_GRAY_CONCRETE) {
             var stack = Items.LIGHT_GRAY_CONCRETE_POWDER.getDefaultStack();
             stack.setCount(itemStack.getCount());
             return Optional.of(stack);
         }
-        if (item == Items.GRAY_CONCRETE) {
+        else if (item == Items.GRAY_CONCRETE) {
             var stack = Items.GRAY_CONCRETE_POWDER.getDefaultStack();
             stack.setCount(itemStack.getCount());
             return Optional.of(stack);
         }
         // convert
-        if (item == Items.SANDSTONE) {
+        else if (item == Items.SANDSTONE) {
             var stack = Items.SAND.getDefaultStack();
             stack.setCount(getAmount(random, itemStack.getCount()));
             return Optional.of(stack);
         }
-        if (item == Items.RED_SANDSTONE) {
+        else if (item == Items.RED_SANDSTONE) {
             var stack = Items.RED_SAND.getDefaultStack();
             stack.setCount(getAmount(random, itemStack.getCount()));
             return Optional.of(stack);
         }
-        if (item == Items.COBBLESTONE) {
+        else if (item == Items.COBBLESTONE) {
             var stack = Items.GRAVEL.getDefaultStack();
             stack.setCount(getAmount(random, itemStack.getCount()));
             return Optional.of(stack);

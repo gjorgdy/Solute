@@ -29,13 +29,13 @@ public class IronBars {
     }
 
     private static boolean isPole(PlayerEntity player) {
-        BlockState block = player.getWorld().getBlockState(player.getBlockPos());
+        BlockState block = player.getEntityWorld().getBlockState(player.getBlockPos());
         return block.isOf(Blocks.END_ROD)
                 || (block.isOf(Blocks.IRON_BARS)
-                && !block.isSideSolid(player.getWorld(), player.getBlockPos(), Direction.NORTH, SideShapeType.CENTER)
-                && !block.isSideSolid(player.getWorld(), player.getBlockPos(), Direction.EAST, SideShapeType.CENTER)
-                && !block.isSideSolid(player.getWorld(), player.getBlockPos(), Direction.SOUTH, SideShapeType.CENTER)
-                && !block.isSideSolid(player.getWorld(), player.getBlockPos(), Direction.WEST, SideShapeType.CENTER));
+                && !block.isSideSolid(player.getEntityWorld(), player.getBlockPos(), Direction.NORTH, SideShapeType.CENTER)
+                && !block.isSideSolid(player.getEntityWorld(), player.getBlockPos(), Direction.EAST, SideShapeType.CENTER)
+                && !block.isSideSolid(player.getEntityWorld(), player.getBlockPos(), Direction.SOUTH, SideShapeType.CENTER)
+                && !block.isSideSolid(player.getEntityWorld(), player.getBlockPos(), Direction.WEST, SideShapeType.CENTER));
     }
 
 }
