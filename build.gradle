@@ -87,22 +87,6 @@ jar {
 	}
 }
 
-// build.gradle
-modrinth {
-	token = "-"
-	projectId = project.archives_base_name
-	versionNumber = "1.11.1"
-	versionType = "release"
-	uploadFile = jar
-	gameVersions = [project.minecraft_version]
-	loaders = ["fabric"]
-	changelog = "FIX-11: items no longer turn into their crushed variants by lava\nFIX-12: ladders do not stay floating if a supporting ladder is removed\nchanged the generation of stone generators in badlands biomes"
-	dependencies {
-		required.project "fabric-api"
-		required.project "fzzy-config"
-	}
-}
-
 static String getModrinthToken() {
     return new File('.env')
             .readLines()
@@ -120,6 +104,7 @@ static String readChangelog() {
 modrinth {
     token = getModrinthToken()
     projectId = project.mod_id
+    versionName = "${archives_base_name} ${project.version}"
     versionNumber = "${project.version}"
     changelog = readChangelog()
     versionType = project.mod_release_type
