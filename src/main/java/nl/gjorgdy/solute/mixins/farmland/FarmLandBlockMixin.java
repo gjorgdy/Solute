@@ -19,15 +19,17 @@ public abstract class FarmLandBlockMixin {
     @Shadow
     public static void setToDirt(@Nullable Entity entity, BlockState state, World world, BlockPos pos) {}
 
-    @Redirect(
-        method = "onLandedUpon(Lnet/minecraft/world/World;Lnet/minecraft/block/BlockState;Lnet/minecraft/util/math/BlockPos;Lnet/minecraft/entity/Entity;D)V",
-        at = @At(value = "INVOKE", target = "Lnet/minecraft/block/FarmlandBlock;setToDirt(Lnet/minecraft/entity/Entity;Lnet/minecraft/block/BlockState;Lnet/minecraft/world/World;Lnet/minecraft/util/math/BlockPos;)V"
-    ))
-    public void onLandedUpon(Entity entity, BlockState state, World world, BlockPos pos, @Local(argsOnly = true) double fallDistance) {
-        // early return if module disabled
-        if (!Solute.CONFIG.farmlandModule.enabled) return;
-        // early return if module disabled
-        if (fallDistance > 8.0f) setToDirt(entity, state, world, pos);
-    }
+//    @Redirect(
+//        method = "onLandedUpon(Lnet/minecraft/world/World;Lnet/minecraft/block/BlockState;Lnet/minecraft/util/math/BlockPos;Lnet/minecraft/entity/Entity;D)V",
+//        at = @At(value = "INVOKE", target = "Lnet/minecraft/block/FarmlandBlock;setToDirt(Lnet/minecraft/entity/Entity;Lnet/minecraft/block/BlockState;Lnet/minecraft/world/World;Lnet/minecraft/util/math/BlockPos;)V"),
+//        require = 1,
+//        order = 999 // to support FarmTweaks
+//    )
+//    public void onLandedUpon(Entity entity, BlockState state, World world, BlockPos pos, @Local(argsOnly = true) double fallDistance) {
+//        // early return if module disabled
+//        if (!Solute.CONFIG.farmlandModule.enabled) return;
+//        // early return if module disabled
+//        if (fallDistance > 8.0f) setToDirt(entity, state, world, pos);
+//    }
 
 }
