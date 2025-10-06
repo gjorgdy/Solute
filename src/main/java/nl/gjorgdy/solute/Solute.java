@@ -4,6 +4,7 @@ import me.fzzyhmstrs.fzzy_config.api.ConfigApiJava;
 import net.fabricmc.api.DedicatedServerModInitializer;
 import net.fabricmc.fabric.api.event.player.PlayerBlockBreakEvents;
 import net.fabricmc.fabric.api.event.player.UseBlockCallback;
+import net.fabricmc.loader.api.FabricLoader;
 import nl.gjorgdy.solute.config.SoluteConfig;
 import nl.gjorgdy.solute.listeners.PlayerBlockBreakListener;
 import nl.gjorgdy.solute.listeners.UseBlockCallbackListener;
@@ -21,6 +22,11 @@ public class Solute implements DedicatedServerModInitializer {
 	public void onInitializeServer() {
 
 		LOGGER.info("Igniting furnace to add solute to the base");
+
+        if (FabricLoader.getInstance().isModLoaded("farmtweaks")) {
+            LOGGER.info("FarmTweaks detected, disabling conflicting features");
+            Solute.CONFIG.farmlandModule.enabled = false;
+        }
 
 		UseBlockCallback.EVENT.register(new UseBlockCallbackListener());
 

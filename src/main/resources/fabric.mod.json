@@ -17,9 +17,6 @@
 
   "environment": "*",
   "entrypoints": {
-    "fabric-datagen": [
-      "nl.gjorgdy.solute.Solute"
-    ],
     "server": [
       "nl.gjorgdy.solute.Solute"
     ]
@@ -32,7 +29,7 @@
     "minecraft": ">=${minecraft_version}",
     "java": ">=21",
     "fabric": "*",
-    "fzzy_config": ">=0.7.1"
+    "fzzy_config": ">=${fzzyConfigVersion}"
   },
   "custom": {
     "fzzy_config": [

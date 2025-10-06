@@ -1,4 +1,4 @@
-﻿Temporary fix
+﻿FarmTweaks Compatibility Fix
 ---
 
-There is a small conflict with the mod FarmTweaks, this version disables the conflicting mixin for now.
+A check has been added to disable the 'farmland' module when FarmTweaks is installed to prevent crashes.
