@@ -4,8 +4,9 @@ plugins {
 	id 'maven-publish'
 }
 
+var min_minecraft_version = project.minecraft_versions.split(',').first()
 archivesBaseName = project.archives_base_name
-version = project.mod_version
+version = "${project.mod_version}+${min_minecraft_version}"
 group = project.maven_group
 
 repositories {
@@ -45,7 +46,7 @@ processResources {
 
 	filesMatching("fabric.mod.json") {
 		expand "version": project.version,
-				"minecraft_version": project.minecraft_version,
+				"minecraft_version": min_minecraft_version,
 				"loader_version": project.loader_version,
                 "fzzyConfigVersion": project.fzzyConfigVersion
 	}
@@ -109,7 +110,7 @@ modrinth {
     changelog = readChangelog()
     versionType = project.mod_release_type
     uploadFile = remapJar
-    gameVersions = [project.minecraft_version]
+    gameVersions = project.minecraft_versions.split(',') as List<String>
     loaders = ["fabric"]
     dependencies {
         required.project "fabric-api"
