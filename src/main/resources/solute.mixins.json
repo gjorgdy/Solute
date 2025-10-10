@@ -4,6 +4,7 @@
   "package": "nl.gjorgdy.solute.mixins",
   "compatibilityLevel": "JAVA_21",
   "mixins": [
+    "copper_golem.MoveItemsTaskMixin"
   ],
   "client": [],
   "server": [

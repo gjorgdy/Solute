@@ -1,10 +1,13 @@
 package nl.gjorgdy.solute.utils;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.JukeboxBlock;
+import net.minecraft.block.jukebox.JukeboxSong;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.*;
 import net.minecraft.registry.tag.ItemTags;
 import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvent;
 import net.minecraft.util.ActionResult;
@@ -16,6 +19,10 @@ import net.minecraft.util.math.Vec3d;
 import nl.gjorgdy.solute.interfaces.ConcretePowderBlockInterface;
 
 public class ItemUtils {
+
+    public static boolean isMusicDisc(ServerWorld world, ItemStack stack) {
+        return JukeboxSong.getSongEntryFromStack(world.getRegistryManager(), stack).isPresent();
+    }
 
     public static ItemStack hardenConcretePowder(final ItemStack stack) {
         if (Block.getBlockFromItem(stack.getItem()) instanceof ConcretePowderBlockInterface concretePowderBlockInterface) {

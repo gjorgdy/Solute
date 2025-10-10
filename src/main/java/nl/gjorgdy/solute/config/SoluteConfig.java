@@ -7,7 +7,7 @@ import me.fzzyhmstrs.fzzy_config.config.Config;
 import net.minecraft.util.Identifier;
 import nl.gjorgdy.solute.Solute;
 
-@Version(version = 1)
+@Version(version = 2)
 public class SoluteConfig extends Config {
 
     public SoluteConfig() {
@@ -25,6 +25,10 @@ public class SoluteConfig extends Config {
     @Translation(prefix = "solute.cauldronModule")
     @Comment(value = "Washing blocks in cauldrons. example ; concrete powder to concrete")
     public ToggleModuleConfig cauldronModule = new ToggleModuleConfig(true);
+
+    @Translation(prefix = "solute.copperGolemModule")
+    @Comment(value = "Let copper golems put music discs directly into jukeboxes.")
+    public ToggleModuleConfig copperGolemModule = new ToggleModuleConfig(true);
 
     @Translation(prefix = "solute.creeperModule")
     @Comment(value = "Disables block damage caused by creepers and ghast fireballs.")
