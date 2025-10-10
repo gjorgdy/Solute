@@ -30,6 +30,13 @@ Use dirt on a cauldron to turn it into mud.
 
 --------
 
+### Copper Golem
+*Your personal DJ*
+
+A copper golem can put music discs in jukeboxes. 
+
+--------
+
 ### Creeper
 *Don't let mobs break your builds*
 
