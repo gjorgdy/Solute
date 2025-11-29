@@ -47,6 +47,8 @@ Disables block damage caused by creepers and ghast fireballs
 ### Farmland
 *Making hoes useful since release 1.0.0*
 
+Use a hoe on empty farmland to turn it (back) into dirt.
+
 Use a hoe on a full-grown crop to harvest it, and the surrounding crops.
 
 If a crop drops seeds, they will automatically be replanted.
@@ -73,12 +75,12 @@ Use bone meal on a grass block to spread grass blocks faster.
 
 --------
 
-### Iron Bars
+### Bars
 *Live your craziest fireman fantasies in Minecraft*   
    
-When falling down while being in the same block as freestanding Iron Bars or End Rods. Your falling speed will be minimized, and your fall damage neglected.  
+When falling down while being in the same block as freestanding Iron Bars, Copper Bars or End Rods. Your falling speed will be minimized, and your fall damage neglected.  
 
-Iron Bars have to be fully freestanding, they can't connect to any block horizontally.   
+Iron and Copper Bars have to be fully freestanding, they can't connect to any block horizontally.   
 
 If you have already built up speed it will take some time before you slowed down enough. Meaning you will still take fall damage if you 'grab on' to the bars too late.
 

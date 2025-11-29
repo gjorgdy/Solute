@@ -7,7 +7,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.Vec3d;
 
-public class IronBars {
+public class Bars {
 
     public static final double TARGET_VELOCITY = -0.5;
     public static final double VELOCITY_MODIFIER = 0.85;
@@ -32,6 +32,7 @@ public class IronBars {
         BlockState block = player.getEntityWorld().getBlockState(player.getBlockPos());
         return block.isOf(Blocks.END_ROD)
                 || (block.isOf(Blocks.IRON_BARS)
+                || Blocks.COPPER_BARS.getAll().contains(block.getBlock())
                 && !block.isSideSolid(player.getEntityWorld(), player.getBlockPos(), Direction.NORTH, SideShapeType.CENTER)
                 && !block.isSideSolid(player.getEntityWorld(), player.getBlockPos(), Direction.EAST, SideShapeType.CENTER)
                 && !block.isSideSolid(player.getEntityWorld(), player.getBlockPos(), Direction.SOUTH, SideShapeType.CENTER)
