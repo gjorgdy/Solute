@@ -9,7 +9,7 @@ import net.minecraft.util.math.Vec3d;
 
 public class Bars {
 
-    public static final double TARGET_VELOCITY = -0.5;
+    public static final double TARGET_VELOCITY = -0.75;
     public static final double VELOCITY_MODIFIER = 0.85;
 
     public static void tick(PlayerEntity player) {
