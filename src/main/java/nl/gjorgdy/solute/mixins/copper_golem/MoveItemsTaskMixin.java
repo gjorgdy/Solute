@@ -37,8 +37,11 @@ public abstract class MoveItemsTaskMixin {
     public void onFindStorage(ServerWorld world, PathAwareEntity entity, CallbackInfoReturnable<Optional<MoveItemsTask.Storage>> cir) {
         if (!Solute.CONFIG.copperGolemModule.enabled) return;
         if (entity instanceof CopperGolemEntity copperGolem && ItemUtils.isMusicDisc(world, copperGolem.getMainHandStack())) {
-            cir.setReturnValue(findJukebox(world, copperGolem));
-            cir.cancel();
+            var optJukebox = this.findJukebox(world, copperGolem);
+            if (optJukebox.isPresent()) {
+                cir.setReturnValue(optJukebox);
+                cir.cancel();
+            }
         }
     }
 
