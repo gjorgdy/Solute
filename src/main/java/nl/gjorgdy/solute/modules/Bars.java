@@ -4,6 +4,7 @@ import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.SideShapeType;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.Vec3d;
 
@@ -24,6 +25,19 @@ public class Bars {
             player.velocityModified = true;
             if (newVerticalVelocity >= TARGET_VELOCITY) {
                 player.fallDistance = 0;
+            }
+        }
+    }
+
+    public static void jump(PlayerEntity player) {
+        if (!player.isSpectator() && !player.isOnGround() && player.getVelocity().getY() < 0 && !player.isSneaking() && isPole(player)) {
+            if (player instanceof ServerPlayerEntity serverPlayer) {
+                var direction = serverPlayer.getHorizontalFacing();
+                serverPlayer.setVelocity(
+                    serverPlayer.getVelocity().add(
+                        direction.getDoubleVector().multiply(0.3)
+                    ).add(0, 0.5, 0)
+                );
             }
         }
     }

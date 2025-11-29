@@ -4,6 +4,19 @@
 
 --------
 
+### Bars
+*Live your craziest fireman fantasies in Minecraft*
+
+When falling down while being in the same block as freestanding Iron Bars, Copper Bars or End Rods. Your falling speed will be minimized, and your fall damage neglected.
+
+Iron and Copper Bars have to be fully freestanding, they can't connect to any block horizontally.
+
+If you have already built up speed it will take some time before you slowed down enough. Meaning you will still take fall damage if you 'grab on' to the bars too late.
+
+If you crouch while sliding down the bars, you will do a small jump with which you can reach platforms next to the bars.
+
+--------
+
 ### Bed
 *When sleeping, speed up time instead of skipping to the morning*
 
@@ -71,20 +84,7 @@ When eating a glow berry, you will temporarily receive the 'glow' effect
 ### Grass
 *Your beautiful garden too dirty?*
 
-Use bone meal on a grass block to spread grass blocks faster.
-
---------
-
-### Bars
-*Live your craziest fireman fantasies in Minecraft*   
-   
-When falling down while being in the same block as freestanding Iron Bars, Copper Bars or End Rods. Your falling speed will be minimized, and your fall damage neglected.  
-
-Iron and Copper Bars have to be fully freestanding, they can't connect to any block horizontally.   
-
-If you have already built up speed it will take some time before you slowed down enough. Meaning you will still take fall damage if you 'grab on' to the bars too late.
-
---------
+Use bone meal on a grass block to spread grass blocks faster.--------
 
 ### Ladder
 *Stuck on top of a cliff, or just want to save some space*
