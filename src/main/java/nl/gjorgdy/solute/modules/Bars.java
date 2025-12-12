@@ -22,7 +22,7 @@ public class Bars {
                     newVerticalVelocity,
                     v.z
             );
-            player.velocityModified = true;
+            player.velocityDirty = true;
             if (newVerticalVelocity >= TARGET_VELOCITY) {
                 player.fallDistance = 0;
             }

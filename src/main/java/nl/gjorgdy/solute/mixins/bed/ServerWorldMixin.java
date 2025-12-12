@@ -7,7 +7,6 @@ import net.minecraft.server.world.SleepManager;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.text.Text;
-import net.minecraft.world.GameRules;
 import net.minecraft.world.level.ServerWorldProperties;
 import nl.gjorgdy.solute.Solute;
 import org.spongepowered.asm.mixin.Final;
@@ -43,8 +42,8 @@ public abstract class ServerWorldMixin {
         // early return if module disabled
         if (!Solute.CONFIG.bedModule.enabled) return instance.canSkipNight(percentage);
         // early return if module disabled
-        boolean doDayLightCycle = serverWorld.getGameRules().getBoolean(GameRules.DO_DAYLIGHT_CYCLE);
-        boolean doWeatherCycle = serverWorld.getGameRules().getBoolean(GameRules.DO_WEATHER_CYCLE);
+        boolean doDayLightCycle = serverWorld.getGameRules().getValue(net.minecraft.world.rule.GameRules.ADVANCE_TIME);
+        boolean doWeatherCycle = serverWorld.getGameRules().getValue(net.minecraft.world.rule.GameRules.ADVANCE_WEATHER);
 
         int playersInWorld = serverWorld.getPlayers().size();
         int playersSleeping = instance.getSleeping();
