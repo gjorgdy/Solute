@@ -1,6 +1,5 @@
 package nl.gjorgdy.solute.listeners;
 
-import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.event.player.UseBlockCallback;
 import net.minecraft.block.*;
 import net.minecraft.client.network.ClientPlayerEntity;
@@ -123,12 +122,12 @@ public class UseBlockCallbackListener implements UseBlockCallback {
     }
 
     private @NonNull ActionResult interactCauldron(PlayerEntity player, World world, @NonNull Hand hand, BlockHitResult hitResult, ItemStack itemStack, BlockState blockState) {
-        if (!player.isSneaking() && ItemUtils.isConcretePowder(player.getStackInHand(hand).getItem()) && blockState.isOf(Blocks.WATER_CAULDRON)) {
+        if (!player.isSneaking() && ItemUtils.isConcretePowder(itemStack.getItem()) && blockState.isOf(Blocks.WATER_CAULDRON)) {
             if (world.isClient()) return clientSwingHand(player, hand, hitResult);
             return cauldronWash(player, hand, world, hitResult.getBlockPos(), ItemUtils::hardenConcretePowder);
         }
         // concrete powder on cauldron
-        else if (!player.isSneaking() && ItemUtils.canBecomeMud(player.getStackInHand(hand)) && blockState.isOf(Blocks.WATER_CAULDRON)) {
+        else if (!player.isSneaking() && ItemUtils.canBecomeMud(itemStack) && blockState.isOf(Blocks.WATER_CAULDRON)) {
             if (world.isClient()) return clientSwingHand(player, hand, hitResult);
             return cauldronWash(player, hand, world, hitResult.getBlockPos(), stack -> Items.MUD.getDefaultStack());
         }

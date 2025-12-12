@@ -11,7 +11,6 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.Vec3i;
 import net.minecraft.world.World;
-import nl.gjorgdy.solute.Solute;
 import nl.gjorgdy.solute.utils.ItemUtils;
 
 public class Rails {
