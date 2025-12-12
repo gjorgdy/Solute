@@ -8,20 +8,26 @@ import net.minecraft.network.packet.s2c.play.EntityVelocityUpdateS2CPacket;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.Vec3d;
+import nl.gjorgdy.solute.Solute;
 
 public class Bars {
 
-    public static final double TARGET_VELOCITY = -0.75;
-    public static final double VELOCITY_MODIFIER = 0.85;
+    public static double getTargetVelocity() {
+        return Solute.CONFIG.ironBarsModule.targetVelocity;
+    }
+
+    public static double getVelocityModifier() {
+        return Solute.CONFIG.ironBarsModule.velocityModifier;
+    }
 
     public static void tick(PlayerEntity player) {
         if (!player.isSpectator() && !player.isOnGround() && player.getVelocity().getY() < 0 && !player.isSneaking() && isPole(player)) {
             Vec3d v = player.getVelocity();
-            double newVerticalVelocity = v.y >= TARGET_VELOCITY ? v.y : v.y * VELOCITY_MODIFIER;
+            double newVerticalVelocity = v.y >= getTargetVelocity() ? v.y : v.y * getVelocityModifier();
             var newVelocity = new Vec3d(v.x, newVerticalVelocity, v.z);
             if (player instanceof ServerPlayerEntity serverPlayer)
                 setVelocity(serverPlayer, newVelocity);
-            if (newVerticalVelocity >= TARGET_VELOCITY) {
+            if (newVerticalVelocity >= getTargetVelocity()) {
                 player.fallDistance = 0;
             }
         }
@@ -41,7 +47,7 @@ public class Bars {
     }
 
     private static boolean closeToTargetVelocity(Vec3d velocity) {
-        return Math.abs(velocity.getY() - TARGET_VELOCITY) < 0.25;
+        return Math.abs(velocity.getY() - getTargetVelocity()) < 0.25;
     }
 
     private static void setVelocity(ServerPlayerEntity player, Vec3d velocity) {

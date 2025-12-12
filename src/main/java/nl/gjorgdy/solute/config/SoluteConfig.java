@@ -7,7 +7,7 @@ import me.fzzyhmstrs.fzzy_config.config.Config;
 import net.minecraft.util.Identifier;
 import nl.gjorgdy.solute.Solute;
 
-@Version(version = 2)
+@Version(version = 3)
 public class SoluteConfig extends Config {
 
     public SoluteConfig() {
@@ -48,7 +48,7 @@ public class SoluteConfig extends Config {
 
     @Translation(prefix = "solute.ironBarsModule")
     @Comment(value = "Use stacked iron bars or end rods as a fireman pole.")
-    public ToggleModuleConfig ironBarsModule = new ToggleModuleConfig(true);
+    public BarsModuleConfig ironBarsModule = new BarsModuleConfig(true, -0.75, 0.85);
 
     @Translation(prefix = "solute.ladderModule")
     @Comment(value = "Make ladders be able to support each other. Also allows right-clicking to lower them.")
