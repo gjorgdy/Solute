@@ -4,6 +4,7 @@ import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.SideShapeType;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.network.packet.s2c.play.EntityVelocityUpdateS2CPacket;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.Vec3d;
@@ -17,29 +18,35 @@ public class Bars {
         if (!player.isSpectator() && !player.isOnGround() && player.getVelocity().getY() < 0 && !player.isSneaking() && isPole(player)) {
             Vec3d v = player.getVelocity();
             double newVerticalVelocity = v.y >= TARGET_VELOCITY ? v.y : v.y * VELOCITY_MODIFIER;
-            player.setVelocity(
-                    v.x,
-                    newVerticalVelocity,
-                    v.z
-            );
-            player.velocityDirty = true;
+            var newVelocity = new Vec3d(v.x, newVerticalVelocity, v.z);
+            if (player instanceof ServerPlayerEntity serverPlayer)
+                setVelocity(serverPlayer, newVelocity);
             if (newVerticalVelocity >= TARGET_VELOCITY) {
                 player.fallDistance = 0;
             }
         }
     }
 
-    public static void jump(PlayerEntity player) {
-        if (!player.isSpectator() && !player.isOnGround() && player.getVelocity().getY() < 0 && !player.isSneaking() && isPole(player)) {
+    public static boolean jump(PlayerEntity player) {
+        if (!player.isSpectator() && !player.isOnGround() && closeToTargetVelocity(player.getVelocity()) && !player.isSneaking() && isPole(player)) {
             if (player instanceof ServerPlayerEntity serverPlayer) {
-                var direction = serverPlayer.getHorizontalFacing();
-                serverPlayer.setVelocity(
-                    serverPlayer.getVelocity().add(
-                        direction.getDoubleVector().multiply(0.3)
-                    ).add(0, 0.5, 0)
-                );
+                var newVelocity = serverPlayer.getVelocity()
+                                          .add(Vec3d.fromPolar(0, serverPlayer.getYaw()).multiply(0.3))
+                                          .add(0, 0.5, 0);
+                setVelocity(serverPlayer, newVelocity);
+                return false;
             }
         }
+        return true;
+    }
+
+    private static boolean closeToTargetVelocity(Vec3d velocity) {
+        return Math.abs(velocity.getY() - TARGET_VELOCITY) < 0.25;
+    }
+
+    private static void setVelocity(ServerPlayerEntity player, Vec3d velocity) {
+        player.setVelocity(velocity);
+        player.networkHandler.send(new EntityVelocityUpdateS2CPacket(player.getId(), velocity), null);
     }
 
     private static boolean isPole(PlayerEntity player) {

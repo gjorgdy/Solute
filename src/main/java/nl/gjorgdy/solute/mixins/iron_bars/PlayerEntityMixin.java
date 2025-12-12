@@ -35,9 +35,14 @@ public abstract class PlayerEntityMixin extends LivingEntity {
         // early return if module disabled
         if (!Solute.CONFIG.ironBarsModule.enabled) return;
         // early return if module disabled
-        if (sneaking) Bars.jump(player);
+        boolean set = true;
+        if (sneaking) {
+            set = Bars.jump(player);
+        }
         // call original method
-        super.setSneaking(sneaking);
+        if (set) {
+            super.setSneaking(sneaking);
+        }
     }
 
 }
