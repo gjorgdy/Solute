@@ -17,9 +17,6 @@ import nl.gjorgdy.solute.utils.ItemUtils;
 public class Rails {
 
     public static boolean place(ServerPlayerEntity player, ItemStack railItem, BlockState blockState, BlockPos pos) {
-        // early return if module disabled
-        if (!Solute.CONFIG.railsModule.enabled) return false;
-        // early return if module disabled
         World world = player.getEntityWorld();
         RailShape shape = getRailShape(blockState);
         var playerDirection = player.getMovementDirection();
