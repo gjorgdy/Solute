@@ -36,8 +36,7 @@ public class ItemMixin {
         // early return if module disabled
         if (!Solute.CONFIG.slimeModule.enabled) return;
         // early return if module disabled
-        if (player.getStackInHand(hand).isOf(Items.SLIME_BALL)) {
-            ServerWorld serverWorld = (ServerWorld) world;
+        if (player.getStackInHand(hand).isOf(Items.SLIME_BALL) && world instanceof ServerWorld serverWorld) {
             Slime.use(serverWorld, player, hand);
         }
     }

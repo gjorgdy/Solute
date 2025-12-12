@@ -4,10 +4,7 @@
   "package": "nl.gjorgdy.solute.mixins",
   "compatibilityLevel": "JAVA_21",
   "mixins": [
-    "copper_golem.MoveItemsTaskMixin"
-  ],
-  "client": [],
-  "server": [
+    "copper_golem.MoveItemsTaskMixin",
     "ItemMixin",
     "bed.ServerWorldMixin",
     "cauldron.ConcretePowderBlockMixin",
@@ -25,6 +22,8 @@
     "tinted_glass.TintedGlassBlockMixin",
     "tnt.ItemEntityMixin"
   ],
+  "client": [],
+  "server": [],
   "injectors": {
     "defaultRequire": 1
   },

@@ -1,7 +1,6 @@
 package nl.gjorgdy.solute.utils;
 
 import net.minecraft.block.Block;
-import net.minecraft.block.JukeboxBlock;
 import net.minecraft.block.jukebox.JukeboxSong;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.*;
@@ -43,10 +42,6 @@ public class ItemUtils {
         return item.isIn(ItemTags.RAILS);
     }
 
-    public static boolean place(ItemStack item, PlayerEntity player, BlockPos pos) {
-        return place(item, player, pos, null);
-    }
-
     public static boolean place(ItemStack item, PlayerEntity player, BlockPos pos, SoundEvent soundEvent) {
         if (item.getItem() instanceof BlockItem blockItem) {
             var result = blockItem.place(new ItemPlacementContext(
@@ -56,8 +51,8 @@ public class ItemUtils {
                 BlockHitResult.createMissed(Vec3d.ZERO, Direction.DOWN, pos)
             ));
             boolean placed = result == ActionResult.SUCCESS;
-            if (placed && soundEvent != null) {
-                PlayerUtils.playDirectSound((ServerPlayerEntity) player, soundEvent, SoundCategory.BLOCKS);
+            if (placed && player instanceof ServerPlayerEntity splayer && soundEvent != null) {
+                PlayerUtils.playDirectSound(splayer, soundEvent, SoundCategory.BLOCKS);
             }
             return placed;
         } else return false;

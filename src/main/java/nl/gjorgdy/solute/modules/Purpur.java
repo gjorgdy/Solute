@@ -88,8 +88,9 @@ public class Purpur {
     }
 
     private static synchronized void teleportEntity(Entity entity, Vec3d destination) {
+        if (!(entity.getEntityWorld() instanceof ServerWorld serverWorld)) return;
         TeleportTarget teleportTarget = new TeleportTarget(
-                (ServerWorld) entity.getEntityWorld(),
+                serverWorld,
                 destination,
                 entity.getVelocity().multiply(0.85),
                 entity.getYaw(),

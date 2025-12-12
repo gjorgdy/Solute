@@ -20,6 +20,7 @@ import nl.gjorgdy.solute.modules.Rails;
 import nl.gjorgdy.solute.utils.BlockUtils;
 import nl.gjorgdy.solute.utils.ItemUtils;
 import nl.gjorgdy.solute.utils.ToolUtils;
+import org.jspecify.annotations.NonNull;
 
 import java.util.Random;
 import java.util.function.Function;
@@ -27,9 +28,10 @@ import java.util.function.Function;
 public class UseBlockCallbackListener implements UseBlockCallback {
 
     @Override
-    public ActionResult interact(PlayerEntity player, World world, Hand hand, BlockHitResult hitResult) {
+    public @NonNull ActionResult interact(PlayerEntity player, World world, @NonNull Hand hand, BlockHitResult hitResult) {
         BlockState blockState = world.getBlockState(hitResult.getBlockPos());
         ItemStack itemStack = player.getStackInHand(hand);
+        if (!(player instanceof ServerPlayerEntity serverPlayer)) return ActionResult.PASS;
 
         if (hand == Hand.MAIN_HAND && player.getOffHandStack().getItem() instanceof BlockItem) return ActionResult.PASS;
         if (hand == Hand.OFF_HAND && player.getMainHandStack().getItem() instanceof BlockItem) return ActionResult.PASS;
@@ -43,14 +45,15 @@ public class UseBlockCallbackListener implements UseBlockCallback {
         }
         // rails on rails
         else if (ItemUtils.isRails(itemStack) && blockState.getBlock() instanceof AbstractRailBlock) {
-            if (Rails.place((ServerPlayerEntity) player, itemStack, blockState, hitResult.getBlockPos())) {
+            if (Rails.place(serverPlayer, itemStack, blockState, hitResult.getBlockPos())) {
                 player.swingHand(hand, true);
                 return ActionResult.SUCCESS;
             }
         }
         // shears on mossy block
         else if (player.getStackInHand(hand).isOf(Items.SHEARS) && BlockUtils.isMossy(blockState.getBlock())) {
-            if (Bricks.shearMoss((ServerWorld) world, hitResult.getBlockPos(), blockState, player)) {
+            if (!(world instanceof ServerWorld serverWorld)) return ActionResult.PASS;
+            if (Bricks.shearMoss(serverWorld, hitResult.getBlockPos(), blockState, player)) {
                 if (new Random().nextInt(4) > 1) {
                     Block.dropStack(world, hitResult.getBlockPos().offset(hitResult.getSide()), Items.VINE.getDefaultStack());
                 }
@@ -62,7 +65,8 @@ public class UseBlockCallbackListener implements UseBlockCallback {
         }
         // pickaxe on crackable block
         else if (ToolUtils.isPickaxe(player.getStackInHand(hand)) && BlockUtils.canCrack(blockState.getBlock())) {
-            if (Bricks.usePickaxeOnStone((ServerWorld) world, hitResult.getBlockPos(), blockState)) {
+            if (!(world instanceof ServerWorld serverWorld)) return ActionResult.PASS;
+            if (Bricks.usePickaxeOnStone(serverWorld, hitResult.getBlockPos(), blockState)) {
                 world.playSound(null, hitResult.getBlockPos(), SoundEvents.BLOCK_DEEPSLATE_BRICKS_BREAK, SoundCategory.BLOCKS);
                 player.getStackInHand(hand).damage(1, player);
                 player.swingHand(hand, true);
@@ -71,7 +75,8 @@ public class UseBlockCallbackListener implements UseBlockCallback {
         }
         // clay ball on cracked block
         else if (player.getStackInHand(hand).getItem().equals(Items.CLAY_BALL) && BlockUtils.isCracked(blockState.getBlock())) {
-            if (Bricks.useClayOnStone((ServerWorld) world, hitResult.getBlockPos(), blockState, player)) {
+            if (!(world instanceof ServerWorld serverWorld)) return ActionResult.PASS;
+            if (Bricks.useClayOnStone(serverWorld, hitResult.getBlockPos(), blockState, player)) {
                 world.playSound(null, hitResult.getBlockPos(), SoundEvents.BLOCK_DEEPSLATE_BRICKS_PLACE, SoundCategory.BLOCKS);
                 player.getStackInHand(hand).decrementUnlessCreative(1, player);
                 player.swingHand(hand, true);
@@ -80,7 +85,8 @@ public class UseBlockCallbackListener implements UseBlockCallback {
         }
         // vines on block
         else if (!player.isSneaking() && player.getStackInHand(hand).isOf(Items.VINE) && BlockUtils.canBeMossy(blockState.getBlock())) {
-            if (Bricks.placeVines((ServerWorld) world, hitResult.getBlockPos(), blockState, player)) {
+            if (!(world instanceof ServerWorld serverWorld)) return ActionResult.PASS;
+            if (Bricks.placeVines(serverWorld, hitResult.getBlockPos(), blockState, player)) {
                 player.getStackInHand(hand).decrementUnlessCreative(1, player);
                 player.swingHand(hand, true);
                 return ActionResult.SUCCESS;

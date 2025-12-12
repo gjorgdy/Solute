@@ -24,6 +24,7 @@ public class Farmland {
         ItemStack toolStack = context.getStack();
         int range = getRange(toolStack);
         // farm the crops
+        if (context.getWorld().isClient()) return true;
         int affectedBlocks = new Process(context)
                 .start(range)
                 .getAffectedBlocks();
@@ -52,25 +53,28 @@ public class Farmland {
 
     private static class Process {
 
-        private final ItemUsageContext itemUsageContext;
-        private final ServerWorld world;
-        private final BlockPos centerPos;
-        private final ItemStack toolStack;
-        private final ServerPlayerEntity player;
-        private final List<ItemStack> itemStacks;
+        private ItemUsageContext itemUsageContext;
+        private ServerWorld world;
+        private BlockPos centerPos;
+        private ItemStack toolStack;
+        private ServerPlayerEntity player;
+        private List<ItemStack> itemStacks;
 
         private int affectedBlocks = 0;
 
         public Process(ItemUsageContext context) {
+            if (!(context.getWorld() instanceof ServerWorld serverWorld) ||
+            !(context.getPlayer() instanceof ServerPlayerEntity serverPlayer)) return;
             this.itemUsageContext = context;
-            this.world = (ServerWorld) context.getWorld();
+            this.world = serverWorld;
             this.centerPos = context.getBlockPos();
             this.toolStack = context.getStack();
-            this.player = (ServerPlayerEntity) context.getPlayer();
+            this.player = serverPlayer;
             this.itemStacks = new ArrayList<>();
         }
 
         public Process start(int range) {
+            if (this.world == null || this.player == null) return this;
             farmArea(itemUsageContext.getBlockPos(), itemUsageContext.getBlockPos(), range);
             return drop();
         }

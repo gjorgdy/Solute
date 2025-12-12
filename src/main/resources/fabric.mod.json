@@ -17,7 +17,7 @@
 
   "environment": "*",
   "entrypoints": {
-    "server": [
+    "main": [
       "nl.gjorgdy.solute.Solute"
     ]
   },
