@@ -30,6 +30,22 @@ public class Cobblestone {
     );
     static final int CRYING_OBSIDIAN_POSSIBLE = 16;
 
+    static final Map<Block, Integer> UNDERGROUND_STONES = Map.of(
+            Blocks.ANDESITE, 2,
+            Blocks.DIORITE, 2,
+            Blocks.GRANITE, 2,
+            Blocks.STONE, 4
+    );
+    static final Map<Block, Integer> BADLAND_STONES = Map.of(
+            Blocks.SMOOTH_RED_SANDSTONE, 2,
+            Blocks.TERRACOTTA, 3,
+            Blocks.RED_TERRACOTTA, 1,
+            Blocks.ORANGE_TERRACOTTA, 1,
+            Blocks.BROWN_TERRACOTTA, 1,
+            Blocks.WHITE_TERRACOTTA, 1,
+            Blocks.YELLOW_TERRACOTTA, 1
+    );
+
     public static boolean fiftyFifty(World world) {
         return chance(world, 1, 2);
     }
@@ -145,27 +161,14 @@ public class Cobblestone {
         if (biomeKey == BiomeKeys.DESERT) {
             return Blocks.SMOOTH_SANDSTONE;
         } else if (BADLAND_BIOMES.contains(biomeKey)) {
-            return randomBlock(world, Map.of(
-                Blocks.SMOOTH_RED_SANDSTONE, 2,
-                Blocks.TERRACOTTA, 3,
-                Blocks.RED_TERRACOTTA, 1,
-                Blocks.ORANGE_TERRACOTTA, 1,
-                Blocks.BROWN_TERRACOTTA, 1,
-                Blocks.WHITE_TERRACOTTA, 1,
-                Blocks.YELLOW_TERRACOTTA, 1
-            ));
+            return randomBlock(world, BADLAND_STONES);
         } else {
             return Blocks.STONE;
         }
     }
 
     public static Block getStoneForUnderground(World world) {
-        return randomBlock(world, Map.of(
-            Blocks.ANDESITE, 2,
-            Blocks.DIORITE, 2,
-            Blocks.GRANITE, 2,
-            Blocks.STONE, 4
-        ));
+        return randomBlock(world, UNDERGROUND_STONES);
     }
 
     private static Block randomBlock(World world, Map<Block, Integer> blocks) {
