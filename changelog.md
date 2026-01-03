@@ -1,8 +1,5 @@
-﻿Mounts of Mayhem Update
+﻿Cobblestone generator fix and improvements
 ---
 
-- Added support for 1.21.11
-- Fixed the mod for singleplayer usage
-- Made interactions smoother if mod is also installed on client
-- Fixed jump direction from bars
-- Made speed of bars configurable
+- Fixed stone generation outside of deserts and badlands.
+- Improved performance of cobblestone generation with random blocks.
