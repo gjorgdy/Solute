@@ -154,10 +154,8 @@ public class Cobblestone {
                 Blocks.WHITE_TERRACOTTA, 1,
                 Blocks.YELLOW_TERRACOTTA, 1
             ));
-        } else if (MOSSY_BIOMES.contains(biomeKey)) {
-            return chance(world, 1, 3) ? Blocks.MOSSY_COBBLESTONE : Blocks.COBBLESTONE;
         } else {
-            return Blocks.COBBLESTONE;
+            return Blocks.STONE;
         }
     }
 
